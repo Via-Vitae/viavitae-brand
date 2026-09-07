@@ -59,7 +59,7 @@ mypy==2.3.1
 # card. Requires a Cairo installation on the host; the GitHub Actions runner
 # image provides it, a minimal container may not.
 # UNRESOLVED PIN — see the pinning policy above.
-cairosvg>=2.7,<3
+cairosvg>=2.9.0,<3
 
 # Image handling: PNG to WebP conversion, resizing the rasterised masters down to
 # the favicon and social sizes, and compositing the OG card. Also used to

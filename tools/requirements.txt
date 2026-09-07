@@ -78,7 +78,7 @@ pillow==10.2.0
 # subsetted WOFF2 can drop a block that the upstream release has, and a Russian
 # display heading then falls back glyph by glyph into two typefaces on one line.
 # UNRESOLVED PIN — see the pinning policy above.
-fonttools>=4.47,<5
+fonttools>=4.64.0,<5
 
 # WOFF2 compression support for fonttools' subsetting output. Required only by
 # the `--fonts` path; the coverage check itself reads TTF, OTF and WOFF2 through

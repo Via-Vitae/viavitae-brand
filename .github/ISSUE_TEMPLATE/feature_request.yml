@@ -1,0 +1,249 @@
+name: Feature request
+description: Propose a new capability or a change to an existing one. Compliance, i18n and accessibility impact are assessed here, before work starts.
+title: "feat(<scope>): "
+labels: ["enhancement", "triage"]
+projects: ["viavitae-org/1"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing a change. A feature request that answers the compliance
+        questions below can be scheduled immediately; one that does not will be returned
+        for clarification, because the answers are needed before work starts, not after.
+
+        Under rule R5, processing personal data requires a completed DPIA **before** the
+        processing begins. Under rule R3, a change with architectural impact needs an ADR.
+        Filling in the compliance section here is what lets the architects tell you early
+        whether either is required.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: |
+        What is the problem, who has it, and how do you know? Describe the situation, not
+        your preferred solution. Include evidence: a support ticket, a user interview, a
+        metric, a failed workflow, a compliance finding.
+
+        A request that starts "we should add X" without stating whose problem X solves is
+        hard to evaluate against alternatives.
+      placeholder: |
+        Parish administrators currently export the assessment funnel to a spreadsheet to
+        produce a monthly report, because no in-product export exists. This takes about
+        three hours per parish per month and produces an unencrypted local file containing
+        personal data.
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: |
+        What you propose, and what the user experience looks like when it is done. Be
+        concrete about inputs, outputs and states. Note any part you consider negotiable.
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        Which other approaches were considered, and why each was rejected. Include "do
+        nothing" and state its cost. If a third-party service could solve this, name it and
+        address the EEA residency question in the compliance section.
+
+        An empty alternatives section usually means the cheapest option was not examined.
+      render: markdown
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ### Compliance impact
+
+        These four questions determine whether a DPIA and an ADR are required before work
+        starts. Answer them honestly — "unknown" is an acceptable answer and is far more
+        useful than a guess, because it routes the request to the DPO early.
+
+  - type: dropdown
+    id: personal-data
+    attributes:
+      label: Does this involve personal data?
+      description: Any information relating to an identified or identifiable person, including identifiers, contact details, device and IP addresses, and behavioural data.
+      options:
+        - "no — no personal data is processed, stored or transmitted"
+        - "yes — ordinary personal data (name, email, phone, address, account)"
+        - "yes — financial data (donations, payments, bank or card references)"
+        - "yes — special category data under Article 9, including religious belief"
+        - "yes — data about children or vulnerable adults"
+        - "unknown — I need the DPO to assess this"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: new-third-party
+    attributes:
+      label: Does this introduce a new third party?
+      description: Any new processor or subprocessor — a SaaS provider, an API, an analytics or error-tracking service, an AI or LLM endpoint, a font or CDN host, a payment provider.
+      options:
+        - "no — uses only processors already under a DPA"
+        - "yes — new processor identified, name given below"
+        - "possibly — depends on the implementation chosen"
+        - "unknown"
+    validations:
+      required: true
+
+  - type: input
+    id: third-party-name
+    attributes:
+      label: New third party details
+      description: Name, what data it receives, where it processes and stores that data, and whether a DPA exists. Required if the answer above is not "no".
+      placeholder: "Example Analytics BV — receives pseudonymous page events — hosted in Amsterdam, NL — DPA in place"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: eu-only
+    attributes:
+      label: EU-only check
+      description: Personal data must be stored and processed inside the EEA. Confirm where the data in this feature would live.
+      options:
+        - "confirmed EEA-only — self-hosted on ViaVitae Proxmox infrastructure"
+        - "confirmed EEA-only — third party with an EEA processing region and a DPA"
+        - "at risk — the obvious implementation would place data outside the EEA"
+        - "requires an exception — I will request an ADR and a transfer impact assessment"
+        - "unknown — needs assessment"
+    validations:
+      required: true
+
+  - type: textarea
+    id: residency-detail
+    attributes:
+      label: Residency detail
+      description: |
+        Required if the EU-only check is anything other than "confirmed EEA-only". Name the
+        storage location, the backup location, the region used by any third party, and which
+        transfers you believe would occur. If you are requesting an exception, say what
+        compensating control you propose.
+      render: markdown
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ### Delivery impact
+
+  - type: dropdown
+    id: i18n
+    attributes:
+      label: i18n impact
+      description: Supported locales are Lithuanian, English and Russian. Polish and German are stubbed. User-facing strings must reach parity in all three supported locales in the same change.
+      options:
+        - "none — no user-facing strings"
+        - "lt / en / ru — parity required in the same change"
+        - "lt / en / ru plus a stubbed locale — flag the gap below"
+        - "requires a new locale"
+    validations:
+      required: true
+
+  - type: textarea
+    id: i18n-detail
+    attributes:
+      label: i18n detail
+      description: Which strings are added or changed, whether translation is needed and who provides it, and any locale-specific formatting for dates, numbers or currency.
+      render: markdown
+    validations:
+      required: false
+
+  - type: dropdown
+    id: accessibility
+    attributes:
+      label: Accessibility impact
+      description: WCAG 2.2 AA is a requirement, not an aspiration. Any UI change must have a keyboard path, a visible focus state, a programmatic name and sufficient contrast.
+      options:
+        - "none — no user interface"
+        - "new UI component — full AA assessment and axe gate required"
+        - "change to an existing component — regression check required"
+        - "new media — captions or transcript required"
+        - "risk of an AA failure — describe below"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Estimated scope
+      description: Order-of-magnitude effort, in the smallest honest bucket. Pull requests stay under 400 changed lines, so a large scope means several sequential pull requests.
+      options:
+        - "small — under a day, one pull request"
+        - "medium — a few days, two to four pull requests"
+        - "large — one to two weeks, needs a design note or ADR first"
+        - "epic — needs decomposition before it can be scheduled"
+        - "unknown — needs investigation, propose a spike"
+    validations:
+      required: true
+
+  - type: input
+    id: repositories
+    attributes:
+      label: Repositories affected
+      description: Comma-separated. Include infrastructure and documentation repositories, not only the application.
+      placeholder: "viavitae-web, viavitae-api, viavitae-docs"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: |
+        Testable statements that define done. One per line, starting with "Given", "When"
+        or "The system". Each must be verifiable by a test, a measurement or a review — not
+        by opinion. Include the negative cases and the accessibility and i18n criteria where
+        they apply.
+      placeholder: |
+        - Given a parish administrator on the report page, when they select a month, then a
+          CSV export is generated containing only that parish's records.
+        - The export contains no special category data.
+        - The export button is reachable by keyboard and announces its state to a screen reader.
+        - Labels exist in lt, en and ru.
+        - A user without the report role receives 403 and the attempt is logged.
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Explicitly out of scope
+      description: What this request does not cover. Stating the boundary prevents scope creep during review and implementation.
+      render: markdown
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have described the problem and its evidence, not only my preferred solution.
+          required: true
+        - label: I have answered the compliance questions honestly, using "unknown" where I am genuinely unsure.
+          required: true
+        - label: I understand that if personal data is involved, a DPIA must be completed before implementation starts (rule R5).
+          required: true
+        - label: I have not included any personal data, secret, token or credential in this request.
+          required: true

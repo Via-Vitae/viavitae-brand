@@ -1,0 +1,85 @@
+{
+  "$description": "ViaVitae spacing tokens, on a 4pt base scale. Every margin, padding, gap and inset in the system is one of these values. An off-scale value is a defect that shows up as a page that looks almost right and cannot be fixed by anyone who did not build it, because the difference between 18px and 16px is invisible in isolation and obvious across a screen. The only permitted exception is a hairline border width, which lives in its own group below at 1px and is not part of the scale.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "spacing",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "base": "4pt",
+    "basePx": 4,
+    "adr": "docs/architecture.md — ADR-002",
+    "guidance": "guidelines/product-page-patterns.md"
+  },
+
+  "spacing": {
+    "$description": "The scale. Steps are named by their multiple of the 4pt base, not by their pixel value, so the scale can be re-based without renaming every consumer: spacing.4 means four base units and is 16px at the current base. Values below 16px are dense and used inside components; values from 16px up are layout and used between them. The jump from 3 to 4 to 6 skips 5 deliberately — a 20px gap is almost always a mistake for 16px or 24px, and removing it removes the mistake.",
+
+    "0": { "$type": "dimension", "$value": "0px", "$description": "Zero. Used for reset and for adjacent-sibling margin collapsing." },
+    "px": { "$type": "dimension", "$value": "1px", "$description": "Half-step, off-scale by design. Optical alignment only — nudging an icon one pixel onto a text baseline. Not a layout value." },
+    "0-5": { "$type": "dimension", "$value": "2px", "$description": "Half a base unit. The gap between a checkbox and its label." },
+    "1": { "$type": "dimension", "$value": "4px", "$description": "One base unit. Icon-to-label gap, badge padding, inline chip spacing." },
+    "2": { "$type": "dimension", "$value": "8px", "$description": "Two base units. Tight component padding, gap between related form fields, list item spacing." },
+    "3": { "$type": "dimension", "$value": "12px", "$description": "Three base units. Standard button padding-y, input padding, gap inside a card header." },
+    "4": { "$type": "dimension", "$value": "16px", "$description": "Four base units. THE default. Card padding, gap between stacked sections inside a component, page gutter on mobile." },
+    "6": { "$type": "dimension", "$value": "24px", "$description": "Six base units. Gap between cards in a grid, section padding on tablet, paragraph spacing in long-form prose." },
+    "8": { "$type": "dimension", "$value": "32px", "$description": "Eight base units. Space above an h2, page gutter on desktop." },
+    "10": { "$type": "dimension", "$value": "40px", "$description": "Ten base units. Gap between a hero and the first content section." },
+    "12": { "$type": "dimension", "$value": "48px", "$description": "Twelve base units. Section separation on mobile and tablet." },
+    "16": { "$type": "dimension", "$value": "64px", "$description": "Sixteen base units. Section separation on desktop." },
+    "20": { "$type": "dimension", "$value": "80px", "$description": "Twenty base units. Major page division — between the hero and the body, or between two distinct scroll-story chapters." },
+    "24": { "$type": "dimension", "$value": "96px", "$description": "Twenty-four base units. Largest standard section gap. Above this, a section break reads as two pages rather than one." },
+    "32": { "$type": "dimension", "$value": "128px", "$description": "Thirty-two base units. Reserved for the top and bottom of a marketing page, where the extra air is the design." },
+    "40": { "$type": "dimension", "$value": "160px", "$description": "Forty base units. Reserved for full-bleed scroll-story transitions on a product page." },
+    "48": { "$type": "dimension", "$value": "192px", "$description": "Forty-eight base units. The ceiling. Nothing in the system needs more; if a layout does, the layout is wrong." }
+  },
+
+  "component": {
+    "$description": "Composite spacing: named component paddings built from the scale above. Declared as aliases so a change to spacing.4 propagates. These exist because 'the padding inside a button' is a design decision that should be made once, not re-derived in every component file.",
+
+    "button-padding-x-lg": { "$type": "dimension", "$value": "{spacing.6}", "$description": "24px horizontal padding on a large button." },
+    "button-padding-y-lg": { "$type": "dimension", "$value": "{spacing.3}", "$description": "12px vertical padding on a large button. With the button-lg label at 17px and 1.2 line-height that is a 20.4px line box plus 24px of padding, giving a 44.4px control — clear of the 44px touch-target guidance and well clear of the 24px floor in WCAG 2.2 SC 2.5.8." },
+    "button-padding-x-md": { "$type": "dimension", "$value": "{spacing.4}" },
+    "button-padding-y-md": { "$type": "dimension", "$value": "{spacing.2}", "$description": "8px vertical on the 15px button-md label gives an 18px line box plus 16px of padding, a 34px control. That is above the 24px AA floor but below the 44px guidance, so reset.css grows an md button to lg padding under (pointer: coarse) where a finger rather than a cursor is doing the aiming." },
+    "input-padding-x": { "$type": "dimension", "$value": "{spacing.3}" },
+    "input-padding-y": { "$type": "dimension", "$value": "{spacing.3}", "$description": "12px vertical on the 16px body-md label at 1.6 line-height gives a 25.6px line box plus 24px of padding, a 49.6px field. A form control is a primary target and is sized accordingly." },
+    "card-padding": { "$type": "dimension", "$value": "{spacing.6}", "$description": "24px on all sides. Grows to spacing.8 above the lg breakpoint." },
+    "card-gap": { "$type": "dimension", "$value": "{spacing.4}" },
+    "list-item-gap": { "$type": "dimension", "$value": "{spacing.3}" },
+    "icon-label-gap": { "$type": "dimension", "$value": "{spacing.2}", "$description": "8px between an icon and its label. Tighter than the general scale because the two form a single perceptual unit." },
+    "focus-ring-offset": { "$type": "dimension", "$value": "{spacing.0-5}", "$description": "2px gap between a control's edge and its focus ring. Without the offset the ring merges with the control's own border and the focus state becomes ambiguous, particularly on a dark surface where a navy control meets a navy background." },
+    "focus-ring-width": { "$type": "dimension", "$value": "{border.medium}", "$description": "2px ring. WCAG 2.2 SC 2.4.11 requires the focus indicator to enclose an area at least equal to a 2 CSS pixel thick perimeter of the unfocused component, so 1px fails regardless of contrast. With the 2px offset the indicator reads as a distinct band of colour rather than as a border, which is the point of the offset." }
+  },
+
+  "layout": {
+    "$description": "Page-level spacing: gutters, container widths and the vertical rhythm between sections. Gutters are responsive and step at the breakpoints in breakpoints.json.",
+
+    "gutter": { "$type": "dimension", "$value": "{spacing.4}", "$description": "16px page gutter below the md breakpoint." },
+    "gutter-md": { "$type": "dimension", "$value": "{spacing.6}", "$description": "24px from 768px." },
+    "gutter-lg": { "$type": "dimension", "$value": "{spacing.8}", "$description": "32px from 1024px." },
+    "gutter-xl": { "$type": "dimension", "$value": "{spacing.12}", "$description": "48px from 1280px. The gutter stops growing here: beyond 48px a wide monitor wastes the space the content should use." },
+    "container-max": { "$type": "dimension", "$value": "1280px", "$description": "Maximum content width. Matches the xl breakpoint so a container never exceeds the viewport it was designed at." },
+    "container-prose": { "$type": "dimension", "$value": "720px", "$description": "Maximum width for a long-form reading column, chosen so body-lg at 18px lands near the 66ch optimal measure in typography.json." },
+    "container-wide": { "$type": "dimension", "$value": "1536px", "$description": "Maximum width for a full-bleed data table or a gallery grid. Matches the 2xl breakpoint." },
+    "section-gap": { "$type": "dimension", "$value": "{spacing.16}", "$description": "64px between sections on desktop; steps down to spacing.12 at md and spacing.8 at sm." },
+    "grid-gap": { "$type": "dimension", "$value": "{spacing.6}", "$description": "24px between cards in a marketing grid. Tighter than section-gap on purpose: items in a grid must read as one group." },
+    "stack-gap": { "$type": "dimension", "$value": "{spacing.4}", "$description": "16px between stacked elements inside a section." }
+  },
+
+  "border": {
+    "$description": "Border widths, kept out of the spacing scale because they are not spacing. Declared here so a component never invents a border weight.",
+    "hairline": { "$type": "dimension", "$value": "1px", "$description": "Default border, divider, input outline, table rule." },
+    "medium": { "$type": "dimension", "$value": "2px", "$description": "Emphasis border, selected card, the focus ring itself." },
+    "heavy": { "$type": "dimension", "$value": "4px", "$description": "Accent bar at the top of a featured card, the left rule on a pull quote. The heaviest border in the system." }
+  },
+
+  "$extensions": {
+    "com.viavitae.rationale": {
+      "$description": "Why 4pt and not 8pt. An 8pt grid is the common choice and is fine for a product UI, but it cannot express the 4px and 12px gaps that icon-and-label and input-padding actually need, so a team on an 8pt grid ends up with off-scale values everywhere and no grid at all. 4pt is the smallest base that still forces alignment: it permits 4, 8, 12, 16 and every multiple, so nothing needs to go off-scale. The cost is that a 4pt grid permits more values than an 8pt grid and therefore more choices — which is what the component and layout groups above exist to remove.",
+      "base": "4pt",
+      "rejected": "8pt grid — cannot express 4px icon gaps or 12px input padding without breaking itself.",
+      "touchTargetFloor": "44px, per WCAG 2.2 SC 2.5.8 Target Size (Minimum), which specifies 24 CSS pixels as the AA minimum and 44 as the established platform guidance for a primary control. This system targets 44 for anything primary and 24 as the absolute floor, with the 24 floor reached only by an inline icon inside a link whose whole line box is the target."
+    }
+  }
+}

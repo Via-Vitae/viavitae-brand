@@ -1,0 +1,182 @@
+# viavitae-brand .gitignore
+# Node + Python + OS + export artefacts. Trimmed from the viavitae-template
+# superset: this repository holds no infrastructure, so the Terraform and state
+# sections are gone, and it holds no application, so the framework caches that
+# never appear here are gone too.
+#
+# Never un-ignore a secret, key or environment file. If a value must be
+# committed, it is not a secret and belongs in documentation or a schema.
+#
+# The governing rule for this file is one line: SOURCES ARE COMMITTED, DERIVED
+# ARTEFACTS ARE NOT. An SVG master is a source. A PNG rasterised from it is
+# derived. A committed derived artefact is a second copy of a value that can
+# disagree with the first, and the disagreement is always found by a consumer
+# downloading the stale one rather than by a reviewer. tools/build_exports.py
+# regenerates everything ignored below, and .github/workflows/ci.yml uploads it.
+
+# --- Secrets and credentials -------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+secrets/
+.secrets.baseline
+
+# --- Python (tools/) ---------------------------------------------------------
+# The scripts under tools/ are linted and type-checked in CI, so their caches
+# are local and never committed.
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage/
+coverage.xml
+htmlcov/
+junit.xml
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+.cache/
+
+# Python's own `build/` directory is NOT ignored here, and that is a deliberate
+# departure from the template this file was trimmed from. In this repository
+# build/ is committed source: build/tailwind.preset.ts is the web consumption
+# entry point and build/css/tokens.css is what a consumer imports. A blanket
+# `build/` pattern would silently un-track the entire distribution surface of the
+# brand system. Only `dist/` — which nothing here writes — is kept.
+dist/
+
+# --- Node (build/package.json, examples/nextjs) ------------------------------
+node_modules/
+.next/
+out/
+.nuxt/
+.svelte-kit/
+.turbo/
+.npm/
+.yarn/
+.pnp.*
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.vite/
+
+# No lockfile is committed for build/package.json, because its only
+# devDependencies are a formatter and a type-checker pinned to exact versions
+# and the package is never installed as an application. If that changes — if a
+# real dependency graph appears — commit the lockfile and switch CI from
+# `npm install --no-package-lock` to `npm ci` in the same pull request.
+
+# --- Logs --------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- Export artefacts: every raster derived from an SVG master ---------------
+# Each file below is produced by `python3 tools/build_exports.py` and uploaded as
+# a workflow artefact by .github/workflows/ci.yml. The SVG masters ARE committed
+# and are the only source; a committed PNG would be a second copy of the mark
+# that can disagree with the first, and the disagreement is found by whoever
+# downloads the stale one. Each output directory keeps a committed README.md
+# naming every file that lands in it and the command that produces it, so a
+# contributor who clones the repository is not left looking at an empty folder
+# wondering whether a build failed. That README is why the two raster-exports
+# patterns below ignore the directory CONTENTS with a trailing /* rather than the
+# directory itself with a trailing /: git cannot re-include a file whose parent
+# directory is excluded, so `png/` would swallow its own README and a following
+# `!png/README.md` would silently do nothing. tools/build_exports.py asserts each
+# README is present, which is the only check that would have caught this.
+assets/logo/raster-exports/png/*
+!assets/logo/raster-exports/png/README.md
+assets/logo/raster-exports/webp/*
+!assets/logo/raster-exports/webp/README.md
+assets/favicon/*.png
+assets/favicon/*.ico
+assets/og/og-default.png
+assets/social/avatar-400.png
+
+# Liturgical photography is NOT ignored. It is a committed brand asset library
+# with a per-file licence record in assets/imagery/liturgical/README.md, and a
+# licence record that points at a file which is not in the repository is not a
+# licence record. Keep individual files under 2MB and prefer WebP; a full-resolution
+# archive belongs in object storage, not in git history, where it is retained
+# forever by every clone whether or not anyone still needs it.
+
+# Font binaries. Both families are SIL Open Font Licensed and may be
+# redistributed, but a variable font is several hundred kilobytes and the shipped
+# subset is derived from it, so neither belongs here. Fetch from the family's own
+# release page into assets/typography/self-hosted-woff2/ and run
+# `python3 tools/build_exports.py --fonts`. The OFL licence text and the README in
+# each family directory ARE committed: those are the compliance record, and the
+# compliance record is the part that has to survive.
+*.ttf
+*.otf
+*.woff
+*.woff2
+.*.instanced.ttf
+
+# --- Editors and IDEs --------------------------------------------------------
+.idea/*
+!.idea/runConfigurations/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# --- Operating systems -------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Archives ----------------------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.dmg
+*.iso
+
+# --- Local staging directories and scratch venvs -----------------------------
+# These are temporary staging areas for generation runs targeting sibling repos.
+# They must never be committed. Delete after migration.
+/.api-staging/
+/.demos-staging/
+/.infra-staging/
+/.api-verify-venv/
+/.infra-verify-venv/
+/.infra-tools/
+/.qoder/
+/.viavitae-*-spec.md

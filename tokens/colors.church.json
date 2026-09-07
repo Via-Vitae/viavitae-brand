@@ -1,0 +1,155 @@
+{
+  "$description": "ViaVitae liturgical season palettes — optional, additive themes layered over colors.json. A season theme never replaces the core identity: navy, gold, ivory and the interactive accent stay exactly as colors.json defines them. What a season changes is the ceremonial surface, its soft companion and one accent, so a site can mark Advent or Easter without becoming a different product. Applied by setting data-season on <html>; see build/css/tokens.css. Seasons are a courtesy to the congregation, not a decoration schedule — they follow the liturgical calendar of the rite the parish actually uses, which is not always the Roman calendar and not always the same date.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "colors.church",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "extends": "tokens/colors.json",
+    "adr": "docs/architecture.md — ADR-001",
+    "verification": "tools/contrast_check.py",
+    "guidance": "guidelines/color-usage.md"
+  },
+
+  "season": {
+    "$description": "Four seasons, matching the four the Roman calendar treats as structurally distinct: Advent and Lent as the two penitential seasons, Easter as the Paschal season, and Ordinary Time as the default. Each is a complete surface/soft/accent/text set so a theme can be applied without reaching back into colors.json for a missing role. Solemnities that carry their own colour — Pentecost red, the rose of Gaudete and Laetare, the white of Christmas — are handled as an accent inside the season they fall in, not as a fifth theme; see each season's notes.",
+
+    "advent": {
+      "$description": "Advent: expectation, waiting, penitence without gloom. Violet, deliberately cool rather than red-violet so it reads as night and expectation rather than as blood. Applied from the First Sunday of Advent until the evening of 24 December. Gaudete Sunday (the Third Sunday) permits rose, which is exposed below as an accent rather than a theme change.",
+
+      "surface": { "$type": "color", "$value": "#4A2C6D", "$description": "Ceremonial violet. Ivory text on it is 10.20:1 and white text is 11.22:1, both AAA." },
+      "surface-soft": { "$type": "color", "$value": "#EDE6F5", "$description": "Pale violet wash for a card or a banner on an ivory page. 1.11:1 against ivory-100, so it separates as a value step without a border. Navy text on it is 13.87:1." },
+      "accent": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "Brand gold on violet — 4.64:1, passes AA for text at any size. Gold is the Advent candle, so this pairing is liturgically correct as well as accessible." },
+      "accent-rose": { "$type": "color", "$value": "#9C4F66", "$description": "Rose for Gaudete Sunday. 5.13:1 against ivory-100 and 4.63:1 against surface-soft, so it is text-safe on both light grounds. 1.99:1 against the violet surface — it must NEVER be used as text or iconography on violet, where it disappears." },
+      "text-on-surface": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "10.20:1 against surface." },
+      "text-muted-on-surface": { "$type": "color", "$value": "#E8DFC7", "$description": "Ivory-300 — 8.44:1 against surface. Warm rather than cool so a muted line does not read as an error." },
+      "text-on-soft": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "13.87:1 against surface-soft." },
+      "rule": { "$type": "color", "$value": "#6B4E8C", "$description": "Hairline inside a violet surface." },
+      "candle": {
+        "$description": "The Advent wreath's four candles, in the order they are lit. Three violet and one rose: this is the one place in the system where a colour sequence carries liturgical meaning, and it is annotated because a reader who does not know the calendar will otherwise read it as decoration.",
+        "$extensions": {
+          "com.viavitae.export": {
+            "$description": "Exported to build/figma-tokens/tokens.json and NOT to the CSS custom properties, the TypeScript objects or the Tailwind preset. The reason is that these four entries introduce no new colour: 1, 2 and 4 are season.advent.surface and 3 is season.advent.accent-rose, both of which are already exported. What the group adds is an ORDER, and an order is content rather than styling — a web consumer rendering a wreath marks up four list items and colours each from the existing tokens, so four further duplicate custom properties would be four more names for a value that already has one. A designer drawing a wreath in Figma is the opposite case: they want four swatches in sequence, so the group is exported there in full. tools/validate_tokens.py checks the Figma copy for these four and does not look for them in the CSS.",
+            "figma": true,
+            "css": false,
+            "typescript": false,
+            "tailwind": false
+          }
+        },
+        "1": { "$type": "color", "$value": "#4A2C6D" },
+        "2": { "$type": "color", "$value": "#4A2C6D" },
+        "3": { "$type": "color", "$value": "#9C4F66", "$description": "Gaudete — the rose candle is lit third." },
+        "4": { "$type": "color", "$value": "#4A2C6D" }
+      }
+    },
+
+    "lent": {
+      "$description": "Lent: fasting, penitence, mortality. A deeper and more desaturated violet than Advent, paired with ash grey rather than gold. The distinction matters — Advent violet anticipates, Lent violet mourns, and putting the Advent palette on a Lent page reads as cheerful in a season that is not. Applied from Ash Wednesday until the evening of Holy Thursday, at which point the Paschal Triduum takes over and no season theme applies until the Easter Vigil. Laetare Sunday (the Fourth) permits rose, exposed below.",
+
+      "surface": { "$type": "color", "$value": "#3E2A55", "$description": "Deep penitential violet. Ivory text on it is 11.46:1, white 12.60:1." },
+      "surface-soft": { "$type": "color", "$value": "#EDEBE7", "$description": "Warm unbleached-linen grey, not a violet wash: Lent strips colour rather than adding it. Navy text on it is 14.19:1." },
+      "accent": { "$type": "color", "$value": "#666460", "$description": "Ash. 5.37:1 against ivory-100 and 4.96:1 against surface-soft, both passing AA for text with margin. White text on an ash fill is 5.90:1, so the fill carries white labels. Navy on ash is 2.86:1, so an ash fill never carries navy. Against the Lent violet surface ash is only 2.13:1 — below the 3:1 non-text threshold — so ash is a foreground on a LIGHT ground only, never an icon or rule on the dark season surface, where the `rule` token below is used instead." },
+      "accent-rose": { "$type": "color", "$value": "#9C4F66", "$description": "Rose for Laetare Sunday — 5.13:1 against ivory-100. Shared with Advent so the two rose days read as the same gesture." },
+      "text-on-surface": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "11.46:1 against surface." },
+      "text-muted-on-surface": { "$type": "color", "$value": "#E8DFC7", "$description": "9.48:1 against surface." },
+      "text-on-soft": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "14.19:1 against surface-soft." },
+      "rule": { "$type": "color", "$value": "#5B4473", "$description": "Hairline inside a Lent surface." },
+      "gold-permitted": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "Gold is suppressed through most of Lent and returns at Laetare and in the Triduum. 5.21:1 against the Lent surface, so where it is permitted it is text-safe." }
+    },
+
+    "easter": {
+      "$description": "Easter: resurrection, light, the fifty days. The only season whose surface is white rather than dark, which is the whole point — after six weeks of violet the page should feel like it has opened a window. Gold returns at full strength, but only as decoration and as a fill carrying navy text: gold on white is 2.42:1 and fails, so the season's exuberance has to be expressed through scale, whitespace and light rather than through gold body copy. Applied from the Easter Vigil until Pentecost; white and gold continue through the Octave and the Sundays of Easter.",
+
+      "surface": { "$type": "color", "$value": "#FFFFFF", "$description": "Pure white. The only place in the system where white is a page surface rather than a raised card, and it is deliberate: Easter is the exception that proves the ivory rule." },
+      "surface-soft": { "$type": "color", "$value": "#FDFBF6", "$description": "Candle-white with a breath of warmth, so a card on a white Easter page still separates. 1.06:1 against ivory-100." },
+      "accent": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "Paschal gold — DECORATION ONLY on this surface, at 2.42:1 against white. Use it for the paschal candle glyph, rules, initials and large display type on a navy band. For gold as text, use accent-text below." },
+      "accent-text": { "$type": "color", "$value": "{color.palette.gold.700}", "$description": "Gold that may carry meaning as text on an Easter surface — 5.42:1 against white, 5.24:1 against surface-soft." },
+      "text-on-surface": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "16.90:1 against surface. The highest text contrast available in the system." },
+      "text-muted-on-surface": { "$type": "color", "$value": "{color.palette.neutral.700}", "$description": "6.56:1 against surface." },
+      "text-on-soft": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "16.34:1 against surface-soft." },
+      "rule": { "$type": "color", "$value": "{color.palette.ivory.300}", "$description": "1.33:1 against surface — a hairline, not an edge." },
+      "pentecost": { "$type": "color", "$value": "#A31621", "$description": "Red for Pentecost, which closes the season, and for feasts of martyrs and apostles. 7.80:1 against white as text; white text on it is 7.80:1, so it also works as a fill carrying white labels. Exposed inside Easter rather than as a fifth theme because it is a single day." },
+      "triduum": {
+        "$description": "The Triduum is not a fifth season and carries no theme of its own. From the evening of Holy Thursday until the Vigil the church is bare: no season theme is applied, and a site should fall back to the unthemed core identity with reduced decoration. This is recorded here because the obvious engineering instinct is to keep the Lent theme running through to Easter, which is liturgically wrong and visually loud at the exact moment that should be quiet.",
+        "applies-theme": { "$type": "boolean", "$value": false }
+      }
+    },
+
+    "ordinary": {
+      "$description": "Ordinary Time: growth, the long ordinary weeks, the church's default season. Green, and the default theme for any parish page whose content is not tied to a season — which is most of it, most of the year. Two blocks: the weeks between the Baptism of the Lord and Ash Wednesday, and the weeks between Pentecost and Advent. Green is also the safest choice for a new parish that has not decided, because it is the colour the congregation actually sees most often.",
+
+      "surface": { "$type": "color", "$value": "#1F5C3A", "$description": "Ordinary green. Ivory text on it is 7.21:1, white 7.92:1, both AAA." },
+      "surface-soft": { "$type": "color", "$value": "#E4F0E8", "$description": "Pale green wash. 1.07:1 against ivory-100. Navy text on it is 14.43:1 and the season green itself is 6.76:1, so green text on a green wash works where violet on violet would not." },
+      "accent": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "Gold on green is 3.28:1: it clears the 3:1 non-text threshold for an icon, a rule or a 24px display heading, but FAILS as body text. For gold as text on this surface use accent-text below." },
+      "accent-text": { "$type": "color", "$value": "{color.palette.gold.400}", "$description": "Lifted gold for TEXT on the Ordinary green surface — 5.25:1, passing AA where brand gold at 3.28:1 does not. Note it is only 1.29:1 against surface-soft, so on a pale green wash use color.semantic.light.text.brand (gold-700) instead." },
+      "text-on-surface": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "7.21:1 against surface." },
+      "text-muted-on-surface": { "$type": "color", "$value": "#E8DFC7", "$description": "5.97:1 against surface." },
+      "text-on-soft": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "14.43:1 against surface-soft." },
+      "rule": { "$type": "color", "$value": "#2E7A4E", "$description": "Hairline inside a green surface." }
+    }
+  },
+
+  "$extensions": {
+    "com.viavitae.contrast-pairs": {
+      "$description": "The season contrast contract, verified by tools/contrast_check.py alongside the pairs in colors.json. A season theme is applied at runtime by an attribute on <html>, which means no reviewer sees it in a pull request diff — the machine check is the only gate that reliably covers it.",
+
+      "text-on-surface": [
+        { "foreground": "{season.advent.text-on-surface}", "background": "{season.advent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.advent.text-muted-on-surface}", "background": "{season.advent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.advent.accent}", "background": "{season.advent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.advent.text-on-soft}", "background": "{season.advent.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.advent.accent-rose}", "background": "{season.advent.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{season.lent.text-on-surface}", "background": "{season.lent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.lent.text-muted-on-surface}", "background": "{season.lent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.lent.gold-permitted}", "background": "{season.lent.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.lent.text-on-soft}", "background": "{season.lent.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.lent.accent}", "background": "{season.lent.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.lent.accent-rose}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{season.easter.text-on-surface}", "background": "{season.easter.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.easter.text-muted-on-surface}", "background": "{season.easter.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.easter.accent-text}", "background": "{season.easter.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.easter.text-on-soft}", "background": "{season.easter.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.easter.accent-text}", "background": "{season.easter.surface-soft}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.easter.pentecost}", "background": "{season.easter.surface}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{season.ordinary.text-on-surface}", "background": "{season.ordinary.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.ordinary.text-muted-on-surface}", "background": "{season.ordinary.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.ordinary.accent-text}", "background": "{season.ordinary.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{season.ordinary.text-on-soft}", "background": "{season.ordinary.surface-soft}", "minimum": 4.5, "sc": "1.4.3" }
+      ],
+
+      "non-text-on-surface": [
+        { "foreground": "{season.advent.accent}", "background": "{season.advent.surface}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{season.advent.accent-rose}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{season.lent.accent}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{season.lent.accent}", "background": "{season.lent.surface-soft}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{season.ordinary.accent}", "background": "{season.ordinary.surface}", "minimum": 3.0, "sc": "1.4.11" }
+      ],
+
+      "prohibited": {
+        "$description": "Season combinations that fail. Asserted by tools/contrast_check.py so that a palette change which accidentally makes one of them pass is caught as a stale entry rather than silently changing the guidance.",
+        "entries": [
+          { "foreground": "{season.advent.accent-rose}", "background": "{season.advent.surface}", "maximum": 3.0, "reason": "Rose on Advent violet is 1.99:1. Rose is for a light ground only." },
+          { "foreground": "{color.palette.navy.900}", "background": "{season.advent.surface}", "maximum": 3.0, "reason": "Navy on violet is 1.51:1. Dark text on a dark season surface is the most common season-theme defect." },
+          { "foreground": "{color.palette.navy.900}", "background": "{season.lent.surface}", "maximum": 3.0, "reason": "Navy on Lent violet is 1.34:1." },
+          { "foreground": "{season.lent.accent}", "background": "{season.lent.surface}", "maximum": 3.0, "reason": "Ash on the Lent violet surface is 2.13:1, below the 3:1 non-text threshold. Ash is a foreground on a light ground only; a hairline inside the violet surface uses the rule token." },
+          { "foreground": "{color.palette.navy.900}", "background": "{season.ordinary.surface}", "maximum": 3.0, "reason": "Navy on Ordinary green is 2.13:1." },
+          { "foreground": "{season.easter.accent}", "background": "{season.easter.surface}", "maximum": 4.5, "reason": "Gold as TEXT on an Easter white surface is 2.42:1. Use accent-text (gold-700)." },
+          { "foreground": "{season.ordinary.accent}", "background": "{season.ordinary.surface}", "maximum": 4.5, "reason": "Gold as TEXT on Ordinary green is 3.28:1 — it passes the 3:1 non-text threshold and fails the 4.5:1 text threshold, which is exactly the distinction a reviewer is likely to blur. Use accent-text." }
+        ]
+      }
+    },
+
+    "com.viavitae.calendar": {
+      "$description": "Seasons are date-dependent and rite-dependent. No fixed date range is encoded here, because the start of Lent moves every year, the Eastern calendars differ by weeks, and a parish's own calendar outranks anything this repository could assert. Resolution is the consuming application's responsibility: it sets data-season on <html> from its own calendar service. The values below are the permitted attribute values and nothing more.",
+      "attribute": "data-season",
+      "permitted-values": ["advent", "lent", "easter", "ordinary"],
+      "default": "ordinary",
+      "none": "Omit the attribute to use the unthemed core identity. Required during the Triduum and recommended for any content that is not season-specific."
+    }
+  }
+}

@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="vv-og-title">
+  <title id="vv-og-title">ViaVitae default Open Graph card</title>
+
+  <!--
+    OPEN GRAPH CARD TEMPLATE, 1200 by 630. The size every platform that reads
+    og:image settles on: 1.91:1, which Facebook, LinkedIn, X, Slack, Teams and
+    WhatsApp all display without letterboxing or cropping. Anything else is
+    cropped by somebody else's rules, which the brand does not control and
+    cannot test.
+
+    THIS FILE IS A TEMPLATE AND AN ASSET AT THE SAME TIME, which is why it has
+    two layers. The card artwork is the deliverable: exported as-is it is
+    assets/og/og-default.png, the fallback image for any page that does not
+    generate its own. The safe-zone guides are drawn on top of it so a designer
+    composing a page-specific card can see where the margins are. The two are
+    separated by sentinel comments, and the export removes the region between
+    them:
+
+      the guide region starts at the line marked GUIDES:BEGIN
+      the guide region ends at the line marked GUIDES:END
+
+    tools/build_exports.py strips that region by those markers before it
+    rasterises, and its check step fails the build if either marker goes missing
+    or if the file no longer parses once the region is gone. Do not delete the
+    markers and do not move artwork inside them.
+
+    WHY TEXT SURGERY AND NOT AN XML TRANSFORMATION. Removing a group with
+    ElementTree would also discard every comment in the file, including this one,
+    because the standard parser does not keep them. The markers delimit a region
+    of a file this repository controls, both are asserted present, and the
+    result is re-parsed as XML afterwards, so the one thing that could go wrong
+    quietly — a malformed strip producing a card nobody renders — is caught
+    instead.
+
+    SAFE ZONES, and the reason there are two. Platforms round corners, draw
+    their own chrome over the bottom edge, and crop 630 to 627 because 1.91:1 of
+    1200 is 628.3 and everybody rounds differently. The outer zone is 80 units
+    in on all four sides, which is 6.7% of the width and survives every crop in
+    use; the inner zone is 120 in, and holds the type, because type cropped at
+    the descender is worse than type set smaller. All artwork below sits inside
+    the outer zone except the decorative mark, which bleeds off the bottom-right
+    corner on purpose: decoration may be cropped, content may not.
+
+    COLOUR AND CONTRAST. The card is navy-900 #0E1B3D, the brand's darkest
+    surface and the one a thumbnail is most recognisable in against a white
+    feed. Every colour carrying information passes WCAG 2.2 AA on it:
+
+      title           ivory-100 #F7F4EC      15.37:1
+      standfirst      navy-200  #C9D1E6      11.06:1
+      domain          navy-300  #9CADDB       7.57:1
+      accent rule     gold-500  #C9A227       6.98:1
+      lockup          ivory-100 #F7F4EC      15.37:1
+      decorative mark navy-800  #142655       1.16:1
+
+    That last figure is the point of the decoration: 1.16:1 is tone on tone, a
+    texture a viewer registers without reading, and it sits under the 3:1 of
+    SC 1.4.11 as pure decoration under that clause's exemption. Nothing is
+    placed on top of it, and the title's 15.37:1 is measured against navy-900
+    because the mark never reaches the title's box.
+
+    THE LOCKUP IS THE INVERSE ONE. It is assets/logo/inverse/
+    viavitae-logo-inverse-navy.svg embedded at 0.12 scale — the ivory-on-dark
+    variant, which is the only lockup permitted on a navy ground. Its path data
+    is copied rather than referenced because an SVG that references another file
+    by relative URL fails the moment it is rasterised from a different working
+    directory or inlined into a page, and an OG card is rasterised in CI.
+
+    EDITING THIS TEMPLATE. Replace the three placeholder strings — the two title
+    lines and the standfirst — and nothing else. The lockup, the accent rule, the
+    domain and the decorative mark are the constant part of the card and are what
+    makes a ViaVitae thumbnail recognisable before it is read. Keep the title to
+    two lines of 60 characters or fewer: a platform truncates at its own width
+    and an ellipsis in the middle of a name is worse than a shorter title.
+
+    <text> is used here, as it is in the construction sheets and as it is not in
+    the logo masters. A card is rendered once, by this repository's own CI, into
+    a PNG; the font that renders it is the font in the CI image, and the result
+    is a raster that cannot re-substitute later. That is the opposite of the
+    masters' situation, where an SVG carrying <text> is re-rendered on every
+    viewer's machine.
+  -->
+
+  <rect width="1200" height="630" fill="#0E1B3D"/>
+
+  <!-- DECORATIVE MARK: the vesica piscis bleeding off the bottom-right corner,
+       in navy-800 at 1.16:1 against the field. The 512 master's own path data,
+       translated. Cropping it is intended and is the reason it is decoration
+       rather than content. -->
+  <g transform="translate(880,260)" fill="none" stroke="#142655" stroke-width="32"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+    <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+    <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+  </g>
+
+  <!-- LOCKUP: the inverse-navy inline lockup at 0.12 scale. Translated so the
+       ink, not the path, starts on the safe zone at x = 80 and y = 80; the
+       lockup carries 50 units of its own clear space, which at this scale is 6. -->
+  <g transform="translate(74,74) scale(0.12)">
+    <g fill="none" stroke="#F7F4EC" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 78 100 A 125 125 0 0 1 278 100 A 125 125 0 0 1 78 100 Z"/>
+      <path d="M 78 100 A 125 125 0 0 0 58 140"/>
+      <path d="M 78 100 A 125 125 0 0 1 58 60"/>
+    </g>
+    <g fill="#F7F4EC">
+      <path d="M 320 50 L 355 150 L 390 50 L 376 50 L 355 110 L 334 50 Z"/>
+      <path d="M 416 50 H 430 V 150 H 416 Z"/>
+      <path d="M 456 150 L 491 50 L 526 150 L 512 150 L 491 90 L 470 150 Z M 477 112 H 505 V 126 H 477 Z"/>
+      <path d="M 552 50 L 587 150 L 622 50 L 608 50 L 587 110 L 566 50 Z"/>
+      <path d="M 648 50 H 662 V 150 H 648 Z"/>
+      <path d="M 688 50 H 758 V 64 H 730 V 150 H 716 V 64 H 688 Z"/>
+      <path d="M 784 150 L 819 50 L 854 150 L 840 150 L 819 90 L 798 150 Z M 805 112 H 833 V 126 H 805 Z"/>
+      <path d="M 880 50 H 950 V 64 H 894 V 93 H 936 V 107 H 894 V 136 H 950 V 150 H 880 Z"/>
+    </g>
+  </g>
+
+  <!-- ACCENT RULE. Gold-500, 6.98:1 against the field, the one place gold is
+       permitted as a foreground on a dark ground. -->
+  <path d="M 80 176 H 200" stroke="#C9A227" stroke-width="4" fill="none"/>
+
+  <!-- CARD COPY. Two title lines and a standfirst; replace the strings, keep
+       the positions, so every ViaVitae card has its type in the same place. -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="80" y="300" font-size="64" font-weight="600" fill="#F7F4EC" letter-spacing="-0.5">Card title, first line</text>
+    <text x="80" y="374" font-size="64" font-weight="600" fill="#F7F4EC" letter-spacing="-0.5">and second line</text>
+    <text x="80" y="440" font-size="28" fill="#C9D1E6">Standfirst: one line, at most ninety characters</text>
+    <text x="80" y="550" font-size="22" font-weight="600" fill="#9CADDB" letter-spacing="1.5">VIAVITAE.COM</text>
+  </g>
+
+  <!-- GUIDES:BEGIN -->
+  <g id="guides" fill="none">
+    <!-- Outer safe zone: 80 in on all four sides, 1040 by 470. -->
+    <rect x="80" y="80" width="1040" height="470" stroke="#C9A227" stroke-width="2" stroke-dasharray="12 8"/>
+    <!-- Type safe zone: 120 in, 960 by 390. -->
+    <rect x="120" y="120" width="960" height="390" stroke="#9CADDB" stroke-width="1" stroke-dasharray="6 6"/>
+    <!-- Centre crosshair, at (600, 315). -->
+    <path d="M 600 291 V 339" stroke="#9CADDB" stroke-width="1"/>
+    <path d="M 576 315 H 624" stroke="#9CADDB" stroke-width="1"/>
+    <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+       font-size="16" font-weight="600" stroke="none">
+      <text x="88" y="70" fill="#C9A227">SAFE ZONE 80 — nothing outside this may be cropped away</text>
+      <text x="128" y="112" fill="#9CADDB">TYPE ZONE 120</text>
+      <text x="1112" y="580" text-anchor="end" fill="#9CADDB">1200 × 630 · guides are stripped from the export</text>
+    </g>
+  </g>
+  <!-- GUIDES:END -->
+</svg>

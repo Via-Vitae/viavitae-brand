@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" role="img" aria-labelledby="vv-banner-title">
+  <title id="vv-banner-title">ViaVitae social banner: the ivory lockup and the brand descriptor on a navy field, framed by two vesica piscis marks bleeding off the left and right edges</title>
+
+  <!--
+    SOCIAL BANNER, 1500 by 500. The dimension X specifies for a profile header
+    and the closest single file that also serves LinkedIn's 1584 by 396 and
+    Mastodon's 1500 by 500 without a re-export. One banner rather than three is
+    a deliberate choice: three files drift, and a header is seen for about a
+    second.
+
+    UNLIKE THE OG TEMPLATE, THIS FILE CARRIES NO DRAWN GUIDES. A banner is
+    uploaded as it is; there is no export step that could strip anything, so
+    every mark in this file ships to the platform. The safe zones are therefore
+    stated here as numbers and respected by the layout, rather than drawn:
+
+      critical content   x from 300 to 1200, y from 60 to 380
+      everything else    may be cropped, overlaid or covered
+
+    Those bounds come from what the platforms actually do. X displays a 1500 by
+    500 header at roughly 1500 by 421 in the profile view, so the bottom 79
+    units are gone, and it then draws the avatar over the lower left, taking
+    another 200 units of that corner. LinkedIn crops a 3:1 band out of whatever
+    it is given. Facebook scales 1500 down to its own 820 by 312 desktop box and
+    to 640 by 360 on a phone, which is where a 24-unit line of type stops being
+    readable and a 26-unit one very nearly does. Content inside the box above
+    survives all four; content outside it survives some.
+
+    WHAT IS IN THE BOX. The lockup's ink spans x from 615 to 885 and y from 150
+    to 180. The accent rule is at y = 220. The descriptor's baseline is y = 272,
+    so its cap line is near 254. All three are inside x from 300 to 1200 and y
+    from 60 to 380 with room to spare, and all three are centred on x = 750
+    rather than optically nudged, because a banner is seen once and a centred
+    composition is the one that reads as deliberate at that speed.
+
+    WHAT IS OUTSIDE IT, AND WHY THAT IS ALLOWED. The two decorative marks bleed
+    off the left and right edges and their ink reaches y = 392, twelve units
+    below the critical band. They are the vesica piscis from
+    assets/logo/master/viavitae-logomark.svg at full 512 scale, translated, and
+    they are cropped on purpose: a mark cut by the edge of the frame reads as a
+    pattern continuing past it, which is what a background should do, and no
+    platform's crop can remove anything a viewer needed. Decoration may be
+    cropped. Content may not. That distinction is the whole of the safe-zone
+    rule and it is the same one the OG template applies.
+
+    COLOUR AND CONTRAST on the navy-900 #0E1B3D field:
+
+      lockup and descriptor   ivory-100 #F7F4EC   15.37:1
+      descriptor              navy-200  #C9D1E6   11.06:1
+      accent rule             gold-500  #C9A227    6.98:1
+      decorative marks        navy-800  #142655    1.16:1
+
+    The lockup is the inverse-navy variant, ivory on a dark ground, which is the
+    only lockup the brand permits on navy; the primary would be navy on navy.
+    Gold appears as a rule and not as a foreground on a light ground, which is
+    the one place gold-500 is permitted as a foreground at all — see
+    assets/logo/inverse/viavitae-logo-inverse-gold.svg for the reasoning and the
+    measured grounds. The 1.16:1 marks are tone on tone and sit under the 3:1 of
+    WCAG 2.2 SC 1.4.11 as decoration exempted by that clause; nothing is set on
+    top of them.
+
+    THE DESCRIPTOR is the brand's one-line statement of what it makes, and it is
+    the same string used in guidelines/brand-guidelines.md and in README.md. If
+    it changes, change all three in one commit: a banner that describes the
+    product differently from the repository that ships it is a small inconsistency
+    that reads as a large one from outside.
+
+    <text> appears here for the same reason it appears on the OG card and not in
+    the logo masters: this file is uploaded to a platform that rasterises it once
+    on its own servers, so the font substitution happens once, out of the brand's
+    control, and cannot be revisited by a viewer later. The masters are the
+    opposite case — an SVG carrying <text> is re-rendered on every machine that
+    opens it — which is why they are outlined.
+  -->
+
+  <rect width="1500" height="500" fill="#0E1B3D"/>
+
+  <!-- DECORATIVE MARKS: the 512 logomark's own path data, translated to bleed
+       off the left and right edges in navy-800. -->
+  <g fill="none" stroke="#142655" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(-280,20)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+    <g transform="translate(1288,20)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+  </g>
+
+  <!-- LOCKUP: the inverse-navy inline lockup at 0.3 scale, translated so its
+       ink is centred on x = 750 and sits at y from 150 to 180. Native ink is
+       x from 50 to 950 and y from 50 to 150, which at 0.3 becomes 270 by 30. -->
+  <g transform="translate(600,135) scale(0.3)">
+    <g fill="none" stroke="#F7F4EC" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 78 100 A 125 125 0 0 1 278 100 A 125 125 0 0 1 78 100 Z"/>
+      <path d="M 78 100 A 125 125 0 0 0 58 140"/>
+      <path d="M 78 100 A 125 125 0 0 1 58 60"/>
+    </g>
+    <g fill="#F7F4EC">
+      <path d="M 320 50 L 355 150 L 390 50 L 376 50 L 355 110 L 334 50 Z"/>
+      <path d="M 416 50 H 430 V 150 H 416 Z"/>
+      <path d="M 456 150 L 491 50 L 526 150 L 512 150 L 491 90 L 470 150 Z M 477 112 H 505 V 126 H 477 Z"/>
+      <path d="M 552 50 L 587 150 L 622 50 L 608 50 L 587 110 L 566 50 Z"/>
+      <path d="M 648 50 H 662 V 150 H 648 Z"/>
+      <path d="M 688 50 H 758 V 64 H 730 V 150 H 716 V 64 H 688 Z"/>
+      <path d="M 784 150 L 819 50 L 854 150 L 840 150 L 819 90 L 798 150 Z M 805 112 H 833 V 126 H 805 Z"/>
+      <path d="M 880 50 H 950 V 64 H 894 V 93 H 936 V 107 H 894 V 136 H 950 V 150 H 880 Z"/>
+    </g>
+  </g>
+
+  <!-- ACCENT RULE, centred, gold-500. -->
+  <path d="M 710 220 H 790" stroke="#C9A227" stroke-width="4" fill="none"/>
+
+  <!-- DESCRIPTOR. The same string as README.md and guidelines/brand-guidelines.md. -->
+  <text x="750" y="272" text-anchor="middle"
+        font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+        font-size="26" fill="#C9D1E6" letter-spacing="0.5">Software for parishes, dioceses and the families they serve</text>
+</svg>

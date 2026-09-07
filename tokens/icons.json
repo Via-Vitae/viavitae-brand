@@ -1,0 +1,156 @@
+{
+  "$description": "ViaVitae icon tokens: the sizes, stroke weights, keyline geometry and clear-space rules the icon set is drawn to. Every icon in the system is drawn once on a 24x24 master grid and scaled to the sizes below, with the stroke weight adjusted per size rather than scaled with the geometry. That adjustment is the whole point of this file: a 1.5px stroke scaled down to 16px renders at 1px, lands between device pixels, and antialiases into a grey blur that is legible on a design review screen and illegible on a five-year-old phone in a church porch.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "icons",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-002",
+    "guidance": "guidelines/accessibility.md",
+    "scReferences": ["WCAG 2.2 SC 1.4.1 Use of Colour", "WCAG 2.2 SC 1.4.11 Non-text Contrast", "WCAG 2.2 SC 2.5.8 Target Size (Minimum)", "WCAG 2.2 SC 4.1.2 Name, Role, Value"]
+  },
+
+  "grid": {
+    "$description": "The master drawing grid. Every icon is authored at 24x24 with a 2px live-area padding, so the drawn geometry occupies a 20x20 box. Nothing is authored at its final size: authoring at the target size produces a set whose optical weights disagree, because a 16px icon drawn at 16px has to simplify differently from a 24px icon scaled to 16px, and the two then sit next to each other in the same toolbar.",
+
+    "size": { "$type": "dimension", "$value": "24px", "$description": "Master artboard. viewBox is 0 0 24 24." },
+    "liveArea": { "$type": "dimension", "$value": "20px", "$description": "The box the drawn geometry must fit inside, leaving 2px of padding on each side. An icon that touches the artboard edge will clip its stroke when rendered, because an SVG stroke is centred on its path and half of a 1.5px stroke sits outside the geometry." },
+    "padding": { "$type": "dimension", "$value": "2px", "$description": "Live-area padding on each side at the master grid." },
+    "strokeBase": { "$type": "dimension", "$value": "1.5px", "$description": "Master stroke weight. 1.5 rather than the 2px that most open icon sets use: a 2px stroke at 24px reads as a consumer utility icon, and the ViaVitae identity sits beside a serif display face whose hairlines are considerably finer. 1.5px keeps the icon set in the same register as the typography." },
+    "strokeCap": { "$type": "string", "$value": "round", "$description": "stroke-linecap: round. A butt cap leaves a sharp 90-degree end on a diagonal stroke, which reads as a break in the line at small sizes." },
+    "strokeJoin": { "$type": "string", "$value": "round", "$description": "stroke-linejoin: round. A miter join on an acute angle spikes well outside the live area and clips." },
+    "fill": { "$type": "string", "$value": "none", "$description": "The set is outline-only. A single filled variant per glyph is permitted where the filled form carries state — a bookmark that is saved, a bell that has notifications — and in that case the filled form must be distinguishable from the outline form by shape and not only by weight, so the state survives forced-colours mode." },
+    "pixelSnap": { "$type": "boolean", "$value": true, "$description": "Horizontal and vertical strokes are snapped to half-pixel boundaries at the master grid so that a 1.5px stroke covers exactly one and a half device pixels rather than straddling two. Diagonals are not snapped, because snapping a diagonal produces a visible stair-step." }
+  },
+
+  "size": {
+    "$description": "The five rendered sizes, each with the stroke weight that size actually needs. Stroke weight is NOT proportional to size — it is adjusted so the rendered stroke lands on a pixel boundary and retains enough density to read. Sizes are drawn from the spacing scale, so an icon always aligns with the type and padding beside it.",
+
+    "xs": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Inline with caption type at 12px, inside a badge or a table cell. The smallest permitted icon. Below 16px an outline icon loses its interior detail entirely and becomes a shape the user has to guess at.",
+      "strokeWidth": "1.75px",
+      "strokeWidthAtMasterGrid": "2.625px",
+      "padding": "{spacing.0}",
+      "touchTarget": "Not a target. An xs icon is always inside a larger interactive element whose own box is the target, or it is decorative.",
+      "simplification": "Icons at this size use the simplified variant: interior detail removed, closed shapes preferred. A 16px rendering of a 24px-detailed icon is not the same icon."
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$description": "Beside body-sm at 14px, in navigation, in a dense toolbar, in a form control's leading position.",
+      "strokeWidth": "1.75px",
+      "strokeWidthAtMasterGrid": "2.1px",
+      "padding": "{spacing.0}",
+      "touchTarget": "Not a target on its own; the surrounding control is."
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "THE DEFAULT. Beside body-md at 16px and heading-4 at 20px, in a button, in a list row, in a menu. Renders at the master grid, so the base stroke weight applies unadjusted.",
+      "strokeWidth": "1.5px",
+      "strokeWidthAtMasterGrid": "1.5px",
+      "padding": "{spacing.0}",
+      "touchTarget": "When interactive, the hit area is 44x44 achieved by the button's padding, not by the icon's box."
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "32px",
+      "$description": "A feature list, a settings row, an empty-state panel, a large icon button.",
+      "strokeWidth": "1.5px",
+      "strokeWidthAtMasterGrid": "1.125px",
+      "padding": "{spacing.1}",
+      "touchTarget": "Interactive at this size, the icon button is 44x44 minimum with the icon centred."
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "48px",
+      "$description": "An empty state, an onboarding illustration, a hero accent. The largest permitted icon; above this the icon should be a drawn illustration rather than a scaled glyph, because an outline icon scaled past about 48px starts to read as an unfinished drawing.",
+      "strokeWidth": "1.25px",
+      "strokeWidthAtMasterGrid": "0.625px",
+      "padding": "{spacing.2}",
+      "touchTarget": "Rarely interactive. Where it is, the whole panel is the target."
+    }
+  },
+
+  "keyline": {
+    "$description": "Keyline shapes inside the 20px live area. An icon is not a 20x20 square of geometry: a circle of 20px diameter and a square of 20px side do not appear the same size, because the circle has no corners to reach the bounding box. Each shape is therefore drawn to its own keyline so that all icons in a set appear to be the same weight and the same size when placed in a row. This is the single most visible difference between a professional icon set and a folder of downloaded SVGs.",
+
+    "square": { "$type": "dimension", "$value": "18px", "$description": "A square glyph — a document, a card, a window, a calendar — is drawn at 18x18. Full 20x20 would make it visibly larger than its circular neighbours." },
+    "circle": { "$type": "dimension", "$value": "20px", "$description": "A circular glyph — a clock, a user avatar, a location pin head — fills the live area at 20px diameter." },
+    "landscape": {
+      "$description": "A wide glyph — an envelope, a screen, a landscape image — spans the full 20px width and 16px of height. Two axes rather than one, so it is a group of two dimensions and not a single value: a 'WxH' string is not a CSS length and no consumer can parse it.",
+      "width": { "$type": "dimension", "$value": "20px", "$description": "The full live area." },
+      "height": { "$type": "dimension", "$value": "16px", "$description": "Four-fifths of the live area. The ratio is what makes a wide glyph read as wide rather than as a smaller square." }
+    },
+    "portrait": {
+      "$description": "A tall glyph — a mobile phone, a book, a person — spans 16px of width and the full 20px height. The transpose of the landscape keyline, and the same shape as a two-axis group for the same reason.",
+      "width": { "$type": "dimension", "$value": "16px", "$description": "Four-fifths of the live area." },
+      "height": { "$type": "dimension", "$value": "20px", "$description": "The full live area." }
+    },
+    "diagonal": { "$type": "dimension", "$value": "19px", "$description": "A glyph whose mass runs on a diagonal — an arrow, a slash, a chevron pair — sits inside a 19x19 bounding box, between the square and circle keylines, because a diagonal reads optically larger than an orthogonal shape of the same bounding box. One value: the box is square, so width and height are not independent." },
+    "irregular": { "$type": "string", "$value": "fit to 20px optical mass", "$description": "A glyph with no regular silhouette — a flame, a dove, a leaf, the ichthys — is sized by eye against the square and circle keylines rather than by bounding box. This entry carries no measurement and is not meant to: it is the tag an authoring tool records against a glyph so a geometry linter knows to skip the bounding-box check and the optical review becomes the only gate. The test is a row of twelve icons at 24px: if one appears heavier or larger, it is wrong, and no measurement will tell you which." }
+  },
+
+  "clearSpace": {
+    "$description": "Minimum clear space around an icon, measured in units of the icon's own rendered size. Clear space exists so an icon does not visually collide with adjacent text or another icon, which at small sizes reads as a single muddy mark rather than as two elements.",
+    "unit": "0.25x the icon's rendered size",
+    "minimum": { "$type": "dimension", "$value": "4px", "$description": "At the default md size of 24px, 0.25x is 6px, and the floor for any size is 4px." },
+    "toText": { "$type": "dimension", "$value": "8px", "$description": "Icon to adjacent label, from spacing.component.icon-label-gap. Measured from the icon's bounding box, not from its drawn geometry, so an icon with generous internal whitespace needs its gap checked optically." },
+    "toIcon": { "$type": "dimension", "$value": "12px", "$description": "Between two icons in a toolbar with no labels. Two unlabelled icons closer than this read as one control." },
+    "toEdge": { "$type": "dimension", "$value": "12px", "$description": "From an icon to the edge of the control containing it, which combined with a 24px icon gives the 48px control height the spacing scale already targets." }
+  },
+
+  "colour": {
+    "$description": "Icon colour roles, as aliases into colors.json. An icon takes its colour from the role it plays, never from a palette value directly, so that a theme switch or a season theme recolours it correctly.",
+
+    "default": { "$type": "color", "$value": "{color.semantic.light.text.secondary}", "$description": "An icon that accompanies text: it inherits the text's secondary role so icon and label read as one unit. 10.78:1 against the light page surface." },
+    "muted": { "$type": "color", "$value": "{color.semantic.light.text.muted}", "$description": "A decorative or tertiary icon. 5.97:1 against the light page surface." },
+    "interactive": { "$type": "color", "$value": "{color.semantic.light.text.link}", "$description": "An icon inside a link or a button that is the only label. 6.10:1 against the light page surface." },
+    "onDark": { "$type": "color", "$value": "{color.semantic.dark.text.secondary}", "$description": "An icon on a navy surface. 11.06:1 against navy-900." },
+    "onGold": { "$type": "color", "$value": "{color.semantic.light.text.on-gold}", "$description": "An icon on a gold fill: navy, 6.98:1. Never white on gold." },
+    "state": {
+      "success": { "$type": "color", "$value": "{color.semantic.light.state.success}" },
+      "warning": { "$type": "color", "$value": "{color.semantic.light.state.warning}" },
+      "danger": { "$type": "color", "$value": "{color.semantic.light.state.danger}" },
+      "info": { "$type": "color", "$value": "{color.semantic.light.state.info}" }
+    },
+    "minimumContrast": { "$type": "number", "$value": 3.0, "$description": "WCAG 2.2 SC 1.4.11 requires 3:1 against adjacent colours for a graphical object needed to understand the content. Every colour role above clears it against its intended surface by a wide margin. An icon that is purely decorative is exempt — and must be marked decorative, per the accessibility rules below, because an exemption that is claimed silently is indistinguishable from an oversight." }
+  },
+
+  "$extensions": {
+    "com.viavitae.accessibility": {
+      "$description": "Non-negotiable rules for how an icon is exposed to assistive technology. Every one of these is a WCAG failure when skipped, and every one of them is invisible in a visual design review, which is why they are written down here rather than left to the component author.",
+      "rules": [
+        { "case": "Icon is decorative and sits beside a text label", "markup": "aria-hidden=\"true\" on the SVG, and focusable=\"false\" for legacy IE/Edge", "sc": "1.1.1", "reason": "A screen reader that announces 'calendar icon, Sunday service, 9am' has said the same thing twice and slowed the user down. The label carries the meaning; the icon must be silent." },
+        { "case": "Icon is the ONLY content of a control", "markup": "aria-label on the button, not on the SVG; the SVG stays aria-hidden", "sc": "4.1.2", "reason": "The accessible name belongs to the interactive element. Putting it on the SVG inside a button produces a nested name that some screen readers announce twice and others drop entirely." },
+        { "case": "Icon conveys status with no text", "markup": "role=\"img\" with a title element, or visible text alongside", "sc": "1.4.1", "reason": "A coloured dot or a tick that means 'confirmed' is colour-as-meaning. It must carry a text alternative AND must not rely on colour alone." },
+        { "case": "Icon is inside a link whose destination is not obvious from the surrounding text", "markup": "visually-hidden text inside the link", "sc": "2.4.4", "reason": "A link announced as 'read more' in a list of six cards gives the user no way to choose between them. The hidden text names the destination." },
+        { "case": "Icon set is inlined as an SVG sprite", "markup": "Each <symbol> carries no accessible name; the <use> site does", "sc": "4.1.2", "reason": "A name declared once on the symbol is announced identically at every use site, which is wrong as soon as the same glyph is used decoratively in one place and meaningfully in another." }
+      ]
+    },
+
+    "com.viavitae.authoring": {
+      "$description": "How an icon enters the set. Enforced in review, because a set that drifts in stroke weight cannot be repaired later without redrawing every glyph.",
+      "rules": [
+        "Author on the 24x24 master grid with a 20px live area; never author at the rendered size.",
+        "Stroke only, 1.5px at master, round cap and round join, no fill unless the filled form carries state.",
+        "Snap orthogonal strokes to half-pixel boundaries; leave diagonals alone.",
+        "Fit the geometry to the correct keyline shape, then check it in a row against the existing set at 24px.",
+        "Outline strokes before export only where a consumer requires it; the source SVG keeps live strokes so the weight stays editable.",
+        "Remove editor metadata, empty groups, transform attributes and clip paths on export — tools/build_exports.py strips these and fails on an SVG it cannot normalise.",
+        "Name the file in kebab-case after the concept, not the appearance: calendar.svg, not square-with-dots.svg. A name describing appearance cannot survive a redesign."
+      ]
+    },
+
+    "com.viavitae.motif-icons": {
+      "$description": "Sacred and liturgical glyphs — the ichthys, the cross, the chi-rho, a dove, a flame, an anchor, a wheat sheaf — are held to a higher standard than utility icons and are reviewed by the brand team rather than merged on a designer's judgement alone. A sacred symbol rendered badly is not a small error: it is visible to exactly the people for whom it is not a decoration. Two additional rules apply. The symbol must be geometrically correct, which for the ichthys means the two arcs meet at a point and do not cross; and it must never be used as a status icon, a bullet, or any other purely functional marker, because a symbol that means something cannot also mean 'list item'.",
+      "review": "@viavitae-org/brand",
+      "geometry": "Verified by eye at 24px and at 16px; a sacred glyph that fails at 16px is not simplified, it is withdrawn from that size.",
+      "prohibited": ["as a list bullet", "as a status or state icon", "as a loading indicator", "inside a progress bar", "as a decorative watermark behind body text at more than 5% opacity"]
+    }
+  }
+}

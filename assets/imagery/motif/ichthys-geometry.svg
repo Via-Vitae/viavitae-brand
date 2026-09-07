@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="vv-geometry-title">
+  <title id="vv-geometry-title">Vesica piscis construction of the ViaVitae ichthys</title>
+
+  <!--
+    MOTIF MASTER: the sacred geometry behind the mark, drawn as a plate rather
+    than as a logo. Where assets/logo/master/viavitae-logomark.svg shows the
+    result, this file shows the reasoning — the two circles, the radii, the
+    right triangles that make every coordinate an integer, and the vesica the
+    circles produce between them. It is a decorative and an explanatory asset:
+    a hero background, a section divider, a printed endpaper, the front of a
+    guidelines document.
+
+    IT IS EXACTLY THE LOGOMARK AT ONE HALF SCALE, taken about the artboard
+    centre, and that is what makes it trustworthy as an explanation: it cannot
+    describe a construction the logo does not actually use.
+
+      master 512 artboard          here at 0.5, in a 512 artboard
+      R   = 250                    R   = 125
+      Cu  = (276, 406)             Cu  = (266, 331)
+      Cl  = (276, 106)             Cl  = (266, 181)
+      A   = ( 76, 256)             A   = (166, 256)
+      B   = (476, 256)             B   = (366, 256)
+      T   = (276, 156)             T   = (266, 206)
+      Bo  = (276, 356)             Bo  = (266, 306)
+      U   = ( 36, 336)             U   = (146, 296)
+      L   = ( 36, 176)             L   = (146, 216)
+
+    The 3-4-5 triangles survive halving as 100-75-125 and 120-35-125, and both
+    are drawn here as dashed triangles with a right-angle marker at the corner,
+    because they are the step a reader has to see to believe the coordinates are
+    exact rather than traced: A = Cu + (-100, -75) with 100^2 + 75^2 = 15625 =
+    125^2, and U = Cu + (-120, -35) with 120^2 + 35^2 = 15625. A compass
+    construction that lands on integers is one anybody can reproduce.
+
+    NOTE THE ASYMMETRY, which is geometry and not a mistake. The two circles
+    share an axis at x = 266, ten units right of the artboard's own axis, while
+    the mark's bounding box runs from x = 146 to x = 366 and so is centred on
+    x = 256. The tail reaches 120 units left of the circle axis against the
+    body's 100 right, which is what displaces the two. The mark is centred on
+    the artboard; its construction is not, and cannot be.
+
+    COLOUR AND CONTRAST, stated plainly because this file is the one place in
+    the brand where the numbers are deliberately low. It is drawn for the ivory
+    page surface #F7F4EC:
+
+      the mark and the vesica     navy-900 #0E1B3D      15.37:1
+      radii and triangles         navy-300 #9CADDB       2.03:1
+      circles and axes            navy-200 #C9D1E6       1.39:1
+      centre dots                 navy-700 #1B3374      10.78:1
+
+    The two hairline steps are below the 3:1 that WCAG 2.2 SC 1.4.11 requires of
+    a graphical object, and they are allowed to be because SC 1.4.11 exempts
+    decoration that is not required to understand the content. That exemption is
+    a condition on how this file is used and not a licence: the usage rules in
+    assets/imagery/motif/usage.md forbid placing meaning on the construction
+    lines, and forbid using this motif as the only carrier of any information,
+    because a screen reader sees the title above and a low-vision reader may see
+    the navy mark and nothing else. Where the motif carries meaning, the meaning
+    goes in the text beside it.
+
+    There is no <text> element in this file, so it has no font dependency and
+    renders identically everywhere. The title above is its accessible name.
+  -->
+
+  <!-- AXES. The shared axis of the two circles, and the horizontal through
+       their crossings A and B. Dashed and hairline because they are scaffolding. -->
+  <g stroke="#C9D1E6" stroke-width="1" stroke-dasharray="4 6" fill="none">
+    <path d="M 266 56 V 456"/>
+    <path d="M 141 256 H 391"/>
+  </g>
+
+  <!-- THE TWO CIRCLES. Equal radius, centres 150 apart, which is 1.2R: opened
+       past the true vesica's 1R so the lens reads as a 2:1 fish body rather
+       than as a 1.732:1 eye. -->
+  <g stroke="#C9D1E6" stroke-width="2" fill="none">
+    <circle cx="266" cy="331" r="125"/>
+    <circle cx="266" cy="181" r="125"/>
+  </g>
+
+  <!-- RADII to the six constructed points. Every one of them is 125 long, and
+       drawing all of them is what shows that the tail tips U and L are on the
+       same circles as the body and are not separate strokes. -->
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 266 331 L 166 256"/>
+    <path d="M 266 331 L 366 256"/>
+    <path d="M 266 331 L 146 296"/>
+    <path d="M 266 331 L 266 206"/>
+    <path d="M 266 181 L 166 256"/>
+    <path d="M 266 181 L 366 256"/>
+    <path d="M 266 181 L 146 216"/>
+    <path d="M 266 181 L 266 306"/>
+  </g>
+
+  <!-- THE 3-4-5 TRIANGLES, dashed, with a right-angle marker at each corner.
+       Left: A, legs 100 and 75. Right: B, the mirror. Lower left: U, legs 120
+       and 35, the second Pythagorean pair on the same circle. -->
+  <g stroke="#9CADDB" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+    <path d="M 166 256 V 331 H 266 Z"/>
+    <path d="M 366 256 V 331 H 266 Z"/>
+    <path d="M 146 296 V 331 H 266 Z"/>
+  </g>
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 178 331 V 319 H 166"/>
+    <path d="M 354 331 V 319 H 366"/>
+    <path d="M 158 331 V 319 H 146"/>
+  </g>
+
+  <!-- CENTRES. Marked in navy-700, the darkest step used for anything other
+       than the mark, so the two points the whole construction turns on are the
+       most legible things on the plate after the mark itself. -->
+  <g fill="#1B3374">
+    <circle cx="266" cy="331" r="4"/>
+    <circle cx="266" cy="181" r="4"/>
+  </g>
+
+  <!-- THE MARK: the vesica and the tail. The logomark's own stroke would be 32
+       on a 512 artboard, 1/16 of it, but this is a plate and the construction
+       has to stay readable through the mark, so the stroke is 6. The path data
+       is the logomark's at half scale and nothing else. -->
+  <g fill="none" stroke="#0E1B3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 166 256 A 125 125 0 0 1 366 256 A 125 125 0 0 1 166 256 Z"/>
+    <path d="M 166 256 A 125 125 0 0 0 146 296"/>
+    <path d="M 166 256 A 125 125 0 0 1 146 216"/>
+  </g>
+</svg>

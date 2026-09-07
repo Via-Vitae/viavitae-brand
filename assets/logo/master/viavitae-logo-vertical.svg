@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 424" width="730" height="424" role="img" aria-labelledby="vv-v-title">
+  <title id="vv-v-title">ViaVitae</title>
+
+  <!--
+    PRIMARY STACKED LOCKUP: the mark above the wordmark, both centred on the
+    artboard's vertical axis. Use this where the space is tall rather than wide —
+    a cover, a title page, a splash screen, a plaque, an embroidered chest.
+    Artboard 730 by 424.
+
+    Where the inline lockup is the workhorse, this one is the formal version, and
+    the difference is not only orientation. The mark is larger relative to the
+    wordmark here — 150 units of mark height against a 100-unit cap height, so
+    1.5 times — because a stacked composition is read from a distance and from
+    below, on a wall or a cover, where the mark has to carry the identity before
+    the name is legible. In the inline lockup the same ratio would make the mark
+    compete with the wordmark for the same horizontal band.
+
+    THE ARTBOARD IS THE CLEAR SPACE, measured to the ink. The ink occupies x from
+    50 to 680 and y from 50 to 374, so all four margins are exactly 50, which is
+    half the wordmark's 100-unit cap height and the minimum clear space required
+    by guidelines/logo-usage.md. Placing this file flush against another element
+    respects the rule without the rule having been read.
+
+    Getting all four margins equal is what fixed the artboard at 424 rather than
+    a rounder number, and the arithmetic is worth keeping visible because it is
+    the kind of thing that silently breaks when someone edits a coordinate:
+
+      mark visual height   0.8R + stroke = 150 + 24                = 174
+      clear space          half the cap height                     =  50
+      internal gap         set equal to the clear space            =  50
+      wordmark cap height                                          = 100
+      artboard height      50 + 174 + 50 + 100 + 50                = 424
+
+    The mark is positioned so the round join at its top apex reaches y = 50
+    exactly, the same convention the inline lockup uses for its tail caps: a
+    round cap or join projects half a stroke width past the coordinate it sits
+    at, so the geometry is placed by its ink and not by its path. Placed by its
+    path this mark would leave 38 units of margin above itself and 50 on the
+    other three sides.
+
+    INTERNAL GAP EQUALS CLEAR SPACE HERE, AND IS SMALLER IN THE INLINE LOCKUP.
+    The two elements change axis in this composition — the mark is centred, the
+    wordmark is set on a baseline — so they need 50 units between them to read
+    as one lockup rather than as a mark and, separately, a name. The inline
+    lockup keeps them on a single band and sets them 34 apart, tighter than
+    anything outside may approach, precisely so they read as one object. Neither
+    number is arbitrary; both are in the respective file's header.
+
+    LAYOUT, every figure exact rather than eyeballed:
+
+      clear space      50 on all four sides, half the cap height
+      mark             path x from 200 to 530, y from 62 to 212
+                       ink   x from 188 to 542, y from 50 to 224
+      gap              50, from the mark's ink to the wordmark's cap line
+      wordmark         630 wide by 100 tall, x from 50 to 680, y from 274 to 374
+      content box      630 by 324, centred on (365, 212)
+
+    The wordmark is wider than the mark — 630 against 354 of ink — so the
+    wordmark sets the content width and the mark is centred within it. The mark's
+    ink spans x from 188 to 542, whose midpoint is 365, which is the artboard's
+    own midpoint; the centring is arithmetic and not a nudge.
+
+    THE MARK is the vesica piscis construction documented in full in
+    viavitae-logomark.svg, here at three-quarter scale: R = 187.5, centres
+    (380, 249.5) and (380, 24.5), stroke 24. The half-unit coordinates are exact
+    at this scale, not rounded; 0.75 of the master's integers is a multiple of
+    0.25 and every value below is a multiple of 0.5.
+
+    THE WORDMARK is the same outlined V I A V I T A E as the inline lockup, on
+    the same grid — cap height 100, thickness 14, letter width 70 except I at 14,
+    letter gap 26, advance 630 — translated to sit 274 units down. It is
+    outlined for the same reason: no <text> element, no font reference, and no
+    viewer-dependent substitution. See viavitae-logo-horizontal.svg for the full
+    rationale and the letterform construction.
+
+    COLOUR. Navy-900 #0E1B3D throughout, transparent artboard, 15.37:1 against
+    the ivory page surface.
+  -->
+
+  <!-- MARK: vesica piscis ichthys, three-quarter scale, positioned so the round
+       join at the top apex lands on the clear-space boundary at y = 50. -->
+  <g fill="none" stroke="#0E1B3D" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 230 137 A 187.5 187.5 0 0 1 530 137 A 187.5 187.5 0 0 1 230 137 Z"/>
+    <path d="M 230 137 A 187.5 187.5 0 0 0 200 197"/>
+    <path d="M 230 137 A 187.5 187.5 0 0 1 200 77"/>
+  </g>
+
+  <!-- WORDMARK: V I A V I T A E, filled outlines. -->
+  <g fill="#0E1B3D">
+    <!-- V -->
+    <path d="M 50 274 L 85 374 L 120 274 L 106 274 L 85 334 L 64 274 Z"/>
+    <!-- I -->
+    <path d="M 146 274 H 160 V 374 H 146 Z"/>
+    <!-- A -->
+    <path d="M 186 374 L 221 274 L 256 374 L 242 374 L 221 314 L 200 374 Z M 207 336 H 235 V 350 H 207 Z"/>
+    <!-- V -->
+    <path d="M 282 274 L 317 374 L 352 274 L 338 274 L 317 334 L 296 274 Z"/>
+    <!-- I -->
+    <path d="M 378 274 H 392 V 374 H 378 Z"/>
+    <!-- T -->
+    <path d="M 418 274 H 488 V 288 H 460 V 374 H 446 V 288 H 418 Z"/>
+    <!-- A -->
+    <path d="M 514 374 L 549 274 L 584 374 L 570 374 L 549 314 L 528 374 Z M 535 336 H 563 V 350 H 535 Z"/>
+    <!-- E -->
+    <path d="M 610 274 H 680 V 288 H 624 V 317 H 666 V 331 H 624 V 360 H 680 V 374 H 610 Z"/>
+  </g>
+</svg>

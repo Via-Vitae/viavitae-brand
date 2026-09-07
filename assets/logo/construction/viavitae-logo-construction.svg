@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="vv-construction-title">
+  <title id="vv-construction-title">Construction sheet for the ViaVitae logomark: two circles of radius R with centres 1.2R apart, crossing at A and B, producing a 2:1 vesica piscis body with a tail swept 20.61 degrees past the crossing</title>
+
+  <!--
+    CONSTRUCTION SHEET. The drawing that proves the mark is a compass
+    construction and not a traced outline, with the arithmetic beside it. This
+    is a reference document: it goes in the guidelines, in a brand review deck
+    and on the wall of a studio, and it is never a reproduction master. Nothing
+    here is used to produce the logo — the logo is
+    assets/logo/master/viavitae-logomark.svg.
+
+    WHY THIS FILE MAY CONTAIN <text> WHEN THE MASTERS MAY NOT. The masters are
+    outlined because an SVG carrying <text> renders in whatever the viewing
+    machine substitutes for the named family, so a logotype would be a different
+    shape on every machine. That argument does not apply to a diagram: if the
+    labels here render in the system sans-serif instead of Inter, the numbers
+    are still the numbers and the drawing is still the drawing. A diagram whose
+    annotations substituted is a diagram, slightly uglier. A logotype whose
+    letterforms substituted is not the logotype. So the masters are outlined and
+    this sheet is not, and the difference is deliberate rather than an oversight.
+
+    SCALE. The plate uses R = 150 on a 1200 by 800 artboard. The master uses
+    R = 250 on 512, so the plate is not the master scaled and is not meant to
+    be measured off; it is the same construction at a size that leaves room for
+    dimensions and labels. Every figure quoted in the panel on the right is
+    exact for R = 150 and scales linearly, so the ratios — 1.2R separation,
+    1.6R by 0.8R body, 1/16 stroke — hold at any R.
+
+    THE STROKE ON THIS PLATE IS 8 AGAINST R = 150. The mark's own ratio is 32
+    against R = 250. A diagram thins the mark so the construction underneath it
+    stays legible, which is a second reason the plate is not a reproduction
+    master.
+
+    COLOUR, all of it from tokens/colors.json, on the ivory-100 page surface:
+
+      headings and the mark       navy-900 #0E1B3D      15.37:1
+      body text and point labels  navy-700 #1B3374      10.78:1
+      radii, triangles, dims      navy-300 #9CADDB       2.03:1
+      circles, axes, rules        navy-200 #C9D1E6       1.39:1
+
+    The two hairline steps fall below the 3:1 of WCAG 2.2 SC 1.4.11 and are
+    exempt as decoration, but the exemption does not extend to the TEXT, which is
+    set at 10.78:1 and passes AAA. A reader who cannot see the construction lines
+    at all can still read every number on the sheet, and that is the condition
+    the exemption requires: the decoration must not be carrying information the
+    text is not.
+
+    When this file is placed in a page, place it as an <img> with alt text that
+    points at guidelines/logo-usage.md rather than transcribing the sheet. The
+    title above is the accessible name for an inline embedding.
+  -->
+
+  <rect width="1200" height="800" fill="#F7F4EC"/>
+
+  <!-- ============================== HEADER ============================== -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="94" font-size="30" font-weight="600" fill="#0E1B3D" letter-spacing="0.5">LOGOMARK CONSTRUCTION</text>
+    <text x="60" y="124" font-size="16" fill="#1B3374">Vesica piscis ichthys — two circles of equal radius, centres 1.2R apart</text>
+  </g>
+  <path d="M 60 148 H 1140" stroke="#DBCDA9" stroke-width="2" fill="none"/>
+
+  <!-- =============================== PLATE ============================== -->
+  <!-- Axes: the shared axis of the two circles at x = 300, and the horizontal
+       through their crossings at y = 430. -->
+  <g stroke="#C9D1E6" stroke-width="1" stroke-dasharray="4 6" fill="none">
+    <path d="M 300 190 V 670"/>
+    <path d="M 150 430 H 450"/>
+  </g>
+
+  <!-- The two circles. Cu = (300, 520) carries the upper edge of the body,
+       Cl = (300, 340) the lower. Centres 180 apart = 1.2R. -->
+  <g stroke="#C9D1E6" stroke-width="2" fill="none">
+    <circle cx="300" cy="520" r="150"/>
+    <circle cx="300" cy="340" r="150"/>
+  </g>
+
+  <!-- Radii to the six constructed points. All eight are 150 long, and drawing
+       the pair to U and L is the point of the sheet: the tail tips are on the
+       same two circles as the body, so they are constructed and not drawn. -->
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 300 520 L 180 430"/>
+    <path d="M 300 520 L 420 430"/>
+    <path d="M 300 520 L 156 478"/>
+    <path d="M 300 520 L 300 370"/>
+    <path d="M 300 340 L 180 430"/>
+    <path d="M 300 340 L 420 430"/>
+    <path d="M 300 340 L 156 382"/>
+    <path d="M 300 340 L 300 490"/>
+  </g>
+
+  <!-- The Pythagorean triangles, dashed, with a right-angle marker at each
+       corner. A: legs 120 and 90. B: the mirror. U: legs 144 and 42. -->
+  <g stroke="#9CADDB" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+    <path d="M 180 430 V 520 H 300 Z"/>
+    <path d="M 420 430 V 520 H 300 Z"/>
+    <path d="M 156 478 V 520 H 300 Z"/>
+  </g>
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 192 520 V 508 H 180"/>
+    <path d="M 408 520 V 508 H 420"/>
+    <path d="M 168 520 V 508 H 156"/>
+  </g>
+
+  <!-- Centres. -->
+  <g fill="#1B3374">
+    <circle cx="300" cy="520" r="4"/>
+    <circle cx="300" cy="340" r="4"/>
+  </g>
+
+  <!-- THE MARK, at the master's own path shape. -->
+  <g fill="none" stroke="#0E1B3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 180 430 A 150 150 0 0 1 420 430 A 150 150 0 0 1 180 430 Z"/>
+    <path d="M 180 430 A 150 150 0 0 0 156 478"/>
+    <path d="M 180 430 A 150 150 0 0 1 156 382"/>
+  </g>
+
+  <!-- Point labels. Set in navy-700 at 10.78:1 so they survive being printed
+       on a laser printer and being read at 50% zoom. -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="15" font-weight="600" fill="#1B3374">
+    <text x="168" y="424" text-anchor="end">A</text>
+    <text x="432" y="424">B</text>
+    <text x="286" y="362" text-anchor="end">T</text>
+    <text x="286" y="508" text-anchor="end">Bo</text>
+    <text x="144" y="484" text-anchor="end">U</text>
+    <text x="144" y="376" text-anchor="end">L</text>
+    <text x="312" y="544">Cu</text>
+    <text x="312" y="332">Cl</text>
+  </g>
+
+  <!-- Dimensions. Ticks at both ends, no arrowheads: an arrowhead has a size
+       that stops scaling with the sheet, a tick does not. -->
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <!-- centre separation, 180 -->
+    <path d="M 110 340 V 520"/>
+    <path d="M 102 340 H 118"/>
+    <path d="M 102 520 H 118"/>
+    <!-- body width, 240 -->
+    <path d="M 180 566 H 420"/>
+    <path d="M 180 558 V 574"/>
+    <path d="M 420 558 V 574"/>
+    <!-- body height, 120 -->
+    <path d="M 484 370 V 490"/>
+    <path d="M 476 370 H 492"/>
+    <path d="M 476 490 H 492"/>
+  </g>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" fill="#1B3374">
+    <text transform="translate(92,430) rotate(-90)" text-anchor="middle">1.2R = 180</text>
+    <text x="300" y="592" text-anchor="middle">body 240 = 1.6R</text>
+    <text transform="translate(506,430) rotate(-90)" text-anchor="middle">120 = 0.8R</text>
+    <text x="368" y="468">R = 150</text>
+    <text x="300" y="626" text-anchor="middle" font-weight="600">2 : 1</text>
+  </g>
+
+  <!-- ================================ PANEL ============================= -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="600" y="200" font-size="18" font-weight="600" fill="#0E1B3D">DERIVATION</text>
+    <g font-size="14" fill="#1B3374">
+      <text x="600" y="228">Set R = 150 and place the two centres 1.2R = 180 apart. A true vesica</text>
+      <text x="600" y="250">piscis places them R apart and yields a 1.732:1 lens, which reads as an</text>
+      <text x="600" y="272">eye or a leaf. Opening the separation to 1.2R yields 2:1, which reads</text>
+      <text x="600" y="294">as a fish, and that is the whole reason the separation is not canonical.</text>
+      <text x="600" y="326">Each constructed point is a Pythagorean pair on one of the two circles.</text>
+      <text x="600" y="348">That is why the master's coordinates are integers and not fitted curves:</text>
+    </g>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace"
+     font-size="14" fill="#1B3374">
+    <text x="600" y="378">A  = Cu + (-120, -90)   120² +  90² = 22500 = 150²   30 × (4, 3, 5)</text>
+    <text x="600" y="400">B  = Cu + ( 120, -90)   the mirror of A in the shared axis</text>
+    <text x="600" y="422">T  = Cu + (   0,-150)   apex of the upper arc, on the axis</text>
+    <text x="600" y="444">Bo = Cl + (   0, 150)   apex of the lower arc, on the axis</text>
+    <text x="600" y="466">U  = Cu + (-144, -42)   144² +  42² = 22500 = 150²    6 × (24, 7, 25)</text>
+    <text x="600" y="488">L  = Cl + (-144,  42)   the mirror of U in the midline</text>
+  </g>
+
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="600" y="530" font-size="18" font-weight="600" fill="#0E1B3D">MEASURES</text>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace"
+     font-size="14" fill="#1B3374">
+    <text x="600" y="558">body          240 × 120, exactly 2:1</text>
+    <text x="600" y="580">body arc      106.26° of each circle</text>
+    <text x="600" y="602">tail sweep    20.61° past the crossing, both arcs</text>
+    <text x="600" y="624">axis offset   the tail reaches 144 left of the shared axis against</text>
+    <text x="600" y="646">              the body's 120 right, so the artwork bounding box</text>
+    <text x="600" y="668">              sits 12 units left of that axis — geometry, not error</text>
+  </g>
+
+  <!-- =============================== FOOTER ============================= -->
+  <path d="M 60 716 H 1140" stroke="#DBCDA9" stroke-width="2" fill="none"/>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" fill="#1B3374">
+    <text x="60" y="746">MINIMUM SIZE 24px, where the master's 32-unit stroke renders as 1.5 device pixels.</text>
+    <text x="60" y="768">CLEAR SPACE the x-height of the wordmark, 50 units on a 100-unit cap height — see the companion sheet.</text>
+    <text x="1140" y="746" text-anchor="end">assets/logo/construction/viavitae-logo-construction.svg</text>
+    <text x="1140" y="768" text-anchor="end">ViaVitae IT Technologies</text>
+  </g>
+</svg>

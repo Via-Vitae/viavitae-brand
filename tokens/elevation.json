@@ -1,0 +1,134 @@
+{
+  "$description": "ViaVitae elevation tokens. Elevation is expressed twice, once per theme, because a drop shadow is the wrong mechanism on a dark surface: on navy-900 a black shadow has almost nothing left to darken, so it renders as nothing at all and the raised element appears to be floating with no support. On the dark theme, elevation is therefore carried by a surface value step plus a hairline light edge on the top and left, which is how a real object in a dark room reads — by the light catching its top edge, not by the shadow underneath it. A consumer must apply the elevation token, never a raw box-shadow, or it gets the light-theme shadow on a dark surface and loses the level entirely.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "elevation",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-002",
+    "guidance": "guidelines/brand-guidelines.md",
+    "shadowColourRationale": "Shadows are navy-tinted (14, 27, 61) rather than pure black on the light theme. A black shadow on warm ivory reads as dirt or as a rendering artefact; a navy shadow reads as the object's own colour reflected in the surface beneath it. On the dark theme the shadow colour drops below navy-950 to (5, 10, 26), because the only way to darken an already-dark surface is to go darker than the darkest token in the palette."
+  },
+
+  "elevation": {
+    "$description": "Five elevation levels, 0 to 4, plus one inset state. Level 0 is the page. Levels 1 and 2 are the ones a product UI uses most; 3 and 4 are reserved for elements that interrupt the page, and an element that interrupts the page should be rare. `pressed` is not a level — it is the :active state of a control and sits below level 0. Each level declares both themes.",
+
+    "none": {
+      "$type": "shadow",
+      "$value": { "color": "#00000000", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "0px", "inset": false },
+      "$description": "Level 0. The page surface and anything flush with it: a section, a table, a full-bleed image. No shadow on either theme.",
+      "level": 0,
+      "lightSurface": "{color.semantic.light.surface.page}",
+      "darkSurface": "{color.semantic.dark.surface.page}"
+    },
+
+    "raised": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#0E1B3D0D", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px", "inset": false },
+        { "color": "#0E1B3D14", "offsetX": "0px", "offsetY": "2px", "blur": "4px", "spread": "0px", "inset": false }
+      ],
+      "$description": "Level 1. A card, a table header, a raised panel. Two layers rather than one: the tight 1px/2px layer defines the edge and the softer 2px/4px layer gives the impression of distance, and a single blur cannot do both. Alpha is 5% and 8%, deliberately faint — on ivory a strong shadow reads as a floating sticker.",
+      "level": 1,
+      "lightSurface": "{color.semantic.light.surface.raised}",
+      "darkSurface": "{color.semantic.dark.surface.raised}",
+      "darkTheme": [
+        { "color": "#F7F4EC12", "offsetX": "0px", "offsetY": "1px", "blur": "0px", "spread": "0px", "inset": true },
+        { "color": "#050A1A80", "offsetX": "0px", "offsetY": "4px", "blur": "12px", "spread": "0px", "inset": false }
+      ],
+      "darkThemeRationale": "The inset 1px ivory layer at 7% alpha is the top-edge highlight and is what actually communicates elevation on navy. The 4px/12px layer at 50% alpha is nearly invisible against navy-900 but separates the card from a navy-950 sunken neighbour, which is the case where a dark-theme shadow still does work."
+    },
+
+    "overlay": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#0E1B3D14", "offsetX": "0px", "offsetY": "2px", "blur": "4px", "spread": "0px", "inset": false },
+        { "color": "#0E1B3D1F", "offsetX": "0px", "offsetY": "8px", "blur": "16px", "spread": "0px", "inset": false }
+      ],
+      "$description": "Level 2. A dropdown, popover, tooltip, autocomplete list or sticky toolbar — anything that floats above content and dismisses on outside click. The 8px/16px layer is what distinguishes level 2 from level 1: an overlay has to read as being above the page rather than merely raised on it.",
+      "level": 2,
+      "lightSurface": "{color.semantic.light.surface.raised}",
+      "darkSurface": "{color.semantic.dark.surface.raised}",
+      "darkTheme": [
+        { "color": "#F7F4EC1A", "offsetX": "0px", "offsetY": "1px", "blur": "0px", "spread": "0px", "inset": true },
+        { "color": "#050A1AB3", "offsetX": "0px", "offsetY": "8px", "blur": "24px", "spread": "0px", "inset": false }
+      ]
+    },
+
+    "modal": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#0E1B3D1F", "offsetX": "0px", "offsetY": "8px", "blur": "16px", "spread": "0px", "inset": false },
+        { "color": "#0E1B3D33", "offsetX": "0px", "offsetY": "24px", "blur": "48px", "spread": "0px", "inset": false }
+      ],
+      "$description": "Level 3. A dialog or modal sheet. The heaviest shadow in the system, and paired with a surface.overlay scrim rather than relying on the shadow alone: a modal must be unmistakably not-part-of-the-page, because a user who does not notice the page behind it is still dimmed has not understood that they are in a contained flow.",
+      "level": 3,
+      "lightSurface": "{color.semantic.light.surface.raised}",
+      "darkSurface": "{color.semantic.dark.surface.raised}",
+      "darkTheme": [
+        { "color": "#F7F4EC1F", "offsetX": "0px", "offsetY": "1px", "blur": "0px", "spread": "0px", "inset": true },
+        { "color": "#050A1AE6", "offsetX": "0px", "offsetY": "24px", "blur": "64px", "spread": "0px", "inset": false }
+      ]
+    },
+
+    "toast": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#0E1B3D29", "offsetX": "0px", "offsetY": "4px", "blur": "12px", "spread": "0px", "inset": false },
+        { "color": "#0E1B3D1F", "offsetX": "0px", "offsetY": "16px", "blur": "32px", "spread": "0px", "inset": false }
+      ],
+      "$description": "Level 4. A toast, snackbar or notification that arrives over existing content without a scrim. Tighter blur than modal so it reads as a small object near the surface rather than a large one far from it.",
+      "level": 4,
+      "lightSurface": "{color.semantic.light.surface.raised}",
+      "darkSurface": "{color.semantic.dark.surface.raised}",
+      "darkTheme": [
+        { "color": "#F7F4EC24", "offsetX": "0px", "offsetY": "1px", "blur": "0px", "spread": "0px", "inset": true },
+        { "color": "#050A1ACC", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "0px", "inset": false }
+      ]
+    },
+
+    "pressed": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#0E1B3D14", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px", "inset": true }
+      ],
+      "$description": "Not an elevation level: an inset shadow that pushes a control INTO the surface on :active. The only inset entry on the light theme. It exists so a button press has a physical response that does not depend on a colour change alone, which matters because a colour-only pressed state is invisible under forced colours and would be a WCAG 1.4.1 failure if it were the only indicator of the state change.",
+      "level": -1,
+      "lightSurface": "{color.semantic.light.surface.raised}",
+      "darkSurface": "{color.semantic.dark.surface.raised}",
+      "darkTheme": [
+        { "color": "#050A1A99", "offsetX": "0px", "offsetY": "2px", "blur": "4px", "spread": "0px", "inset": true }
+      ]
+    }
+  },
+
+  "$extensions": {
+    "com.viavitae.surface-pairing": {
+      "$description": "The complete elevation recipe. A shadow token on its own is not elevation on the dark theme; the surface step is the primary signal and the shadow is secondary. Consumers must set both. This table is what build/css/tokens.css emits as paired custom properties.",
+      "levels": [
+        { "level": 0, "token": "elevation.none", "lightSurface": "ivory-100 #F7F4EC", "darkSurface": "navy-900 #0E1B3D", "borderLight": "none", "borderDark": "none" },
+        { "level": 1, "token": "elevation.raised", "lightSurface": "white #FFFFFF", "darkSurface": "navy-800 #142655", "borderLight": "ivory-300 #E8DFC7", "borderDark": "navy-700 #1B3374" },
+        { "level": 2, "token": "elevation.overlay", "lightSurface": "white #FFFFFF", "darkSurface": "navy-800 #142655", "borderLight": "ivory-300 #E8DFC7", "borderDark": "navy-600 #224295" },
+        { "level": 3, "token": "elevation.modal", "lightSurface": "white #FFFFFF", "darkSurface": "navy-800 #142655", "borderLight": "none", "borderDark": "navy-600 #224295" },
+        { "level": 4, "token": "elevation.toast", "lightSurface": "white #FFFFFF", "darkSurface": "navy-800 #142655", "borderLight": "ivory-300 #E8DFC7", "borderDark": "navy-600 #224295" }
+      ]
+    },
+
+    "com.viavitae.performance": {
+      "$description": "Shadows are paint-expensive. A large blur radius on a scrolling list of cards costs real frame time on a mid-range Android, which is the device a parish secretary is most likely to be using. Two rules follow. First, never animate a box-shadow: animate opacity on a pseudo-element carrying the shadow instead, because box-shadow is not compositor-accelerated and repainting a 48px blur every frame will drop frames. Second, a list of more than about twenty level-1 cards should use the border-only variant, which is visually within a hair of the shadow at 5% alpha and costs nothing.",
+      "animateBoxShadow": false,
+      "animateInstead": "opacity on a ::after pseudo-element that carries the shadow",
+      "borderOnlyThreshold": "20 concurrent level-1 surfaces",
+      "willChange": "Do not set will-change on a shadowed element. It promotes the element to its own compositor layer permanently, and a page of promoted cards exhausts layer memory faster than it saves paint."
+    },
+
+    "com.viavitae.forced-colors": {
+      "$description": "Under Windows High Contrast and forced-colors mode, box-shadow is removed by the user agent and cannot be restored. Elevation must therefore never be the only signal that an element is interactive or that a container is separate: every level-1 and level-2 surface also carries a border, which forced-colors mode preserves as a system-colour outline. This is the reason the surface-pairing table above declares a border for every level rather than leaving it to the component.",
+      "boxShadowPreserved": false,
+      "borderPreserved": true,
+      "requirement": "Every elevated surface carries a border at 1px so that separation survives forced-colors mode."
+    }
+  }
+}

@@ -1,0 +1,96 @@
+# CODEOWNERS — default owner mapping
+#
+# Each line is a path pattern followed by one or more owners. Later patterns take
+# precedence over earlier ones, so the most specific rule wins. Owners are requested
+# for review automatically when a matching path changes in a pull request.
+#
+# Syntax reference: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# ---------------------------------------------------------------------------
+# RULE R2 — CODEOWNERS IMMUTABILITY
+#
+# 1. This file is NEVER empty. An empty CODEOWNERS silently removes every
+#    required reviewer, so a pull request that empties it fails review by
+#    definition. The `*` rule below must always resolve to at least
+#    @viavitae-org/architects.
+# 2. Overrides are allowed. Narrower path rules may add or replace owners for
+#    their subtree — that is the intended mechanism for giving security,
+#    compliance, legal and the DPO authority over their own paths.
+# 3. Removal requires compliance team approval. Deleting an owner, widening `*`,
+#    or changing the rules for /LICENSE, /SECURITY.md, /QODER.md,
+#    /.github/CODEOWNERS, /docs/DPIA-template.md or /.github/workflows/
+#    requires an approving review from @viavitae-org/compliance in addition to
+#    the standard architect review. Record the reason as an ADR.
+# 4. Owners are teams, not individuals. Team membership changes without editing
+#    this file, which keeps the ownership map stable and auditable.
+# ---------------------------------------------------------------------------
+
+# --- Default owner for everything -------------------------------------------
+*                                       @viavitae-org/architects
+
+# --- Platform: CI/CD, automation and repository configuration -----------------
+/.github/                               @viavitae-org/platform @viavitae-org/architects
+/.github/workflows/                     @viavitae-org/platform @viavitae-org/security
+/.github/CODEOWNERS                     @viavitae-org/architects @viavitae-org/compliance
+/.github/dependabot.yml                 @viavitae-org/platform
+/.editorconfig                          @viavitae-org/platform
+/.gitignore                             @viavitae-org/platform @viavitae-org/security
+
+# --- Compliance and privacy --------------------------------------------------
+/docs/gdpr/                             @viavitae-org/compliance
+/docs/DPIA-template.md                  @viavitae-org/compliance @viavitae-org/dpo
+/docs/architecture.md                   @viavitae-org/architects @viavitae-org/compliance
+/docs/security/                         @viavitae-org/security @viavitae-org/compliance
+
+# --- Legal and policy --------------------------------------------------------
+/LICENSE                                @viavitae-org/legal @viavitae-org/architects
+/SECURITY.md                            @viavitae-org/security @viavitae-org/legal
+/CODE_OF_CONDUCT.md                     @viavitae-org/legal @viavitae-org/compliance
+/CONTRIBUTING.md                        @viavitae-org/architects
+/QODER.md                               @viavitae-org/architects @viavitae-org/security
+/CHANGELOG.md                           @viavitae-org/architects
+/README.md                              @viavitae-org/architects
+
+# --- Security-sensitive application paths ------------------------------------
+**/auth/**                              @viavitae-org/security @viavitae-org/architects
+**/authentication/**                    @viavitae-org/security
+**/authorization/**                     @viavitae-org/security
+**/secrets/**                           @viavitae-org/security
+**/crypto/**                            @viavitae-org/security
+**/payments/**                          @viavitae-org/security @viavitae-org/legal
+**/donations/**                         @viavitae-org/security @viavitae-org/compliance
+
+# --- Infrastructure and data residency ---------------------------------------
+/terraform/                             @viavitae-org/platform @viavitae-org/security
+/ansible/                               @viavitae-org/platform
+/k8s/                                   @viavitae-org/platform @viavitae-org/security
+*.tf                                    @viavitae-org/platform @viavitae-org/security
+*.tfvars                                @viavitae-org/security
+Dockerfile                              @viavitae-org/platform @viavitae-org/security
+docker-compose*.yml                     @viavitae-org/platform
+
+# --- Application source ------------------------------------------------------
+/src/                                   @viavitae-org/architects
+*.py                                    @viavitae-org/architects
+*.ts                                    @viavitae-org/architects
+*.tsx                                   @viavitae-org/architects
+*.js                                    @viavitae-org/architects
+*.jsx                                   @viavitae-org/architects
+
+# --- Dependencies and packaging ----------------------------------------------
+/requirements*.txt                      @viavitae-org/architects @viavitae-org/security
+/pyproject.toml                         @viavitae-org/architects @viavitae-org/security
+/uv.lock                                @viavitae-org/architects
+/package.json                           @viavitae-org/architects @viavitae-org/security
+/package-lock.json                      @viavitae-org/architects @viavitae-org/security
+
+# --- Accessibility and internationalisation ----------------------------------
+**/locales/**                           @viavitae-org/architects @viavitae-org/compliance
+**/i18n/**                              @viavitae-org/architects @viavitae-org/compliance
+**/a11y/**                              @viavitae-org/architects
+**/components/**                        @viavitae-org/architects
+
+# --- Tests and quality assets ------------------------------------------------
+/tests/                                 @viavitae-org/architects
+**/*.test.*                             @viavitae-org/architects
+**/*.spec.*                             @viavitae-org/architects

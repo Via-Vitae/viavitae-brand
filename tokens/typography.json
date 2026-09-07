@@ -1,0 +1,454 @@
+{
+  "$description": "ViaVitae typography tokens. Two families and no more: Fraunces for display, Inter for everything a user reads or clicks. A third family is a defect, not an option — it doubles the font payload, triples the fallback testing and produces pages where two serifs argue. Every size, weight, line-height and letter-spacing in the system is declared here; a component must never set a raw font-size. Format: W3C DTCG draft.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "typography",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-003",
+    "verification": "tools/cyrillic_check.py",
+    "guidance": "guidelines/typography-usage.md",
+    "rootFontSizePx": 16,
+    "scaleRatio": 1.25,
+    "scaleName": "major third"
+  },
+
+  "fontFamily": {
+    "$description": "Font stacks. Each stack is declared as a full CSS font-family value, ordered: the webfont first, then progressively more widely-installed substitutes in the same classification, then a generic. The generic at the end is not optional — it is what the browser falls back to when every named family is missing, and omitting it makes the fallback browser-dependent and therefore untestable.",
+
+    "display": {
+      "$type": "fontFamily",
+      "$value": ["Fraunces", "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", "serif"],
+      "$description": "Display face for headings, heroes, pull quotes and any type above 24px. Fraunces is a variable font with optical sizing, so the stack is only reached when the webfont fails to load; the substitutes are chosen for a similarly high x-height and warm serif texture rather than for metric compatibility, because no widely-installed serif is metrically compatible with Fraunces."
+    },
+
+    "display-cyrillic": {
+      "$type": "fontFamily",
+      "$value": ["Noto Serif", "PT Serif", "Georgia", "serif"],
+      "$description": "Display face for Russian (ru) and any other Cyrillic locale. Fraunces ships Latin, Latin Extended and Vietnamese coverage; Cyrillic is NOT part of its declared coverage, so a Russian display heading set in Fraunces silently falls back to the browser default serif mid-word and the page looks broken. This stack is applied by the locale-specific rule in build/css/tokens.css. tools/cyrillic_check.py verifies the coverage claim against the actual font binaries before a release rather than trusting this comment — a font's documented coverage and its shipped coverage are not always the same thing."
+    },
+
+    "ui": {
+      "$type": "fontFamily",
+      "$value": ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "UI and body face: paragraphs, labels, buttons, tables, forms, navigation, captions. Inter's tall x-height keeps 14px UI text legible at the sizes a dashboard actually uses, and its coverage includes Latin, Latin Extended and Cyrillic, so one stack serves lt, en and ru. Verify the Cyrillic claim with tools/cyrillic_check.py against the exact files you ship; a subsetted WOFF2 can drop it even when the upstream release has it."
+    },
+
+    "mono": {
+      "$type": "fontFamily",
+      "$value": ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", "monospace"],
+      "$description": "Code, reference numbers, donation transaction IDs, log excerpts. Deliberately a platform stack with no webfont: a monospace webfont is 40-90KB for text almost no visitor reads, and every platform already ships a competent one. No licence, no self-hosting and no subsetting question arises, which is the point."
+    }
+  },
+
+  "fontWeight": {
+    "$description": "Permitted weights. Both families ship as variable fonts covering 100-900, but only the weights listed here may be requested: a self-hosted build subsets to these, and an unlisted weight silently rounds to the nearest available one, which means the design is not what ships. If a new weight is genuinely needed, add it here, re-run the subsetting build and re-check the Cyrillic coverage for that axis position.",
+
+    "light": { "$type": "fontWeight", "$value": 300, "$description": "Fraunces only, at 30px and above. Below 30px a light serif loses its hairlines to hinting." },
+    "regular": { "$type": "fontWeight", "$value": 400, "$description": "Body copy in both families." },
+    "medium": { "$type": "fontWeight", "$value": 500, "$description": "Inter emphasis inside body copy; Fraunces at 24-30px where 600 is too heavy." },
+    "semibold": { "$type": "fontWeight", "$value": 600, "$description": "Headings, buttons, navigation, table headers, form labels." },
+    "bold": { "$type": "fontWeight", "$value": 700, "$description": "Fraunces display at 48px and above, and strong emphasis in Inter." }
+  },
+
+  "fontVariant": {
+    "$description": "OpenType settings. Declared here rather than inline so a change applies everywhere. Every entry must be confirmed against the shipped font file: a CSS request for a feature the font does not implement is silently ignored, which means the design looks correct in a mockup and wrong in production with no error anywhere.",
+
+    "numerals-tabular": {
+      "$type": "fontVariantNumeric",
+      "$value": "tabular-nums",
+      "$description": "Fixed-width digits. REQUIRED in any column of numbers — a table of donation amounts, a date list, a metric card, a countdown. Without it, digits are proportionally spaced and columns jitter as values change, which makes a total unreadable and a live-updating figure visibly twitch."
+    },
+    "numerals-lining": {
+      "$type": "fontVariantNumeric",
+      "$value": "lining-nums",
+      "$description": "Digits that sit on the baseline at cap height. Default for UI and for any figure next to uppercase. Set explicitly rather than relying on the font default, because Fraunces offers oldstyle figures as an alternate and the default varies by optical size."
+    },
+    "numerals-proportional": {
+      "$type": "fontVariantNumeric",
+      "$value": "proportional-nums",
+      "$description": "For running prose and Fraunces display type, where oldstyle or proportional figures belong to the texture of the face."
+    },
+    "common-ligatures": {
+      "$type": "fontVariantLigatures",
+      "$value": "common-ligatures",
+      "$description": "On for prose. Off for uppercase overline and navigation, where the fi and fl joins read as errors at small sizes."
+    }
+  },
+
+  "typeScale": {
+    "$description": "The complete type scale on a 1.25 (major third) ratio with a 16px root. Two families of roles: display roles set in Fraunces for anything meant to be looked at, and UI roles set in Inter for anything meant to be read or operated. A fluid entry carries a clamp() expression so the size interpolates between the sm and xl breakpoints from breakpoints.json instead of jumping; the fixed min and max are the clamp endpoints, and both are declared separately so a consumer without clamp() support can still use them.",
+
+    "display": {
+      "$description": "Fraunces roles. Line-height tightens as size grows, because a 72px line does not need the leading a 16px line needs to be readable — the eye tracks it by size, not by gap. Letter-spacing goes negative for the same reason: large type appears looser than it is.",
+
+      "display-2xl": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "4.5rem",
+          "fontWeight": "{fontWeight.bold}",
+          "lineHeight": 1.05,
+          "letterSpacing": "-0.02em",
+          "fontVariantNumeric": "{fontVariant.numerals-lining}"
+        },
+        "$description": "72px. The largest size in the system, for a marketing hero and nothing else. Fluid: clamp(2.75rem, 1.4rem + 5.6vw, 4.5rem). On mobile this is 44px, which is still the largest thing on the page.",
+        "fluid": "clamp(2.75rem, 1.4rem + 5.6vw, 4.5rem)",
+        "fontSizeMin": "2.75rem",
+        "fontSizeMax": "4.5rem",
+        "opticalSize": 144
+      },
+
+      "display-xl": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "3.75rem",
+          "fontWeight": "{fontWeight.bold}",
+          "lineHeight": 1.08,
+          "letterSpacing": "-0.02em",
+          "fontVariantNumeric": "{fontVariant.numerals-lining}"
+        },
+        "$description": "60px. Section hero, product page headline. Fluid: clamp(2.375rem, 1.4rem + 3.9vw, 3.75rem).",
+        "fluid": "clamp(2.375rem, 1.4rem + 3.9vw, 3.75rem)",
+        "fontSizeMin": "2.375rem",
+        "fontSizeMax": "3.75rem",
+        "opticalSize": 120
+      },
+
+      "display-lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "3rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.1,
+          "letterSpacing": "-0.015em",
+          "fontVariantNumeric": "{fontVariant.numerals-lining}"
+        },
+        "$description": "48px. Page title on a marketing page, pull quote. Fluid: clamp(2rem, 1.3rem + 2.8vw, 3rem).",
+        "fluid": "clamp(2rem, 1.3rem + 2.8vw, 3rem)",
+        "fontSizeMin": "2rem",
+        "fontSizeMax": "3rem",
+        "opticalSize": 96
+      },
+
+      "display-md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "2.25rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.15,
+          "letterSpacing": "-0.01em",
+          "fontVariantNumeric": "{fontVariant.numerals-lining}"
+        },
+        "$description": "36px. Section title. Fluid: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem). This is the largest size at which gold-500 becomes usable as text on a light surface, because WCAG treats 24px and above as large text with a 3:1 threshold — gold-500 still fails it at 2.20:1, so this is documented as a near miss rather than a permission.",
+        "fluid": "clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem)",
+        "fontSizeMin": "1.75rem",
+        "fontSizeMax": "2.25rem",
+        "opticalSize": 60
+      },
+
+      "display-sm": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "1.875rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.2,
+          "letterSpacing": "-0.01em",
+          "fontVariantNumeric": "{fontVariant.numerals-lining}"
+        },
+        "$description": "30px. Card title, sub-section, liturgical calendar day heading. Fixed, not fluid: below about 30px a display face stops needing to scale.",
+        "opticalSize": 48
+      }
+    },
+
+    "heading": {
+      "$description": "Structural headings h1-h6. h1-h3 are Fraunces, because a heading that introduces prose should share the prose's register. h4-h6 switch to Inter semibold: below 20px a serif's thin hairlines lose definition at typical screen densities, and the smaller headings are doing a structural job — labelling a card, a table section, a form group — which is UI work rather than display work.",
+
+      "heading-1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "2.25rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.2,
+          "letterSpacing": "-0.01em"
+        },
+        "$description": "36px. The document h1, one per page. Fluid: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem)."
+      },
+      "heading-2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "1.875rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.25,
+          "letterSpacing": "-0.01em"
+        },
+        "$description": "30px. Major section."
+      },
+      "heading-3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.display}",
+          "fontSize": "1.5rem",
+          "fontWeight": "{fontWeight.medium}",
+          "lineHeight": 1.3,
+          "letterSpacing": "-0.005em"
+        },
+        "$description": "24px. Sub-section. Weight drops to 500 here because at 24px semibold Fraunces reads as shouting next to 16px Inter body copy."
+      },
+      "heading-4": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1.25rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.35,
+          "letterSpacing": "0em"
+        },
+        "$description": "20px. Card and panel title. First Inter heading: letter-spacing returns to zero because a sans-serif at this size does not need tightening."
+      },
+      "heading-5": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1.125rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.4,
+          "letterSpacing": "0em"
+        },
+        "$description": "18px. Table section, form group legend."
+      },
+      "heading-6": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.45,
+          "letterSpacing": "0.005em"
+        },
+        "$description": "16px. The smallest heading. Same size as body copy, separated by weight only — which is permitted under WCAG 1.4.3 because the distinction is not carried by colour, and the heading role is exposed to assistive technology regardless of appearance."
+      }
+    },
+
+    "body": {
+      "$description": "Reading roles, all Inter. body-md is the default and the only size that may be used for prose longer than three paragraphs. Minimum permitted text size anywhere in the system is caption at 12px, and caption is not body copy: it labels something adjacent.",
+
+      "body-xl": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1.25rem",
+          "fontWeight": "{fontWeight.regular}",
+          "lineHeight": 1.6,
+          "letterSpacing": "-0.005em"
+        },
+        "$description": "20px. Lead paragraph, marketing intro, the opening of a homily archive entry. Measure should stay under 70 characters at this size."
+      },
+      "body-lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1.125rem",
+          "fontWeight": "{fontWeight.regular}",
+          "lineHeight": 1.65,
+          "letterSpacing": "0em"
+        },
+        "$description": "18px. Long-form reading on a content page. The highest line-height in the system, because sustained reading needs more air than a marketing page does."
+      },
+      "body-md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1rem",
+          "fontWeight": "{fontWeight.regular}",
+          "lineHeight": 1.6,
+          "letterSpacing": "0em"
+        },
+        "$description": "16px. THE default. Body copy, form inputs, table cells, list items, button labels at default size. A page whose paragraphs are not body-md needs a reason."
+      },
+      "body-sm": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "0.875rem",
+          "fontWeight": "{fontWeight.regular}",
+          "lineHeight": 1.55,
+          "letterSpacing": "0.005em"
+        },
+        "$description": "14px. Dense tables, secondary panels, metadata rows, form helper text. Not permitted for the main content of a page."
+      },
+      "body-strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.6,
+          "letterSpacing": "0em"
+        },
+        "$description": "Emphasis inside body-md. Weight rather than italic: Inter's italic is a true italic and reads correctly, but a weight change survives a poor display and a low-vision user's forced-colour or high-contrast mode better than a style change does."
+      }
+    },
+
+    "utility": {
+      "$description": "Non-prose roles: labels, captions, code, the small uppercase line above a heading. These are where letter-spacing does real work — uppercase at small sizes needs positive tracking or the letters close into a grey bar.",
+
+      "caption": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "0.75rem",
+          "fontWeight": "{fontWeight.medium}",
+          "lineHeight": 1.45,
+          "letterSpacing": "0.01em"
+        },
+        "$description": "12px. THE MINIMUM TEXT SIZE IN THE SYSTEM. Image captions, timestamps, legal footnotes, axis labels, badge text. Medium rather than regular weight, because 12px regular Inter loses definition on a low-density display."
+      },
+      "overline": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "0.75rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.3,
+          "letterSpacing": "0.1em",
+          "textCase": "uppercase"
+        },
+        "$description": "12px uppercase with 0.1em tracking. The eyebrow line above a section heading, and the only uppercase role in the system. 0.1em is the floor for legible uppercase at 12px; below about 0.08em the words close up. Ligatures are disabled here, per fontVariant.common-ligatures. The DTCG property is textCase, which a consumer emits as the CSS text-transform of the same name and value."
+      },
+      "code": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.mono}",
+          "fontSize": "0.875rem",
+          "fontWeight": "{fontWeight.regular}",
+          "lineHeight": 1.6,
+          "letterSpacing": "0em"
+        },
+        "$description": "14px monospace. Inline code, reference numbers, transaction IDs, JSON in documentation. Tabular figures are the default for a monospace face, so numerals-tabular is not requested here."
+      },
+      "metric": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "2.25rem",
+          "fontWeight": "{fontWeight.bold}",
+          "lineHeight": 1.1,
+          "letterSpacing": "-0.02em",
+          "fontVariantNumeric": "{fontVariant.numerals-tabular}"
+        },
+        "$description": "36px tabular figures for a single headline number — attendance, total raised, years served. Tabular figures are mandatory here: a metric that resizes as its digits change is unreadable, and a row of metrics that does not align is worse than no metrics. Set in Inter rather than Fraunces because Fraunces' figures are display-drawn and do not align on a baseline the way a data readout needs."
+      },
+      "button-lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "1.0625rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.2,
+          "letterSpacing": "0.005em"
+        },
+        "$description": "17px. Primary call to action. Deliberately one pixel above body-md: a button label at exactly body size disappears into surrounding prose, and the primary CTA on a product page is the one element that must not."
+      },
+      "button-md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "0.9375rem",
+          "fontWeight": "{fontWeight.semibold}",
+          "lineHeight": 1.2,
+          "letterSpacing": "0.005em"
+        },
+        "$description": "15px. Secondary and tertiary buttons, form submit."
+      },
+      "nav": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.ui}",
+          "fontSize": "0.9375rem",
+          "fontWeight": "{fontWeight.medium}",
+          "lineHeight": 1.2,
+          "letterSpacing": "0.01em"
+        },
+        "$description": "15px. Primary navigation, tab bar, breadcrumb. Slightly tracked so a horizontal run of short words stays legible as separate items."
+      }
+    }
+  },
+
+  "measure": {
+    "$description": "Line length, in characters. Measure is the single largest determinant of reading comfort and the one most often left to a container width that happens to be 1200px. Enforced as max-width on the prose container, never on the page.",
+    "optimal": { "$type": "dimension", "$value": "66ch", "$description": "Target for body-lg and body-xl prose. 45-75ch is the readable range; 66ch is the middle of it." },
+    "max": { "$type": "dimension", "$value": "75ch", "$description": "Hard ceiling for any prose column. Beyond this the eye loses the line on return." },
+    "min": { "$type": "dimension", "$value": "35ch", "$description": "Floor, and the reason a two-column layout collapses to one below the md breakpoint. Below 35ch a paragraph is a stack of one or two words and reads as a list." },
+    "narrow": { "$type": "dimension", "$value": "45ch", "$description": "Caption, footnote, sidebar and form helper text — short roles that sit beside a wider column." }
+  },
+
+  "locale": {
+    "$description": "Locale-specific typography. ViaVitae ships lt, en and ru as supported locales, with pl and de stubbed. This section exists because the three differ in ways a single stack cannot absorb: Lithuanian needs a set of Latin Extended-A diacritics that many display faces omit, and Russian needs a Cyrillic coverage Fraunces does not declare. tools/cyrillic_check.py verifies the required codepoints against the actual font binaries; this file only declares what is required.",
+
+    "lt": {
+      "displayName": "Lithuanian",
+      "status": "supported",
+      "fontFamilyDisplay": "{fontFamily.display}",
+      "fontFamilyUi": "{fontFamily.ui}",
+      "$description": "Lithuanian adds nine letters to the Latin alphabet, all in Latin Extended-A: a ogonek, c caron, e dot, e ogonek, i ogonek, s caron, u macron, u ogonek, z caron. Eighteen codepoints, being those nine in both cases. All are in Latin Extended-A (U+0100-U+017F), which Fraunces declares support for. Verify anyway: a variable font may implement the axis range for the base glyphs and omit an accented form at a given optical size.",
+      "requiredCodepoints": ["U+0104", "U+0105", "U+010C", "U+010D", "U+0116", "U+0117", "U+0118", "U+0119", "U+012E", "U+012F", "U+0160", "U+0161", "U+016A", "U+016B", "U+0172", "U+0173", "U+017D", "U+017E"],
+      "notes": "The ogonek (ą, ę, į, ų) is a descender-like mark below the baseline and the caron (č, š, ž) is a mark above. Both collide with tight line-heights. Do not apply a display line-height below 1.15 to Lithuanian body copy, and never set an overline in a locale whose diacritics will be clipped by the uppercase transform — text-transform: uppercase is safe for lt, but a clipped caron is not recoverable by CSS."
+    },
+
+    "en": {
+      "displayName": "English",
+      "status": "supported",
+      "fontFamilyDisplay": "{fontFamily.display}",
+      "fontFamilyUi": "{fontFamily.ui}",
+      "$description": "Basic Latin plus the typographic set: curly quotes, apostrophe, en and em dash, ellipsis, non-breaking space. No additional coverage question arises.",
+      "requiredCodepoints": ["U+2018", "U+2019", "U+201C", "U+201D", "U+2013", "U+2014", "U+2026", "U+00A0"],
+      "notes": "Straight quotes and hyphens used as dashes are a typographic defect, not a stylistic preference, and are corrected in content review rather than in CSS."
+    },
+
+    "ru": {
+      "displayName": "Russian",
+      "status": "supported",
+      "fontFamilyDisplay": "{fontFamily.display-cyrillic}",
+      "fontFamilyUi": "{fontFamily.ui}",
+      "$description": "Cyrillic. Inter covers the Cyrillic and Cyrillic Extended blocks, so the UI face is unchanged. The display face changes to display-cyrillic, because Fraunces does not declare Cyrillic coverage and a Russian heading set in Fraunces falls back glyph by glyph — producing a heading where some letters are Fraunces and some are the browser default serif. That failure is silent, invisible in an English-only review, and obvious to every Russian reader.",
+      "requiredCodepoints": ["U+0410", "U+0411", "U+0412", "U+0413", "U+0414", "U+0415", "U+0401", "U+0416", "U+0417", "U+0418", "U+0419", "U+041A", "U+041B", "U+041C", "U+041D", "U+041E", "U+041F", "U+0420", "U+0421", "U+0422", "U+0423", "U+0424", "U+0425", "U+0426", "U+0427", "U+0428", "U+0429", "U+042A", "U+042B", "U+042C", "U+042D", "U+042E", "U+042F", "U+0430", "U+0431", "U+0432", "U+0433", "U+0434", "U+0435", "U+0451", "U+0436", "U+0437", "U+0438", "U+0439", "U+043A", "U+043B", "U+043C", "U+043D", "U+043E", "U+043F", "U+0440", "U+0441", "U+0442", "U+0443", "U+0444", "U+0445", "U+0446", "U+0447", "U+0448", "U+0449", "U+044A", "U+044B", "U+044C", "U+044D", "U+044E", "U+044F"],
+      "notes": "U+0401 and U+0451 (Ё, ё) are the two most commonly omitted Cyrillic glyphs and the two most commonly needed in Russian liturgical text. They are listed explicitly rather than being implied by the U+0410-U+044F range, which does not contain them. Church Slavonic and Ukrainian add further glyphs (U+0462-U+0463 yat, U+0472-U+0473 iota, Ukrainian U+0404/U+0406/U+0407/U+0491); those locales are not supported and adding one requires a coverage check before the font choice, not after."
+    },
+
+    "pl": { "displayName": "Polish", "status": "stubbed", "$description": "Stubbed. Polish adds nine letters to Basic Latin — a ogonek, c acute, e ogonek, l stroke, n acute, o acute, s acute, z acute, z dot — of which a ogonek and e ogonek are already required by lt. Enabling it means adding U+0106/U+0107 (c acute), U+0141/U+0142 (l stroke), U+0143/U+0144 (n acute), U+00D3/U+00F3 (o acute, Latin-1), U+015A/U+015B (s acute), U+0179/U+017A (z acute) and U+017B/U+017C (z dot) to requiredCodepoints and re-running tools/cyrillic_check.py, not choosing a new font." },
+    "de": { "displayName": "German", "status": "stubbed", "$description": "Stubbed. Latin-1 Supplement umlauts and eszett: U+00C4/U+00E4, U+00D6/U+00F6, U+00DC/U+00FC and U+00DF, all covered by both families. The one glyph to check before enabling is U+1E9E, the capital sharp S, which is absent from most faces and from most keyboards; German typesetting that uppercases a word containing eszett needs it, and the fallback is a two-letter SS that is correct but visibly different. Enabling it is otherwise a content task, not a typography task." }
+  },
+
+  "$extensions": {
+    "com.viavitae.loading": {
+      "$description": "Font loading strategy. Fonts are self-hosted WOFF2 from assets/typography/self-hosted-woff2/ under the EU-privacy option, or loaded from Google Fonts under the convenience option. Self-hosting is the default for any deployment that serves EU residents: a Google Fonts request sends the visitor's IP address and user agent to a US-controlled third party at page load, before consent, which is the exact pattern German courts have ruled unlawful and which the CNIL has flagged. See guidelines/typography-usage.md and the ADR-003 compliance impact.",
+      "strategy": "self-hosted-woff2",
+      "fallback": "google-fonts",
+      "fontDisplay": "swap",
+      "preload": true,
+      "preloadWeights": [400, 600],
+      "$fontDisplayRationale": "swap rather than block or optional. block hides all text for up to three seconds on a slow connection, which on a funeral page means a bereaved family stares at a blank screen. optional avoids layout shift but routinely serves the fallback for the whole session on a slow network, so the brand face is seen by exactly the users with the worst connection. swap shows the fallback immediately and upgrades; the cost is one reflow, which is bounded by size-adjust and ascent-override on the fallback face declared below."
+    },
+
+    "com.viavitae.fallback-metrics": {
+      "$description": "Metric overrides for the fallback face, so the swap reflow is a colour and texture change rather than a layout change. Values are declared per fallback family and applied through @font-face src: local() blocks in build/css/reset.css. Without these, a 72px Fraunces headline reflows to a different height when the webfont lands and everything below it jumps — the classic cumulative-layout-shift failure, and the reason font loading shows up in a Core Web Vitals gate.",
+      "display": { "sizeAdjust": "100%", "ascentOverride": "75%", "descentOverride": "25%", "lineGapOverride": "0%" },
+      "ui": { "sizeAdjust": "107%", "ascentOverride": "90%", "descentOverride": "22%", "lineGapOverride": "0%" }
+    },
+
+    "com.viavitae.licensing": {
+      "$description": "Both faces are licensed under the SIL Open Font Licence 1.1, which permits embedding, self-hosting, subsetting and redistribution alongside proprietary software without the software becoming open source. The full licence text is kept with the fonts at assets/typography/fraunces/OFL-licence.md and assets/typography/inter/OFL-licence.md, which is an OFL condition rather than a courtesy. The Reserved Font Name clause applies: a modified or subsetted build may not be released under the name Fraunces or Inter. Our subsetted files stay internal and are never redistributed under those names.",
+      "fraunces": { "licence": "SIL Open Font Licence 1.1", "spdx": "OFL-1.1", "reservedFontName": "Fraunces", "source": "https://fonts.google.com/specimen/Fraunces" },
+      "inter": { "licence": "SIL Open Font Licence 1.1", "spdx": "OFL-1.1", "reservedFontName": "Inter", "source": "https://fonts.google.com/specimen/Inter" }
+    }
+  }
+}

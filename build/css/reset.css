@@ -1,0 +1,850 @@
+/* ==========================================================================
+   ViaVitae base reset
+   ==========================================================================
+
+   Generated alongside css/tokens.css by ../../tools/build_exports.py from the
+   token sources under ../../tokens. Do not hand-edit.
+
+   WHAT THIS FILE IS
+
+   A reset that produces a ViaVitae page rather than a blank one. It removes
+   browser defaults, then applies the brand's own: the type scale onto the
+   heading and prose elements, the semantic colour roles onto the page, the
+   focus indicator from the spacing and colour tokens, and the accessibility
+   adaptations that the tokens declare as mandatory rather than optional.
+
+   It is a reset, not a component library. Nothing here styles a button, a card
+   or a table beyond the properties that are wrong by default in every browser.
+
+   LOAD ORDER
+
+   tokens.css must be loaded before this file. Every declaration here resolves
+   through a custom property, and a var() with no declaration behind it falls
+   back to the inherited or initial value rather than failing loudly — so
+   loading this file alone produces a page that renders but is not branded.
+
+   THE LAST SECTION IS THE REDUCED-MOTION BLOCK, AND IT MUST STAY LAST
+
+   It is written with a universal selector and !important, which is not a style
+   choice. A reduced-motion override that a component can beat with a more
+   specific rule is not an override: the component author never sees the failure,
+   because it only appears for the users who asked for it. Putting this block at
+   the end of the cascade, with the highest specificity a reset can express, is
+   what makes the guarantee real. See ../../tokens/motion.json.
+
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Box model and document
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  /* 100% rather than 16px. A px value here overrides the font size a user set
+     in their browser, which defeats the entire rem scale and is a WCAG 1.4.4
+     failure. The tokens are rem-based precisely so this stays a percentage. */
+  font-size: var(--vv-font-size-root);
+  /* Smooth scrolling is NOT set here. It is a reduced-motion trigger in its own
+     right and is frequently missed because it is set on html rather than on a
+     component. Users who want it have already enabled it in their OS. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Optical sizing and kerning on by default; the display face declares an
+     optical-size axis and a browser that does not use it renders Fraunces at its
+     default axis position regardless of the size it is used at. */
+  font-optical-sizing: auto;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  /* Break long unbroken strings — a URL, a donation reference, a file path —
+     rather than letting them overflow and produce a horizontal scrollbar, which
+     at 320px is a WCAG 1.4.10 Reflow failure. */
+  overflow-wrap: break-word;
+}
+
+body {
+  font-family: var(--vv-font-ui);
+  font-size: var(--vv-text-body-md-size);
+  font-weight: var(--vv-text-body-md-weight);
+  line-height: var(--vv-text-body-md-line-height);
+  letter-spacing: var(--vv-text-body-md-letter-spacing);
+  color: var(--vv-color-text-primary);
+  background-color: var(--vv-color-surface-page);
+  /* A body that does not fill the viewport leaves the page background showing
+     through at the bottom of a short document, which reads as a rendering
+     defect rather than as a design. */
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* --------------------------------------------------------------------------
+   2. Replaced and embedded content
+   -------------------------------------------------------------------------- */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* An SVG with no intrinsic size inside a flex container collapses to zero
+   height in some engines. Declaring the icon grid as the default keeps a
+   brand icon at its intended 24px unless a size token overrides it. */
+svg:not([width]):not([height]) {
+  inline-size: var(--vv-icon-md);
+  block-size: var(--vv-icon-md);
+}
+
+/* Brand icons. The set is outline-only, drawn on a 24px grid with a 20px live
+   area and a 1.5px stroke with round caps and joins; see
+   ../../tokens/icons.json.
+
+   This is scoped to .vv-icon rather than applied to every svg on the page, and
+   the scoping matters. A blanket `svg { fill: currentColor; stroke:
+   currentColor }` looks like a convenient way to make icons inherit text colour
+   and instead destroys them: a stroked outline icon with its fill also set to
+   currentColor renders as a solid silhouette, so every glyph in the set becomes
+   an unrecognisable blob. The blanket rule also reaches third-party SVG that
+   carries its own palette — a logo, a chart, an illustration — and recolours it.
+
+   Inheriting the text colour needs no rule at all: `currentColor` inside the SVG
+   already resolves against the inherited `color`, which is what makes an icon
+   and its label read as one unit and makes a theme change recolour both. What
+   the class supplies is the stroke geometry, not the colour. */
+.vv-icon {
+  inline-size: var(--vv-icon-md);
+  block-size: var(--vv-icon-md);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--vv-icon-md-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* An icon must not shrink inside a flex row, or a long label squeezes it into
+     an ellipse. */
+  flex: none;
+}
+
+.vv-icon-xs {
+  inline-size: var(--vv-icon-xs);
+  block-size: var(--vv-icon-xs);
+  /* Stroke weight is NOT proportional to size. A 1.5px stroke scaled to 16px
+     renders at 1px, lands between device pixels and antialiases into a grey
+     blur, so each size declares the stroke it actually needs. */
+  stroke-width: var(--vv-icon-xs-stroke);
+}
+
+.vv-icon-sm {
+  inline-size: var(--vv-icon-sm);
+  block-size: var(--vv-icon-sm);
+  stroke-width: var(--vv-icon-sm-stroke);
+}
+
+.vv-icon-lg {
+  inline-size: var(--vv-icon-lg);
+  block-size: var(--vv-icon-lg);
+  stroke-width: var(--vv-icon-lg-stroke);
+}
+
+.vv-icon-xl {
+  inline-size: var(--vv-icon-xl);
+  block-size: var(--vv-icon-xl);
+  stroke-width: var(--vv-icon-xl-stroke);
+}
+
+/* A filled variant, for the small number of glyphs where the filled form carries
+   state — a bookmark that is saved, a bell that has notifications. The filled
+   form must also be distinguishable by shape, not only by weight, so that the
+   state survives forced-colours mode. */
+.vv-icon-filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Form controls
+   --------------------------------------------------------------------------
+   Form controls do not inherit font properties in most browsers. Without this
+   block an input renders in the browser's own face at the browser's own size,
+   which is the most common way a page ends up with two typefaces in one row. */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+/* `appearance: none` on a select removes the platform arrow, which then has to
+   be replaced. It is deliberately NOT set here: a native select arrow is a
+   recognisable affordance, and replacing it with a custom one is a component
+   decision, not a reset decision. */
+
+textarea {
+  resize: vertical;
+}
+
+::placeholder {
+  color: var(--vv-color-text-disabled);
+  opacity: 1;
+}
+
+/* Placeholder text at neutral-400 is 1.86:1 against ivory. That is exempt under
+   WCAG 1.4.3 as an inactive component, but the exemption does NOT extend to a
+   required field whose only hint is its placeholder. Any information a user
+   needs after they have typed belongs in a <label> or in helper text, which
+   reset.css colours at text.muted (5.97:1). */
+
+:-webkit-autofill,
+:-webkit-autofill:focus {
+  /* The browser's autofill blue is not a brand colour and is not theme-aware.
+     A long inner shadow in the surface colour masks it while keeping the
+     control's own text legible. */
+  box-shadow: 0 0 0 1000px var(--vv-color-surface-raised) inset;
+  -webkit-text-fill-color: var(--vv-color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. Tables
+   -------------------------------------------------------------------------- */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  /* Tabular figures by default in every table. A column of numbers with
+     proportional digits jitters as values change and does not align, which makes
+     a total unreadable. */
+  font-variant-numeric: var(--vv-font-variant-numerals-tabular);
+  font-feature-settings: "tnum" 1;
+}
+
+caption {
+  font-size: var(--vv-text-caption-size);
+  line-height: var(--vv-text-caption-line-height);
+  letter-spacing: var(--vv-text-caption-letter-spacing);
+  font-weight: var(--vv-text-caption-weight);
+  color: var(--vv-color-text-muted);
+  text-align: start;
+  padding-block-end: var(--vv-spacing-2);
+}
+
+th {
+  font-weight: var(--vv-font-weight-semibold);
+  text-align: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   5. Type scale onto elements
+   --------------------------------------------------------------------------
+   Display roles h1-h3 are Fraunces; h4-h6 switch to Inter, because below 20px a
+   serif's hairlines lose definition at typical screen densities and the smaller
+   headings are doing structural UI work rather than display work.
+
+   These are defaults for an unclassed document. A component may override them;
+   an override should still take its values from the scale rather than inventing
+   a size, because an off-scale size is what makes a page look almost right and
+   impossible to fix later. */
+
+h1 {
+  font-family: var(--vv-font-display-active);
+  font-size: var(--vv-text-heading-1-fluid);
+  font-weight: var(--vv-text-heading-1-weight);
+  line-height: var(--vv-text-heading-1-line-height);
+  letter-spacing: var(--vv-text-heading-1-letter-spacing);
+  text-wrap: balance;
+}
+
+h2 {
+  font-family: var(--vv-font-display-active);
+  font-size: var(--vv-text-heading-2-size);
+  font-weight: var(--vv-text-heading-2-weight);
+  line-height: var(--vv-text-heading-2-line-height);
+  letter-spacing: var(--vv-text-heading-2-letter-spacing);
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--vv-font-display-active);
+  font-size: var(--vv-text-heading-3-size);
+  font-weight: var(--vv-text-heading-3-weight);
+  line-height: var(--vv-text-heading-3-line-height);
+  letter-spacing: var(--vv-text-heading-3-letter-spacing);
+  text-wrap: balance;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--vv-font-ui);
+  font-weight: var(--vv-text-heading-4-weight);
+  line-height: var(--vv-text-heading-4-line-height);
+}
+
+h4 {
+  font-size: var(--vv-text-heading-4-size);
+  letter-spacing: var(--vv-text-heading-4-letter-spacing);
+}
+
+h5 {
+  font-size: var(--vv-text-heading-5-size);
+  line-height: var(--vv-text-heading-5-line-height);
+  letter-spacing: var(--vv-text-heading-5-letter-spacing);
+}
+
+h6 {
+  font-size: var(--vv-text-heading-6-size);
+  line-height: var(--vv-text-heading-6-line-height);
+  letter-spacing: var(--vv-text-heading-6-letter-spacing);
+}
+
+/* Headings do not inherit a margin from this reset, so spacing between a heading
+   and the paragraph it introduces comes from the layout, not from the element.
+   That is deliberate: a heading margin set here cannot be correct in both a
+   dense dashboard and an airy marketing page. */
+
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+table,
+figure {
+  font-size: var(--vv-text-body-md-size);
+  line-height: var(--vv-text-body-md-line-height);
+}
+
+/* A prose column is capped at the reading measure. 720px puts body-lg at 18px
+   near the 66ch optimum; past about 75ch the eye loses the line on return. The
+   cap is on the container, never on the page, so a wide viewport grows margins
+   rather than line length. */
+.prose {
+  max-inline-size: var(--vv-container-prose);
+  font-size: var(--vv-text-body-lg-size);
+  line-height: var(--vv-text-body-lg-line-height);
+}
+
+.prose > * + * {
+  margin-block-start: var(--vv-spacing-4);
+}
+
+small {
+  font-size: var(--vv-text-caption-size);
+  line-height: var(--vv-text-caption-line-height);
+  letter-spacing: var(--vv-text-caption-letter-spacing);
+  font-weight: var(--vv-text-caption-weight);
+}
+
+strong,
+b {
+  /* Weight rather than italic. Inter's italic is a true italic and reads
+     correctly, but a weight change survives a poor display and a forced-colour
+     or high-contrast mode better than a style change does. */
+  font-weight: var(--vv-text-body-strong-weight);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--vv-font-mono);
+  font-size: var(--vv-text-code-size);
+  line-height: var(--vv-text-code-line-height);
+  /* A monospace face is already tabular, so no numerals override is needed. */
+}
+
+pre {
+  overflow-x: auto;
+  padding: var(--vv-spacing-4);
+  background-color: var(--vv-color-surface-sunken);
+  border-radius: var(--vv-radius-md);
+}
+
+hr {
+  border: 0;
+  border-block-start: var(--vv-border-hairline) solid var(--vv-color-border-default);
+  margin-block: var(--vv-spacing-6);
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+  /* An abbreviation whose expansion is only in a title attribute is unavailable
+     to a touch user and to a screen reader that does not surface titles. The
+     expansion belongs in the text on first use; this styling is for the second
+     and subsequent uses. */
+}
+
+/* --------------------------------------------------------------------------
+   6. Links
+   -------------------------------------------------------------------------- */
+
+a {
+  color: var(--vv-color-text-link);
+  /* Underlined by default and not removed. A link distinguished only by colour
+     is a WCAG 1.4.1 failure, and the "underline looks cluttered" argument is a
+     preference being paid for by the roughly one in twelve men with a
+     colour-vision deficiency. Where an underline genuinely must go — a
+     navigation bar, a card that is entirely a link — the component removes it
+     and must then supply a second signal: weight, an icon, or an underline that
+     appears on hover AND on focus. */
+  text-decoration: underline;
+  text-decoration-thickness: var(--vv-border-hairline);
+  text-underline-offset: 0.15em;
+  text-decoration-color: currentColor;
+  transition: var(--vv-transition-color);
+}
+
+a:visited {
+  color: var(--vv-color-text-link-visited);
+}
+
+a:hover {
+  color: var(--vv-color-text-link-hover);
+  text-decoration-thickness: var(--vv-border-medium);
+}
+
+/* A link inside a raised surface steps up on the dark theme, because accent-400
+   measures 4.80:1 on navy-900 but only 4.14:1 on navy-800 and so fails AA
+   inside a dark card. On the light theme the value is unchanged. */
+:is(.card, .panel, .popover, .dialog, [data-surface="raised"]) a {
+  color: var(--vv-color-text-link-raised);
+}
+
+/* --------------------------------------------------------------------------
+   7. Focus
+   --------------------------------------------------------------------------
+   The single most important block in this file. A keyboard user who cannot see
+   where they are cannot use the page at all, and a missing focus indicator is a
+   WCAG 2.4.7 failure that no amount of correct colour contrast compensates for. */
+
+:focus-visible {
+  outline: var(--vv-focus-ring-width) solid var(--vv-color-border-focus);
+  outline-offset: var(--vv-focus-ring-offset);
+  border-radius: var(--vv-radius-xs);
+}
+
+/* :focus-within on a container would style the container when anything inside it
+   is focused, which is not a focus indicator and confuses the one that is. Only
+   :focus-visible is used, so a mouse click on a button does not leave a ring
+   behind while a keyboard Tab does. */
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* The skip link. Positioned off-screen rather than display:none, because
+   display:none removes it from the tab order entirely and defeats its purpose.
+   It becomes visible on focus and is the first thing a keyboard user reaches. */
+.skip-link {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: var(--vv-z-skip-link);
+  padding: var(--vv-spacing-3) var(--vv-spacing-6);
+  background-color: var(--vv-color-surface-raised);
+  color: var(--vv-color-text-primary);
+  font-size: var(--vv-text-nav-size);
+  font-weight: var(--vv-font-weight-semibold);
+  border-end-end-radius: var(--vv-radius-md);
+  transform: translateY(-100%);
+  transition: var(--vv-transition-enter);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* The visually-hidden utility. Used for a label that must exist for assistive
+   technology but not for sighted users — an icon-only button's name, a "read
+   more" link's destination. width and height are 1px rather than 0 so that some
+   screen readers do not skip the element, and overflow is hidden so the 1px is
+   not visible. clip-path rather than clip, which is deprecated. */
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The inverse: restore an element that was hidden. Never apply .visually-hidden
+   to something that becomes visible on focus without also removing it, or the
+   element receives focus while remaining invisible and the keyboard user is
+   lost. */
+.visually-hidden-focusable:focus,
+.visually-hidden-focusable:focus-visible {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  padding: inherit;
+  margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+
+/* --------------------------------------------------------------------------
+   8. Selection
+   -------------------------------------------------------------------------- */
+
+::selection {
+  background-color: var(--vv-color-accent-200);
+  color: var(--vv-color-navy-900);
+  /* accent-200 is #B0C7FF; navy-900 on it is well above 7:1, so selected text
+     stays readable in both themes. The selection background is a palette value
+     rather than a theme-aware role on purpose: a selection highlight that
+     changes with the theme makes copied text unpredictable to read back. */
+}
+
+/* --------------------------------------------------------------------------
+   9. Layout primitives
+   -------------------------------------------------------------------------- */
+
+.vv-container {
+  inline-size: 100%;
+  max-inline-size: var(--vv-container-max);
+  margin-inline: auto;
+  padding-inline: var(--vv-gutter);
+}
+
+.vv-container-prose {
+  max-inline-size: var(--vv-container-prose);
+}
+
+.vv-container-wide {
+  max-inline-size: var(--vv-container-wide);
+}
+
+.vv-stack > * + * {
+  margin-block-start: var(--vv-stack-gap);
+}
+
+.vv-section {
+  padding-block: var(--vv-section-gap);
+}
+
+/* Logical properties throughout: inline-size rather than width, margin-inline
+   rather than margin-left and margin-right. A right-to-left locale is not
+   currently supported, but a reset written with physical properties cannot be
+   made to support one without rewriting every rule, and the cost of writing it
+   correctly the first time is zero. */
+
+/* --------------------------------------------------------------------------
+   10. Responsive
+   --------------------------------------------------------------------------
+   Breakpoint values are written literally here because a CSS custom property
+   cannot appear in a media query condition. They must match the values declared
+   in section 12 of tokens.css and in ../../tokens/breakpoints.json, and
+   tools/validate_tokens.py fails the build when they disagree — which is the
+   only reliable way to keep three copies of the same number honest. */
+
+@media (min-width: 640px) {
+  /* sm — a large phone in landscape or a small tablet in portrait. */
+  .vv-container {
+    padding-inline: var(--vv-gutter-md);
+  }
+}
+
+@media (min-width: 768px) {
+  /* md — a tablet in portrait. The gutter steps and section spacing opens up. */
+  .vv-container {
+    padding-inline: var(--vv-gutter-md);
+  }
+
+  .vv-section {
+    padding-block: var(--vv-spacing-12);
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg — the primary target for a parish dashboard: a secretary on a
+     ten-year-old 1366x768 machine with the browser not maximised. */
+  .vv-container {
+    padding-inline: var(--vv-gutter-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  /* xl — content reaches its maximum width; beyond this the layout grows
+     margins, not columns. */
+  .vv-container {
+    padding-inline: var(--vv-gutter-xl);
+  }
+}
+
+@media (min-width: 1536px) {
+  /* xxl — the wide container only. Body copy never gets wider than the prose
+     measure no matter how large the viewport is. */
+  .vv-container {
+    padding-inline: var(--vv-spacing-12);
+  }
+}
+
+/* A phone in landscape, or a browser window dragged short: the viewport height
+   can drop below 400px, at which point a full-height hero leaves no room for
+   its own content. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .vv-section {
+    padding-block: var(--vv-spacing-8);
+  }
+}
+
+/* A touch device. The medium button padding produces a 34px control, which is
+   above the 24px AA floor in WCAG 2.2 SC 2.5.8 but below the 44px guidance for
+   a primary control, so on a device where a finger rather than a cursor is
+   doing the aiming the padding grows.
+
+   Both pointer and hover are tested. `pointer: coarse` alone is true on a
+   touchscreen laptop that also has a mouse, where enlarging every control would
+   be wrong. */
+@media (pointer: coarse) and (hover: none) {
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  select,
+  .vv-touch-target {
+    min-block-size: var(--vv-touch-target);
+    padding-block: var(--vv-button-padding-y-lg);
+  }
+
+  /* Adjacent targets need separation as well as size: two 44px targets that
+     touch are still two mis-taps. */
+  button + button,
+  [role="button"] + [role="button"] {
+    margin-inline-start: var(--vv-spacing-2);
+  }
+}
+
+/* A fine pointer gets hover affordances, and only a fine pointer does. Gating
+   hover behind a min-width query is the common mistake: a narrow desktop window
+   loses the affordance and a wide tablet gains one it cannot trigger. */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-thickness: var(--vv-border-medium);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Print
+   --------------------------------------------------------------------------
+   A real output path, not a legacy one: a parish newsletter, a funeral order of
+   service and a donation receipt all get printed. */
+
+@media print {
+  /* Force every colour to black on white regardless of theme or season. A
+     light-dark() value resolves against color-scheme, and print user agents
+     resolve it inconsistently, so the colours are replaced outright rather than
+     left to the engine. */
+  :root {
+    color-scheme: light;
+    --vv-color-surface-page: #ffffff;
+    --vv-color-surface-raised: #ffffff;
+    --vv-color-surface-sunken: #ffffff;
+    --vv-color-surface-inverse: #ffffff;
+    --vv-color-text-primary: #000000;
+    --vv-color-text-secondary: #000000;
+    --vv-color-text-muted: #1a1a1a;
+    --vv-color-text-inverse: #000000;
+    --vv-color-text-link: #000000;
+    --vv-color-text-link-visited: #000000;
+    --vv-color-text-brand: #000000;
+    --vv-color-border-default: #767676;
+    --vv-color-border-strong: #4a4a4a;
+    --vv-color-border-divider: #767676;
+    --vv-elevation-raised: none;
+    --vv-elevation-overlay: none;
+    --vv-elevation-modal: none;
+    --vv-elevation-toast: none;
+  }
+
+  /* Borders stay at #767676 rather than going lighter: 4.54:1 against white, so
+     a printed table rule is still a visible boundary. Everything else is black
+     on white because ink is not free and a navy hero printed as navy is a page
+     of wasted toner with unreadable text. */
+
+  body {
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000000;
+    background: #ffffff;
+  }
+
+  h1 {
+    font-size: 20pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+
+  h3 {
+    font-size: 13pt;
+  }
+
+  /* Interactive chrome has no meaning on paper. */
+  nav,
+  .skip-link,
+  button,
+  input,
+  select,
+  textarea,
+  .vv-no-print {
+    display: none !important;
+  }
+
+  /* Hidden content must print. A disclosure that is collapsed on screen contains
+     information the reader asked for by printing the page. */
+  details,
+  [aria-expanded="false"],
+  [hidden="until-found"] {
+    display: block !important;
+  }
+
+  details > *:not(summary),
+  [aria-expanded="false"] > * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Show the destination of every link, because a printed URL that cannot be
+     clicked is only useful if it can be read. Limited to http(s) so internal
+     anchors and mailto links do not decorate the page with noise. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--vv-font-mono);
+    font-size: 9pt;
+    font-weight: var(--vv-font-weight-regular);
+    word-break: break-all;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  /* Avoid a heading orphaned at the foot of a page and a table row split across
+     the break. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    break-after: avoid;
+  }
+
+  p,
+  li,
+  blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+
+  img,
+  figure,
+  table {
+    break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 20mm 18mm;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Reduced motion
+   --------------------------------------------------------------------------
+   LAST IN THE FILE, AND MUST STAY LAST.
+
+   The universal selector and !important are not a style choice. A reduced-motion
+   override that a component can beat with a more specific rule is not an
+   override: the component author never sees the failure, because it only appears
+   for the users who asked for it. Vestibular dysfunction is common in adults
+   over forty, which overlaps heavily with the demographic that reads a parish
+   website, and a large parallax or scroll-triggered animation can produce
+   nausea and disorientation rather than mere discomfort.
+
+   Durations go to 1ms rather than 0ms because a zero-length transition never
+   fires transitionend, which leaves a component stuck in its pre-transition
+   state. 1ms is imperceptible and still fires the event.
+
+   Transforms are removed rather than shortened: a 4px translate still reads as
+   movement to a vestibular-sensitive user. Animations that carry information —
+   a pending indicator, a progress bar — keep running, because removing them
+   makes the interface worse rather than safer; only the decorative ones stop.
+   See ../../tokens/motion.json. */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Parallax, scroll-triggered reveals and Ken Burns zoom have no reduced form:
+     the differential movement IS the effect. They are switched off by the
+     attribute a component must set when it uses them, so that the component
+     cannot quietly reintroduce them with an inline style. */
+  [data-vv-motion="parallax"],
+  [data-vv-motion="scroll-reveal"],
+  [data-vv-motion="ken-burns"],
+  [data-vv-motion="marquee"],
+  [data-vv-motion="stagger"] {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* An auto-advancing carousel must expose a pause control at all times under
+     WCAG 2.2.2; under reduced motion it must not advance at all. */
+  [data-vv-autoplay] {
+    animation-play-state: paused !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}

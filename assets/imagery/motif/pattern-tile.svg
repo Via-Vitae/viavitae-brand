@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="vv-tile-title">
+  <title id="vv-tile-title">ViaVitae ichthys repeating tile</title>
+
+  <!--
+    REPEATING BACKGROUND TILE. One seamless square of the brand lattice: five
+    copies of the ichthys on a centred rectangular grid, drawn so that
+    translating the tile by its own width or its own height maps the pattern
+    exactly onto itself.
+
+      background-image: url("/assets/imagery/motif/pattern-tile.svg");
+      background-size: 256px 256px;
+      background-repeat: repeat;
+
+    WHY IT IS SEAMLESS, rather than merely claimed to be. The lattice has basis
+    vectors (256, 0) and (0, 256) and two marks per cell, at the cell centre
+    (128, 128) and at the cell corner (0, 0). A corner mark is shared by four
+    cells, so this one tile has to draw it four times — at (0,0), (256,0),
+    (0,256) and (256,256) — and the outer svg viewport clips each of those to
+    the quarter that belongs here. The three clipped quarters are supplied by
+    the neighbouring tiles. Translate by (256, 0) and the centre mark lands on
+    the next tile's centre mark and each corner mark lands on another corner
+    mark, which is the definition of a repeat with no seam in it.
+
+    THE MARK IS THE LOGOMARK AT EXACTLY ONE QUARTER SCALE. Every coordinate is
+    the master's divided by four, so the shape cannot drift from the logo:
+
+      master 512 artboard          here at 0.25, in local coordinates
+      R   = 250                    R   = 62.5
+      A   = ( 76, 256)             A   = ( 19, 64)
+      B   = (476, 256)             B   = (119, 64)
+      U   = ( 36, 336)             U   = (  9, 84)
+      L   = ( 36, 176)             L   = (  9, 44)
+
+    The local bounding box is x from 9 to 119 and y from 39 to 89, that is 110
+    by 50, centred on (64, 64), and each copy below is that local drawing
+    translated to its lattice position. The circles' centres fall on half-units
+    at this scale — (69, 101.5) and (69, 26.5) — but no centre appears in the
+    path data, only in the arc radii, so nothing here is rounded.
+
+    THE STROKE IS NOT SCALED WITH THE SHAPE, and the difference is the reason a
+    pattern master exists separately from a logo master. A quarter of the
+    master's 32 would be 8; this tile uses 3. A repeating field drawn at the
+    logo's own weight is a wall of ink that competes with the text sitting on
+    it, so the shape is kept exact and the weight is reduced to 2.7% of the
+    mark's width against the master's 7.3%. Do not "fix" this by scaling the
+    stroke to match: the two files answer different questions.
+
+    COLOUR. Navy-200 #C9D1E6 on the ivory page surface #F7F4EC is 1.39:1,
+    deliberately far below the 3:1 of WCAG 2.2 SC 1.4.11 and permitted by that
+    same clause's exemption for decoration. A tile that passed 3:1 would not be
+    a texture, it would be a pattern of shapes, and text set over it would have
+    to fight a 3:1 background variation that nobody can measure against. The
+    tile is therefore required to sit under text at this weight or quieter and
+    never louder; assets/imagery/motif/usage.md states the rule and the one
+    exception, which is a full-bleed panel carrying no text at all.
+
+    Apply it as a background-image on an element that also carries the semantic
+    surface colour, never as an <img> and never as the element's only
+    background. Under forced-colors mode the browser discards background images
+    and keeps background colours, so a surface that declares both survives and a
+    surface that declares only the tile becomes transparent over whatever is
+    behind it.
+  -->
+
+  <g fill="none" stroke="#C9D1E6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- cell centre (128, 128) -->
+    <g transform="translate(64,64)">
+      <path d="M 19 64 A 62.5 62.5 0 0 1 119 64 A 62.5 62.5 0 0 1 19 64 Z"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 0 9 84"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 1 9 44"/>
+    </g>
+    <!-- cell corner (0, 0) -->
+    <g transform="translate(-64,-64)">
+      <path d="M 19 64 A 62.5 62.5 0 0 1 119 64 A 62.5 62.5 0 0 1 19 64 Z"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 0 9 84"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 1 9 44"/>
+    </g>
+    <!-- cell corner (256, 0) -->
+    <g transform="translate(192,-64)">
+      <path d="M 19 64 A 62.5 62.5 0 0 1 119 64 A 62.5 62.5 0 0 1 19 64 Z"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 0 9 84"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 1 9 44"/>
+    </g>
+    <!-- cell corner (0, 256) -->
+    <g transform="translate(-64,192)">
+      <path d="M 19 64 A 62.5 62.5 0 0 1 119 64 A 62.5 62.5 0 0 1 19 64 Z"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 0 9 84"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 1 9 44"/>
+    </g>
+    <!-- cell corner (256, 256) -->
+    <g transform="translate(192,192)">
+      <path d="M 19 64 A 62.5 62.5 0 0 1 119 64 A 62.5 62.5 0 0 1 19 64 Z"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 0 9 84"/>
+      <path d="M 19 64 A 62.5 62.5 0 0 1 9 44"/>
+    </g>
+  </g>
+</svg>

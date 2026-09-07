@@ -1,0 +1,106 @@
+{
+  "$description": "ViaVitae motion tokens. Motion in this system has one job: to explain where something came from and where it went. It is not decoration, it is not delight, and it is never used to make a page feel alive. That is a deliberate constraint rather than a limitation — a church-vertical product is used by people arranging a funeral, checking a parish rota and giving money, and none of those tasks are improved by animation that draws attention to itself. Every duration and easing here is chosen to be felt as responsiveness rather than seen as movement.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "motion",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-002",
+    "guidance": "guidelines/accessibility.md",
+    "reducedMotionSupport": "mandatory",
+    "scReferences": ["WCAG 2.2 SC 2.2.2 Pause, Stop, Hide", "WCAG 2.2 SC 2.3.1 Three Flashes or Below Threshold", "WCAG 2.2 SC 2.3.3 Animation from Interactions (AAA)"]
+  },
+
+  "duration": {
+    "$description": "Durations in milliseconds. The scale is not linear: below about 100ms a transition is imperceptible as motion and reads as an instant state change, which is what a hover or a press should feel like; above about 500ms a transition reads as the interface waiting, which is what it should never feel like. The useful band is therefore 100-300ms and most of the system lives there. Anything longer is a deliberate, page-level event and is named as such.",
+
+    "instant": { "$type": "duration", "$value": "0ms", "$description": "No transition. The correct value for a state change that carries no spatial meaning: a colour change on :active, a validation message appearing under a field the user is already looking at, a checkbox tick." },
+    "immediate": { "$type": "duration", "$value": "80ms", "$description": "Below the threshold at which the eye tracks movement. Used where feedback must feel simultaneous with the input: a button's background on press, a ripple, an icon swap." },
+    "fast": { "$type": "duration", "$value": "120ms", "$description": "Hover states, focus ring appearance, tooltip fade-in, a small icon rotation. The most-used duration in the system." },
+    "base": { "$type": "duration", "$value": "200ms", "$description": "THE DEFAULT. Expanding a disclosure, fading a popover in, a card lifting on hover, a tab underline sliding. If a transition has no obvious duration, it is 200ms." },
+    "moderate": { "$type": "duration", "$value": "320ms", "$description": "A dropdown opening, a drawer sliding in from an edge, a modal scaling up. Anything that travels a meaningful distance across the viewport." },
+    "slow": { "$type": "duration", "$value": "480ms", "$description": "A full-height side navigation, a large content cross-fade, a chart series re-laying out after a filter change. At this length the user must be able to look away, so anything at 480ms or longer is interruptible by definition." },
+    "deliberate": { "$type": "duration", "$value": "720ms", "$description": "A scroll-story chapter transition on a marketing page. Requires a prefers-reduced-motion override and must not block interaction while it runs." },
+    "ceremonial": { "$type": "duration", "$value": "1200ms", "$description": "The longest permitted transition, and reserved for one thing: the reveal of a hero on a marketing page at first paint. Never used for a state change, never repeated, never applied to anything the user is waiting on. A 1200ms animation on a control is a 1200ms delay." }
+  },
+
+  "easing": {
+    "$description": "Easing curves as cubic-bezier(x1, y1, x2, y2). Every curve here is monotonic in progress and none overshoots. A linear curve is included and restricted: linear motion looks mechanical for anything that appears or disappears, but is required for anything that represents elapsed time, because a progress bar that eases in tells the user a lie about how long the operation will take.",
+
+    "standard": { "$type": "cubicBezier", "$value": [0.4, 0, 0.2, 1], "$description": "The default curve. Slow start, fast middle, soft landing. Correct for a state change that neither enters nor leaves the viewport: a colour transition, an expanding disclosure, an underline slide." },
+    "emphasized": { "$type": "cubicBezier", "$value": [0.2, 0, 0, 1], "$description": "A longer slow start and a very soft landing, so the movement spends most of its time nearly at rest and then settles. Used for a hero reveal and any ceremonial motion, where the point is gravity rather than speed." },
+    "decelerate": { "$type": "cubicBezier", "$value": [0, 0, 0.2, 1], "$description": "ENTERS at full speed and decelerates to rest. Correct for anything arriving in the viewport — a drawer sliding in, a toast rising, a modal scaling up. An arriving object that starts slowly looks reluctant." },
+    "accelerate": { "$type": "cubicBezier", "$value": [0.4, 0, 1, 1], "$description": "Starts at rest and LEAVES at full speed. Correct for anything exiting — a popover dismissing, a drawer closing, a toast fading out. An exiting object that decelerates looks like it changed its mind." },
+    "linear": { "$type": "cubicBezier", "$value": [0, 0, 1, 1], "$description": "Restricted to elapsed-time indicators: a progress bar, a determinate upload, a countdown, a liturgical-season progress marker. Using linear anywhere else makes the interface feel mechanical, and using standard on a progress bar makes the remaining time impossible to estimate." }
+  },
+
+  "transition": {
+    "$description": "Named property/duration/easing combinations. A component uses one of these and never assembles its own, because the failure mode of hand-assembled transitions is a property list that quietly omits one of the properties the design changes — the element animates its background but snaps its border, and nobody notices until a user reports that the hover state 'feels broken'.",
+
+    "none": { "$type": "transition", "$value": { "duration": "{duration.instant}", "delay": "0ms", "timingFunction": "{easing.linear}" }, "$description": "Explicit no-transition. Use this rather than omitting the property, so the absence of motion is a decision on the record rather than an oversight." },
+    "color": { "$type": "transition", "$value": { "property": "color, background-color, border-color, fill, stroke", "duration": "{duration.fast}", "delay": "0ms", "timingFunction": "{easing.standard}" }, "$description": "Hover and focus colour changes. 120ms: fast enough that the control feels immediate, long enough that the change does not strobe." },
+    "interactive": { "$type": "transition", "$value": { "property": "color, background-color, border-color, box-shadow, transform", "duration": "{duration.fast}", "delay": "0ms", "timingFunction": "{easing.standard}" }, "$description": "A button or link in every state. Includes transform so a :active translate composes with the colour change on one curve." },
+    "expand": { "$type": "transition", "$value": { "property": "height, opacity", "duration": "{duration.base}", "delay": "0ms", "timingFunction": "{easing.standard}" }, "$description": "A disclosure or accordion. Animating height is a layout animation and is the one permitted exception to the transform-and-opacity-only rule, because there is no transform that expresses 'grow to fit content'. It must be bounded: animate to a measured pixel height, never to height: auto, which is not animatable and produces a snap." },
+    "enter": { "$type": "transition", "$value": { "property": "opacity, transform", "duration": "{duration.moderate}", "delay": "0ms", "timingFunction": "{easing.decelerate}" }, "$description": "Anything arriving: a drawer, a modal, a toast, a popover." },
+    "exit": { "$type": "transition", "$value": { "property": "opacity, transform", "duration": "{duration.base}", "delay": "0ms", "timingFunction": "{easing.accelerate}" }, "$description": "Anything leaving. Deliberately shorter than enter: a dismissal that takes as long as an arrival makes the interface feel slow to obey, and the user has already decided." },
+    "fade": { "$type": "transition", "$value": { "property": "opacity", "duration": "{duration.base}", "delay": "0ms", "timingFunction": "{easing.standard}" }, "$description": "Opacity only. The cheapest and safest transition in the system, and the correct choice when there is no spatial relationship to express." },
+    "reveal": { "$type": "transition", "$value": { "property": "opacity, transform, clip-path", "duration": "{duration.ceremonial}", "delay": "0ms", "timingFunction": "{easing.emphasized}" }, "$description": "The hero reveal. Runs once per page load, at first paint, and never again — re-running it on every scroll into view turns a signature moment into a stutter." },
+    "progress": { "$type": "transition", "$value": { "property": "width", "duration": "{duration.base}", "delay": "0ms", "timingFunction": "{easing.linear}" }, "$description": "A determinate progress bar advancing to a new value. Linear because the width now represents a quantity, and easing a quantity misrepresents it." }
+  },
+
+  "reducedMotion": {
+    "$description": "The mandatory override set for prefers-reduced-motion: reduce. This is not an optional enhancement and not a courtesy: vestibular dysfunction is common in adults over forty — population studies put it at roughly a third of that group — which overlaps heavily with the demographic that reads a parish website, and a large parallax or scroll-triggered animation can produce nausea and disorientation rather than mere discomfort. WCAG 2.2 SC 2.3.3 makes removal of non-essential animation an AAA criterion; this system treats it as a baseline requirement, because the audience most likely to be harmed is the audience this product serves most.",
+
+    "appliesWhen": "(prefers-reduced-motion: reduce)",
+    "enforcement": "build/css/reset.css applies this block unconditionally at the end of the cascade, so no component can override it with a later or more specific rule.",
+
+    "duration": { "$type": "duration", "$value": "1ms", "$description": "1ms rather than 0ms. Setting duration to 0 can break CSS transitionend listeners, which never fire for a zero-length transition and leave a component stuck in its pre-transition state. 1ms is imperceptible and still fires the event." },
+    "delay": { "$type": "duration", "$value": "0ms", "$description": "All staggered delays collapse to zero. A stagger is pure decoration and is the most common thing a reduced-motion block forgets to remove." },
+    "easing": { "$type": "cubicBezier", "$value": [0, 0, 1, 1], "$description": "Linear, because the curve of an imperceptible transition is irrelevant and linear is the safest value to leave in a cascade." },
+    "iterationCount": { "$type": "number", "$value": 1, "$description": "Every infinite animation stops. SC 2.2.2 requires that anything moving for more than five seconds can be paused, stopped or hidden; the simplest compliant implementation is not to start it." },
+    "scrollBehavior": { "$type": "string", "$value": "auto", "$description": "Smooth scrolling is disabled. scroll-behavior: smooth is a reduced-motion trigger in its own right and is frequently missed because it is set on html rather than on a component." },
+    "transform": { "$type": "string", "$value": "none", "$description": "Translates, scales and rotations are removed rather than shortened. A 4px translate still reads as movement to a vestibular-sensitive user." },
+
+    "disabled": {
+      "$description": "Motion patterns that are removed outright under reduced-motion rather than shortened, because shortening them does not remove the effect that causes the problem.",
+      "items": [
+        { "pattern": "Parallax on scroll", "reason": "Foreground and background moving at different rates is the strongest known simulator-sickness trigger on the web. There is no reduced version of it; it is either present or absent." },
+        { "pattern": "Scroll-triggered reveal", "reason": "An element that fades and translates in as the user scrolls ties content appearance to scroll position, so scrolling becomes a sequence of surprises. Under reduced motion, content is simply present." },
+        { "pattern": "Full-bleed image zoom (Ken Burns)", "reason": "Continuous slow scale on a large image is perceived as the page moving even though nothing is scrolling." },
+        { "pattern": "Marquee and auto-advancing carousel", "reason": "Also fails SC 2.2.2 independently of reduced motion. An auto-advancing carousel must expose a pause control at all times; under reduced motion it must not advance at all." },
+        { "pattern": "Staggered list entrance", "reason": "Sequential delay is the entire effect. With delays collapsed the pattern reduces to a single fade, which is handled by the duration override." }
+      ]
+    },
+
+    "retained": {
+      "$description": "Motion that is NOT removed, because it carries information the user needs and removing it would make the interface worse rather than better. Under reduced motion these collapse to an instant state change: the state still changes, only the transition does not.",
+      "items": [
+        { "pattern": "Focus ring appearance", "reason": "The focus indicator must still appear. It appears instantly instead of fading." },
+        { "pattern": "Progress bar advancement", "reason": "Elapsed-time feedback is information, not decoration." },
+        { "pattern": "Spinner", "reason": "A pending indicator must still indicate pending. Under reduced motion it becomes an indeterminate bar or a pulsing opacity change at 1 iteration per 2s rather than a rotation." },
+        { "pattern": "Disclosure expand", "reason": "Content still appears; the height animation is replaced by an instant show." }
+      ]
+    }
+  },
+
+  "$extensions": {
+    "com.viavitae.performance": {
+      "$description": "Only two properties are cheap to animate: transform and opacity. Both are handled by the compositor without a layout or paint pass. Everything else — width, height, top, left, margin, padding, box-shadow, filter, background-position — triggers layout or paint on every frame, and a 60fps budget is 16.7ms per frame including the main thread's own work. transition.expand animating height is the one permitted exception, and it is permitted because no transform can express 'grow to fit content'; it is still a layout animation and must be used on one element at a time, never on a list.",
+      "compositorOnly": ["transform", "opacity"],
+      "permittedLayoutAnimation": "height, on a single disclosure element, to a measured pixel value",
+      "forbidden": ["animating box-shadow (use opacity on a pseudo-element carrying the shadow)", "animating background-position (use transform on a child)", "animating filter: blur (paint cost is proportional to element area)", "animating top/left for anything that could use transform: translate"]
+    },
+
+    "com.viavitae.rejected": {
+      "$description": "Motion devices considered and declined.",
+      "entries": [
+        { "curve": "Spring with overshoot, cubic-bezier(0.34, 1.56, 0.64, 1)", "reason": "The overshoot is the appeal and also the problem: an element that travels past its destination and returns is exactly the movement pattern a vestibular-sensitive user reacts to, and it cannot be reduced without deleting the effect. Declined for the whole system rather than permitted under reduced motion, so no component depends on it." },
+        { "pattern": "Bounce and elastic on error states", "reason": "Physically expressive, and reads as the interface mocking the user. An error shake in particular is a recognised simulator-sickness trigger and is prohibited outright, not only under reduced motion." },
+        { "pattern": "Page-transition animation between routes", "reason": "Adds perceived latency to every navigation, breaks the browser's own back/forward transition, and interacts badly with screen-reader route announcements. Rejected on performance and accessibility grounds together." },
+        { "pattern": "Cursor-following parallax", "reason": "Continuous motion tied to pointer position, running on every mousemove, with no user intent behind it. Fails SC 2.2.2 by construction." }
+      ]
+    }
+  }
+}

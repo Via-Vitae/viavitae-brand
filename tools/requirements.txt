@@ -1,0 +1,87 @@
+# tools/requirements.txt — ViaVitae brand validation and export tooling
+#
+# Install:
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r tools/requirements.txt
+#
+# Every entry is a direct dependency of a script in this directory. Nothing here
+# is a runtime dependency of a shipped product: these tools run in CI and on a
+# developer machine, and the artefacts they produce (CSS custom properties,
+# rasterised logos, a Figma token file) are what consumers receive.
+#
+# ---------------------------------------------------------------------------
+# PINNING POLICY
+#
+# Versions verified present in the reference environment are pinned exactly,
+# because an exact pin is the only thing that makes a CI result reproducible.
+# Three entries carry a compatible-range floor instead, marked UNRESOLVED PIN
+# below: they are not installed in the reference environment, and asserting a
+# specific release of a package that has not been installed and exercised would
+# be a fabricated identifier. Resolve each with `pip-compile` or
+# `pip install --dry-run`, confirm the tool runs, and commit the exact pin
+# before the first tagged release. Until then CI installs the floor and the
+# dependency-scan job reports the resolved version, so the effective pin is
+# recorded in every build log even though it is not recorded here.
+# ---------------------------------------------------------------------------
+
+# --- Token validation (tools/validate_tokens.py) ---------------------------
+# JSON Schema validation for the DTCG token files under tokens/.
+# 4.26.0 verified in the reference environment.
+jsonschema==4.26.0
+
+# Transitive dependencies of jsonschema, pinned for reproducibility.
+# Both verified in the reference environment.
+attrs==23.2.0
+referencing==0.37.0
+
+# --- Contrast verification (tools/contrast_check.py) -----------------------
+# No third-party dependency. The WCAG 2.x relative-luminance and contrast-ratio
+# arithmetic is twenty lines of standard library, and taking a dependency for it
+# would add a supply-chain surface to the one gate whose entire purpose is to be
+# trustworthy. Implemented directly against the WCAG 2.2 definition.
+
+# --- YAML validation, used by the local quality gate in CI ------------------
+# Parses the workflow and issue-form files so a malformed GitHub Actions file is
+# caught before it reaches a hosted runner. 6.0.1 verified in the reference
+# environment. PyYAML is also the parser behind a duplicate-key check that
+# `yaml.safe_load` alone does not perform.
+PyYAML==6.0.1
+
+# --- Lint and type check for the tools themselves ---------------------------
+# The scripts in this directory are Python and are held to the same standard as
+# any other Python in the organisation: ruff for lint and format, mypy in strict
+# mode for types. Both verified in the reference environment.
+ruff==0.16.5
+mypy==2.3.1
+
+# --- Raster export (tools/build_exports.py) --------------------------------
+# SVG to PNG rasterisation for the logo masters, the favicon set and the OG
+# card. Requires a Cairo installation on the host; the GitHub Actions runner
+# image provides it, a minimal container may not.
+# UNRESOLVED PIN — see the pinning policy above.
+cairosvg>=2.7,<3
+
+# Image handling: PNG to WebP conversion, resizing the rasterised masters down to
+# the favicon and social sizes, and compositing the OG card. Also used to
+# generate a placeholder raster when Cairo is unavailable, so a contributor
+# without the system dependency still gets a usable artefact and a clear message
+# rather than a stack trace.
+# 10.2.0 verified in the reference environment.
+pillow==10.2.0
+
+# --- Font subsetting and coverage (tools/cyrillic_check.py, --fonts) --------
+# Reads a font binary's `cmap` table to verify that the codepoints required by
+# each supported locale are actually present, and reads the `fvar` table to
+# verify that a requested variable-font axis position exists. Also performs the
+# WOFF2 subsetting for the self-hosted bundle. This is the tool that turns
+# "the documentation says the font covers Cyrillic" into a checked fact: a
+# subsetted WOFF2 can drop a block that the upstream release has, and a Russian
+# display heading then falls back glyph by glyph into two typefaces on one line.
+# UNRESOLVED PIN — see the pinning policy above.
+fonttools>=4.47,<5
+
+# WOFF2 compression support for fonttools' subsetting output. Required only by
+# the `--fonts` path; the coverage check itself reads TTF, OTF and WOFF2 through
+# fonttools and does not need the compressor.
+# UNRESOLVED PIN — see the pinning policy above.
+brotli>=1.1,<2

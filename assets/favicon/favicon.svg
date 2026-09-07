@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="vv-favicon-title">
+  <title id="vv-favicon-title">ViaVitae</title>
+
+  <!--
+    MODERN FAVICON: the single file a browser uses when it supports SVG icons,
+    and the master every rasterised favicon in this directory is cut from. Put
+    it in the document head as the last icon link so it wins over the PNGs:
+
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    THIS IS NOT THE LOGOMARK SCALED DOWN. A monoline stroke of 32 on a 512
+    artboard becomes one device pixel at 16px, and one pixel of antialiased
+    stroke is a grey smudge rather than a line. So this master is drawn FILLED:
+    the vesica is a solid lens and the tail is a solid wedge, which is the
+    standard small-size optical correction and the reason the file exists
+    separately instead of being generated.
+
+    THE GEOMETRY IS THE MASTER'S GEOMETRY AT EXACTLY ONE TENTH SCALE, which is
+    the property worth stating because it is what stops this file drifting.
+    Every coordinate below is the corresponding coordinate in
+    assets/logo/master/viavitae-logomark.svg with the decimal point moved one
+    place left:
+
+      master 512 artboard          here, 64 artboard
+      R   = 250                    R   = 25
+      Cu  = (276, 406)             Cu  = (34, 47)
+      Cl  = (276, 106)             Cl  = (34, 17)
+      A   = ( 76, 256)             A   = (14, 32)
+      B   = (476, 256)             B   = (54, 32)
+      T   = (276, 156)             T   = (34, 22)
+      Bo  = (276, 356)             Bo  = (34, 42)
+      U   = ( 36, 336)             U   = (10, 40)
+      L   = ( 36, 176)             L   = (10, 24)
+
+    The 3-4-5 triangle that makes the master's coordinates integers survives the
+    division exactly: A = Cu + (-20, -15) and 20^2 + 15^2 = 625 = 25^2, and
+    U = Cu + (-24, -7) with 24^2 + 7^2 = 625. Nothing here is rounded, so the
+    favicon and the logomark cannot disagree about the shape.
+
+    The artwork bounding box is x from 10 to 54 and y from 22 to 42, that is
+    44 by 20, centred on (32, 32). The mark fills 69% of the plate width; the
+    vertical padding is larger simply because the body is 2:1 and the plate is
+    square. 69% sits inside the ~80% content box platform vendors mask to, so
+    the silhouette survives being cropped to a circle on Android or a squircle
+    on iOS.
+
+    PLATE. Navy-900 #0E1B3D with a corner radius of 14, which is 21.9% of the
+    artboard and matches the ~22% squircle the platform icon masks use, so this
+    file already looks like an app icon before the platform rounds it. The plate
+    is opaque on purpose: a transparent favicon is composited against browser
+    chrome the brand does not control, which is light in one theme and near
+    black in the other, and no single artwork colour passes contrast against
+    both. Navy-900 does the choosing instead.
+
+    CONTRAST. Ivory-100 #F7F4EC on navy-900 #0E1B3D is 15.37:1, far above the
+    3:1 WCAG 2.2 SC 1.4.11 needs for a graphical object. This pairing is also
+    the one assets/logo/inverse/viavitae-logo-inverse-navy.svg uses, so the
+    favicon and the inverse lockup are the same decision made twice.
+  -->
+
+  <rect width="64" height="64" rx="14" fill="#0E1B3D"/>
+
+  <g fill="#F7F4EC">
+    <!-- Body: the vesica piscis, filled. Same two arcs as the master's stroke,
+         so filling it produces the lens the stroke was drawn around. -->
+    <path d="M 14 32 A 25 25 0 0 1 54 32 A 25 25 0 0 1 14 32 Z"/>
+    <!-- Tail: the region between the two diverging arcs, closed by the straight
+         line U to L. Both arcs keep the master's sweep flags — 0 for the upper
+         tail around Cu, and the lower arc traversed from L back to A, which
+         reverses the master's sweep of 1 to 0 because reversing an arc's
+         direction reverses its sweep. -->
+    <path d="M 14 32 A 25 25 0 0 0 10 40 L 10 24 A 25 25 0 0 0 14 32 Z"/>
+  </g>
+</svg>

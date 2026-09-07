@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" width="1000" height="200" role="img" aria-labelledby="vv-inverse-navy-title">
+  <title id="vv-inverse-navy-title">ViaVitae</title>
+
+  <!--
+    INVERSE FOR A NAVY GROUND, in brand ivory. This is the version to use on the
+    dark theme, on a navy hero band, on a navy-900 card, or over a photograph that
+    has been scrimmed with surface.overlay. Ivory-100 #F7F4EC on navy-900
+    measures 15.37:1, which clears WCAG 2.2 AAA for body text at any size, so
+    there is no size below which this lockup stops being legible.
+
+    The file is named for the GROUND it goes on, not for the colour it is,
+    because that is the question a consumer is actually asking: "my header is
+    navy, which file do I use". A name describing the ink would make every
+    consumer translate.
+
+    The artboard is transparent. Do not add a navy rectangle behind the artwork
+    in this file — the ground is the consumer's, and a baked-in background would
+    make the lockup unusable over a photograph and would produce a visible navy
+    box on a ground that is navy-800 rather than navy-900.
+
+    On navy-800, the raised dark surface, ivory measures 13.29:1, which also
+    clears AAA. Both are safe grounds. On navy-700 or lighter the ratio falls and
+    the primary navy lockup becomes the correct choice instead.
+
+    Geometry is byte-identical to viavitae-logo-horizontal.svg; only the colour
+    differs.
+  -->
+
+  <!-- MARK: vesica piscis ichthys, half scale, positioned so the round caps on
+       the tail tips land on the clear-space boundary at x = 50. -->
+  <g fill="none" stroke="#F7F4EC" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 78 100 A 125 125 0 0 1 278 100 A 125 125 0 0 1 78 100 Z"/>
+    <path d="M 78 100 A 125 125 0 0 0 58 140"/>
+    <path d="M 78 100 A 125 125 0 0 1 58 60"/>
+  </g>
+
+  <!-- WORDMARK: V I A V I T A E, filled outlines. -->
+  <g fill="#F7F4EC">
+    <!-- V -->
+    <path d="M 320 50 L 355 150 L 390 50 L 376 50 L 355 110 L 334 50 Z"/>
+    <!-- I -->
+    <path d="M 416 50 H 430 V 150 H 416 Z"/>
+    <!-- A: chevron plus crossbar, one path so the fill cannot separate them -->
+    <path d="M 456 150 L 491 50 L 526 150 L 512 150 L 491 90 L 470 150 Z M 477 112 H 505 V 126 H 477 Z"/>
+    <!-- V -->
+    <path d="M 552 50 L 587 150 L 622 50 L 608 50 L 587 110 L 566 50 Z"/>
+    <!-- I -->
+    <path d="M 648 50 H 662 V 150 H 648 Z"/>
+    <!-- T -->
+    <path d="M 688 50 H 758 V 64 H 730 V 150 H 716 V 64 H 688 Z"/>
+    <!-- A -->
+    <path d="M 784 150 L 819 50 L 854 150 L 840 150 L 819 90 L 798 150 Z M 805 112 H 833 V 126 H 805 Z"/>
+    <!-- E -->
+    <path d="M 880 50 H 950 V 64 H 894 V 93 H 936 V 107 H 894 V 136 H 950 V 150 H 880 Z"/>
+  </g>
+</svg>

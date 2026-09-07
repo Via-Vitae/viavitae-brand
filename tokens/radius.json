@@ -1,0 +1,49 @@
+{
+  "$description": "ViaVitae corner-radius tokens. The system is deliberately close to square. A church-vertical identity built on stone, print, inscription and liturgical book is undermined by the soft pill corners of a consumer app; the radius scale therefore tops out at 8px for anything structural and reserves large radii for two specific cases — an avatar and a pill button — where a round form is the meaning rather than a decoration.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "radius",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-001",
+    "guidance": "guidelines/brand-guidelines.md"
+  },
+
+  "radius": {
+    "$description": "The scale. Each step is roughly double the previous, which keeps the relationship between a card's outer corner and the corner of an image inside it consistent: an inner element's radius should be the outer radius minus the padding between them, and a doubling scale makes that arithmetic land on a token rather than between two.",
+
+    "none": { "$type": "dimension", "$value": "0px", "$description": "Square. The default for a page section, a full-bleed image, a table and anything that meets a viewport edge. Most of the system is none." },
+    "xs": { "$type": "dimension", "$value": "2px", "$description": "Badge, tag, inline chip, keyboard key hint, the corner of a table cell fill." },
+    "sm": { "$type": "dimension", "$value": "4px", "$description": "THE DEFAULT for a control: button, input, select, checkbox, textarea. Small enough to read as precise, large enough to avoid the harsh 1px corner that looks like a rendering defect on a low-density display." },
+    "md": { "$type": "dimension", "$value": "6px", "$description": "Dropdown menu, popover, tooltip, toast." },
+    "lg": { "$type": "dimension", "$value": "8px", "$description": "Card, dialog, image inside a card, modal. The largest structural radius in the system." },
+    "xl": { "$type": "dimension", "$value": "12px", "$description": "A feature panel or an oversized hero card on a marketing page, where the element is large enough that 8px reads as square. Not used inside a product UI." },
+    "pill": { "$type": "dimension", "$value": "9999px", "$description": "Fully rounded. Two uses only: an avatar and a pill button or filter chip. Using 9999px rather than 50% because a percentage radius on a non-square element produces an ellipse, and a 44px-tall pill button with border-radius: 50% becomes an oval. 9999px clamps to half the shorter side and stays a pill at any size." },
+    "circle": { "$type": "dimension", "$value": "50%", "$description": "For a guaranteed-square element: an icon button with equal width and height, a status dot, a numbered step marker. 50% is correct here and wrong everywhere else." }
+  },
+
+  "$extensions": {
+    "com.viavitae.nesting": {
+      "$description": "Inner radius rule. When an element sits inside a rounded container with padding between them, the inner radius must be the outer radius minus the padding, floored at zero. A card at radius.lg (8px) with spacing.4 (16px) of padding contains an image at 8 - 16 = negative, so radius.none (0px) — the image is square and the card's corner does the rounding. Getting this wrong is the single most common visual defect in a hand-built design system: every inner element at the same radius as its container produces a visible gap of background at each corner, which reads as sloppiness even to someone who cannot name it.",
+      "formula": "inner = max(0, outer - padding)",
+      "workedExamples": [
+        { "container": "radius.lg (8px)", "padding": "spacing.4 (16px)", "innerRadius": "radius.none (0px)" },
+        { "container": "radius.lg (8px)", "padding": "spacing.2 (8px)", "innerRadius": "radius.none (0px)" },
+        { "container": "radius.lg (8px)", "padding": "spacing.1 (4px)", "innerRadius": "radius.sm (4px)" },
+        { "container": "radius.xl (12px)", "padding": "spacing.2 (8px)", "innerRadius": "radius.sm (4px)" },
+        { "container": "radius.md (6px)", "padding": "spacing.1 (4px)", "innerRadius": "radius.xs (2px)" }
+      ]
+    },
+
+    "com.viavitae.rejected": {
+      "$description": "Radii considered and declined, so the question is not reopened by the next designer.",
+      "entries": [
+        { "value": "16px on cards", "reason": "Reads as a consumer mobile app. The identity is institutional and printed; 16px corners on a parish donation card make it look like a food-delivery tile." },
+        { "value": "Asymmetric radii (one square corner)", "reason": "A distinctive device, but it cannot be applied consistently across a card, a button and an image, so it appears once and then looks like a mistake everywhere else." },
+        { "value": "Superellipse / squircle corners", "reason": "Requires either a mask-image with an SVG or a border-image, neither of which composes with a focus ring or a box-shadow correctly. The visual gain over 8px is small and the implementation cost lands on every consumer." }
+      ]
+    }
+  }
+}

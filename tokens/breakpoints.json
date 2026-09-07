@@ -1,0 +1,127 @@
+{
+  "$description": "ViaVitae breakpoint tokens. Six named viewport steps — five of them media queries, because xs is the base and is expressed as the absence of one — plus a set of adaptive capability queries. The viewport steps answer 'how wide is the window'; the capability queries answer 'what is this device able to do', which is a different question and one that a width alone cannot answer — a 1024px tablet in landscape and a 1024px desktop window need different touch targets and different hover behaviour. Layout is mobile-first: base styles target the smallest viewport and every breakpoint is a min-width override, so a missing breakpoint degrades to the small layout rather than to nothing.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "breakpoints",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-002",
+    "strategy": "mobile-first",
+    "queryType": "min-width",
+    "guidance": "guidelines/product-page-patterns.md"
+  },
+
+  "breakpoint": {
+    "$description": "Six named steps, of which five are media queries: xs is the base and is expressed as the absence of a query. Values match the Tailwind v4 defaults exactly, which is not an accident: build/tailwind.preset.ts maps these tokens onto the framework's own scale so a consumer gets identical behaviour whether it uses the token or the framework utility, and a designer reading `lg:` in a class name knows the pixel value without looking it up. A seventh breakpoint is not added without an ADR, because each one multiplies the number of layouts that must be designed, tested and reviewed.",
+
+    "xs": { "$type": "dimension", "$value": "0px", "$description": "The base. Not a media query — it is the absence of one. Every style is written here first. Covers 320px and up, which includes the smallest iPhone SE in portrait and the narrowest viewport a real user arrives with." },
+    "sm": { "$type": "dimension", "$value": "640px", "$description": "Large phone in landscape, small tablet in portrait. First point at which a two-column layout is viable. Query: (min-width: 640px)." },
+    "md": { "$type": "dimension", "$value": "768px", "$description": "Tablet in portrait. The point at which a navigation bar stops being a hamburger and becomes visible links, and at which the page gutter steps from 16px to 24px. Query: (min-width: 768px)." },
+    "lg": { "$type": "dimension", "$value": "1024px", "$description": "Tablet in landscape, small laptop. The primary design target for a parish dashboard: a secretary on a ten-year-old 1366x768 machine with the browser not maximised lands here. Query: (min-width: 1024px)." },
+    "xl": { "$type": "dimension", "$value": "1280px", "$description": "Standard laptop and desktop. Content reaches its maximum width here and the gutter steps to 48px; beyond this the layout grows margins, not columns. Query: (min-width: 1280px)." },
+    "xxl": { "$type": "dimension", "$value": "1536px", "$description": "Large desktop. Reserved for the wide container — a full data table or a gallery grid — and for the largest display type. Query: (min-width: 1536px)." }
+  },
+
+  "capability": {
+    "$description": "Adaptive queries. These are not breakpoints and must not be used as a proxy for one. A capability query asks the device a question and adapts to the answer, which is more reliable than inferring the answer from a viewport width that a resizable desktop window can falsify at any moment.",
+
+    "touch": {
+      "$type": "string",
+      "$value": "(pointer: coarse) and (hover: none)",
+      "$description": "A device whose primary input is a finger. Under this query the medium button grows to large padding so the control clears 44px, hover-only affordances become permanently visible, tooltips are disabled in favour of inline help because a tooltip has no trigger without a pointer, and the tap target spacing widens. Checking BOTH pointer and hover matters: pointer: coarse alone is true on a touchscreen laptop that also has a mouse, where shrinking hover affordances would be wrong."
+    },
+    "finePointer": {
+      "$type": "string",
+      "$value": "(pointer: fine) and (hover: hover)",
+      "$description": "A mouse or trackpad. Hover states, tooltips and cursor-driven affordances are enabled here and only here. Never gate a hover affordance behind (min-width) — a narrow desktop window would lose it and a wide tablet would gain one it cannot trigger."
+    },
+    "anyHover": {
+      "$type": "string",
+      "$value": "(any-hover: hover)",
+      "$description": "At least one available input can hover. Used for a hybrid device where the affordance should exist but not be the only path."
+    },
+    "darkScheme": {
+      "$type": "string",
+      "$value": "(prefers-color-scheme: dark)",
+      "$description": "The user's OS is in dark mode. Applies the dark semantic tier from colors.json. A site that offers its own theme switch must let the explicit choice win over this query, and must persist that choice — a switch that resets on every navigation is not a switch."
+    },
+    "lightScheme": {
+      "$type": "string",
+      "$value": "(prefers-color-scheme: light)",
+      "$description": "Explicit light preference, used to suppress a default-dark theme rather than to apply the light one."
+    },
+    "reducedMotion": {
+      "$type": "string",
+      "$value": "(prefers-reduced-motion: reduce)",
+      "$description": "Applies the full override set in motion.json. Mandatory, not progressive."
+    },
+    "moreContrast": {
+      "$type": "string",
+      "$value": "(prefers-contrast: more)",
+      "$description": "The user has asked for stronger contrast. Under this query the muted text role steps up to secondary, the default border steps up to strong, and any tinted state surface is replaced by its foreground colour at full strength. This is a real accessibility path and is tested in CI alongside the default palette."
+    },
+    "lessContrast": {
+      "$type": "string",
+      "$value": "(prefers-contrast: less)",
+      "$description": "Recognised and deliberately NOT acted on. Reducing contrast below the WCAG minimums to honour a user preference would fail the AA gate that this system is required to meet, and the preference is far more often set by accident than by intent. Recorded here so that the omission is visible as a decision."
+    },
+    "forcedColors": {
+      "$type": "string",
+      "$value": "(forced-colors: active)",
+      "$description": "Windows High Contrast or a forced-colors user agent style sheet. Under this query every colour the system declares is overridden by system colours, box-shadow is removed, and border-radius may be removed. Only border widths, text and structure survive, which is exactly why elevation.json pairs every level with a border and why no state in this system is communicated by colour alone."
+    },
+    "reducedTransparency": {
+      "$type": "string",
+      "$value": "(prefers-reduced-transparency: reduce)",
+      "$description": "The user has asked for less transparency. Any backdrop-filter blur or translucent surface becomes opaque: surface.overlay at 80% navy becomes solid navy-950, and a frosted header becomes a solid one. A backdrop-filter over scrolling text is a genuine readability problem, not a stylistic preference."
+    },
+    "portrait": { "$type": "string", "$value": "(orientation: portrait)", "$description": "Used only where a layout genuinely differs by aspect ratio — a hero image crop, a full-screen cover. Never used as a proxy for 'mobile'." },
+    "landscape": { "$type": "string", "$value": "(orientation: landscape)", "$description": "As above. On a phone in landscape the viewport height can drop below 400px, which is the case this query exists to catch." },
+    "shortViewport": {
+      "$type": "string",
+      "$value": "(max-height: 500px)",
+      "$description": "A phone in landscape, or a browser window dragged short. Under this query a full-height hero collapses to a compact one and a modal becomes a bottom sheet, because a 100vh modal on a 380px-tall viewport leaves no room for its own content."
+    },
+    "print": {
+      "$type": "string",
+      "$value": "print",
+      "$description": "Print stylesheet. Forces every colour to black on white regardless of theme, hides navigation and interactive chrome, expands every disclosure so hidden content prints, shows link URLs after anchor text, and removes backgrounds. A parish newsletter, a funeral order of service and a donation receipt all get printed, so this is a real output path rather than a legacy one."
+    }
+  },
+
+  "container": {
+    "$description": "Container query widths. A container query adapts a component to the space its parent gives it rather than to the viewport, which is what makes a card usable in a 12-column grid, a sidebar and a modal without three separate implementations. Container queries are baseline-supported in every browser this system targets. Where a component must work without them, the fallback is the viewport breakpoint, and the component is written so that fallback degrades to a single column rather than to a broken layout.",
+    "type": "@container",
+    "sizes": {
+      "xs": { "$type": "dimension", "$value": "240px", "$description": "A narrow sidebar card. Single column, caption-scale type." },
+      "sm": { "$type": "dimension", "$value": "384px", "$description": "A card in a three-up grid at the lg breakpoint." },
+      "md": { "$type": "dimension", "$value": "448px", "$description": "A card in a two-up grid." },
+      "lg": { "$type": "dimension", "$value": "576px", "$description": "A wide feature card; the point at which a card's internal layout may go horizontal." },
+      "xl": { "$type": "dimension", "$value": "768px", "$description": "A full-width panel or a modal body." }
+    }
+  },
+
+  "$extensions": {
+    "com.viavitae.minimum": {
+      "$description": "The narrowest viewport the system must render correctly at, and the widest content measure it must not exceed. 320px is not an arbitrary floor: it is the width of the smallest device still in active use, and a layout that breaks at 320px produces a horizontal scrollbar, which is a WCAG 1.4.10 Reflow failure at 320 CSS pixels. Reflow requires that content be usable at 320px wide without two-dimensional scrolling, except for content that genuinely requires two dimensions — a wide data table, which must scroll horizontally inside its own container rather than taking the page with it.",
+      "minimumViewportWidth": "320px",
+      "reflowSc": "1.4.10",
+      "zoomRequirement": "The layout must remain usable at 400% zoom on a 1280px viewport, which presents a 320px layout — the same constraint from the other direction. SC 1.4.4 requires text to be resizable to 200% without loss of content or function; testing at 400% is what catches a component that survives 200% by overflowing invisibly.",
+      "tableException": "A data table wider than the viewport scrolls horizontally within its own scroll container, with the first column made sticky so the row stays identifiable while scrolling. The page itself never scrolls horizontally."
+    },
+
+    "com.viavitae.grid": {
+      "$description": "The column grid per breakpoint. Columns and gutter are declared together because a gutter change without a column change produces a grid that silently stops aligning with the section above it.",
+      "steps": [
+        { "at": "xs (0px)", "columns": 4, "gutter": "spacing.4 (16px)", "margin": "spacing.4 (16px)", "container": "fluid" },
+        { "at": "sm (640px)", "columns": 8, "gutter": "spacing.4 (16px)", "margin": "spacing.6 (24px)", "container": "fluid" },
+        { "at": "md (768px)", "columns": 8, "gutter": "spacing.6 (24px)", "margin": "spacing.6 (24px)", "container": "fluid" },
+        { "at": "lg (1024px)", "columns": 12, "gutter": "spacing.6 (24px)", "margin": "spacing.8 (32px)", "container": "fluid" },
+        { "at": "xl (1280px)", "columns": 12, "gutter": "spacing.6 (24px)", "margin": "spacing.12 (48px)", "container": "1280px max" },
+        { "at": "xxl (1536px)", "columns": 12, "gutter": "spacing.8 (32px)", "margin": "auto", "container": "1536px max" }
+      ]
+    }
+  }
+}

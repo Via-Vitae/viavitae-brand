@@ -1,0 +1,135 @@
+{
+  "name": "@viavitae/brand",
+  "version": "1.0.0",
+  "description": "ViaVitae design system: design tokens, Tailwind preset, CSS custom properties and TypeScript token objects. The single source of brand truth for every ViaVitae web property.",
+  "license": "SEE LICENSE IN ../LICENSE",
+  "private": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viavitae-org/viavitae-brand.git",
+    "directory": "build"
+  },
+  "bugs": {
+    "url": "https://github.com/viavitae-org/viavitae-brand/issues"
+  },
+  "homepage": "https://github.com/viavitae-org/viavitae-brand#readme",
+  "author": {
+    "name": "ViaVitae IT Technologies",
+    "email": "brand@viavitae.com",
+    "url": "https://viavitae.com"
+  },
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "tailwind",
+    "tailwindcss",
+    "css-variables",
+    "wcag",
+    "accessibility",
+    "viavitae",
+    "brand"
+  ],
+
+  "type": "module",
+
+  "main": "./ts/index.ts",
+  "module": "./ts/index.ts",
+  "types": "./ts/index.ts",
+  "exports": {
+    ".": {
+      "types": "./ts/index.ts",
+      "import": "./ts/index.ts",
+      "default": "./ts/index.ts"
+    },
+    "./tailwind-preset": {
+      "types": "./tailwind.preset.ts",
+      "import": "./tailwind.preset.ts",
+      "default": "./tailwind.preset.ts"
+    },
+    "./tokens.css": "./css/tokens.css",
+    "./reset.css": "./css/reset.css",
+    "./tokens.json": "./figma-tokens/tokens.json",
+    "./package.json": "./package.json"
+  },
+
+  "files": [
+    "tailwind.preset.ts",
+    "css/tokens.css",
+    "css/reset.css",
+    "ts/index.ts",
+    "figma-tokens/tokens.json",
+    "../LICENSE",
+    "../CHANGELOG.md"
+  ],
+
+  "sideEffects": [
+    "**/*.css"
+  ],
+
+  "scripts": {
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --moduleResolution nodenext --target es2022 ts/index.ts tailwind.preset.ts",
+    "lint": "prettier --check \"**/*.{ts,css,json}\"",
+    "format": "prettier --write \"**/*.{ts,css,json}\"",
+    "validate:tokens": "python3 ../tools/validate_tokens.py",
+    "validate:contrast": "python3 ../tools/contrast_check.py",
+    "validate:cyrillic": "python3 ../tools/cyrillic_check.py",
+    "validate": "npm run validate:tokens && npm run validate:contrast",
+    "exports": "python3 ../tools/build_exports.py",
+    "verify": "npm run validate && npm run typecheck"
+  },
+
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+
+  "devDependencies": {
+    "prettier": "3.3.3",
+    "typescript": "5.6.3"
+  },
+
+  "engines": {
+    "node": ">=20.0.0"
+  },
+
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+
+  "funding": {
+    "type": "internal",
+    "url": "https://viavitae.com"
+  },
+
+  "viavitae": {
+    "tokenSource": "../tokens",
+    "generatedFrom": [
+      "../tokens/colors.json",
+      "../tokens/colors.church.json",
+      "../tokens/typography.json",
+      "../tokens/spacing.json",
+      "../tokens/radius.json",
+      "../tokens/elevation.json",
+      "../tokens/motion.json",
+      "../tokens/breakpoints.json",
+      "../tokens/icons.json"
+    ],
+    "regenerate": "Edit ../tokens/*.json, then run `npm run exports` from this directory. css/tokens.css, ts/index.ts, tailwind.preset.ts and figma-tokens/tokens.json are derived artefacts: a hand edit to any of them is overwritten on the next regeneration and is a review blocker.",
+    "consumption": {
+      "tailwind": "import the preset in your Tailwind v4 CSS with `@config` or spread `preset.theme.extend` into a v3-style config. See ../examples/nextjs/app/page.tsx.",
+      "plainCss": "`@import '@viavitae/brand/tokens.css';` then `@import '@viavitae/brand/reset.css';`. See ../examples/tailwind-static/index.html.",
+      "typescript": "`import { colors, typography } from '@viavitae/brand';`",
+      "figma": "Import ../build/figma-tokens/tokens.json through a Variables-compatible plugin. See ../examples/figma/README.md."
+    }
+  }
+}

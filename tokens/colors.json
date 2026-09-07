@@ -1,0 +1,386 @@
+{
+  "$description": "ViaVitae colour tokens — the single source of truth for every colour in every ViaVitae product, site and document. Format: W3C Design Tokens Community Group draft (groups are plain objects; leaf nodes carry $type and $value). Consumed by build/css/tokens.css, build/tailwind.preset.ts, build/ts/index.ts and build/figma-tokens/tokens.json. Edit this file and rebuild; never hand-edit a build output.",
+
+  "meta": {
+    "$description": "Non-DTCG bookkeeping, ignored by DTCG-conformant tooling.",
+    "name": "colors",
+    "version": "1.0.0",
+    "format": "dtcg-draft",
+    "owner": "@viavitae-org/brand",
+    "adr": "docs/architecture.md — ADR-002",
+    "contrastPolicy": "guidelines/accessibility.md",
+    "verification": "tools/contrast_check.py"
+  },
+
+  "color": {
+    "$description": "All colour tokens, in three tiers: palette (raw ramps, never referenced by a component), semantic (theme-aware roles a component consumes) and chart (data-visualisation series). A component references the semantic tier only. Referencing the palette tier directly is a review blocker, because a palette value does not change when the theme changes and the component silently breaks on a dark surface.",
+
+    "palette": {
+      "$description": "Raw colour ramps. Each ramp is a monotone lightness ladder in HSL space anchored on the brand value, so a step number means the same relative lightness in every family. Anchors are fixed by ADR-001 and may not drift.",
+
+      "navy": {
+        "$description": "Brand navy. Anchor #0E1B3D at step 900. The structural colour: headers, footers, dark surfaces, primary text on light backgrounds.",
+        "50": { "$type": "color", "$value": "#F4F5F8", "$description": "Navy tint for a subtle wash on an ivory page." },
+        "100": { "$type": "color", "$value": "#E6E9F1" },
+        "200": { "$type": "color", "$value": "#C9D1E6", "$description": "Secondary text on a navy surface — 11.06:1 against navy-900, 9.56:1 against navy-800." },
+        "300": { "$type": "color", "$value": "#9CADDB", "$description": "Muted text on a navy surface — 7.57:1 against navy-900, 6.55:1 against navy-800." },
+        "400": { "$type": "color", "$value": "#6181D3", "$description": "Form-control outline on a navy surface — 4.50:1 against navy-900, 3.89:1 against navy-800. Both clear the 3:1 non-text minimum." },
+        "500": { "$type": "color", "$value": "#2D56C3" },
+        "600": { "$type": "color", "$value": "#224295", "$description": "Strong border and disabled text on a navy surface — 1.84:1. Decorative only." },
+        "700": { "$type": "color", "$value": "#1B3374", "$description": "Default border and chart gridline on navy — 1.43:1. Also secondary text on ivory at 10.78:1." },
+        "800": { "$type": "color", "$value": "#142655", "$description": "Raised surface on the dark theme — 1.16:1 against navy-900, which is the whole of the elevation signal available at this depth." },
+        "900": { "$type": "color", "$value": "#0E1B3D", "$description": "BRAND ANCHOR — navy. Primary text on light surfaces at 15.37:1 against ivory-100 and 16.90:1 against white. Default dark-theme page surface." },
+        "950": { "$type": "color", "$value": "#091127", "$description": "Sunken surface on the dark theme; deepest available navy. Ivory text on it reaches 17.04:1." }
+      },
+
+      "gold": {
+        "$description": "Brand gold. Anchor #C9A227 at step 500. Gold is a liturgical and honorific colour: it marks, it does not narrate. At step 500 it fails every WCAG text threshold on a light surface — 2.20:1 against ivory-100, 2.42:1 against white — so step 500 is restricted to decoration, iconography, rules and text on navy. Any gold that carries meaning as text on a light surface must use step 700 or darker.",
+        "50": { "$type": "color", "$value": "#FDFBF4" },
+        "100": { "$type": "color", "$value": "#FAF6E8", "$description": "Gold wash for a highlighted card on an ivory page." },
+        "200": { "$type": "color", "$value": "#F5ECCE" },
+        "300": { "$type": "color", "$value": "#F0E0B0" },
+        "400": { "$type": "color", "$value": "#E8D187", "$description": "Decorative gold on navy — 11.19:1 against navy-900, 9.67:1 against navy-800. Navy text on it reaches 11.19:1." },
+        "500": { "$type": "color", "$value": "#C9A227", "$description": "BRAND ANCHOR — gold. 6.98:1 against navy-900, so it IS text-safe on the dark theme. 2.20:1 against ivory-100 and 2.42:1 against white, so it is never text on a light surface." },
+        "600": { "$type": "color", "$value": "#AB8A21", "$description": "2.99:1 against ivory-100: passes the 3:1 non-text threshold for icons, rules and borders at the boundary, still fails for text of any size. 5.14:1 against navy-900." },
+        "700": { "$type": "color", "$value": "#806719", "$description": "Gold for TEXT on a light surface — 4.93:1 against ivory-100, 5.42:1 against white. Both pass AA at every size." },
+        "800": { "$type": "color", "$value": "#604D13", "$description": "7.44:1 against ivory-100 — passes AAA for body text." },
+        "900": { "$type": "color", "$value": "#44370D", "$description": "10.63:1 against ivory-100." }
+      },
+
+      "ivory": {
+        "$description": "Brand ivory. Anchor #F7F4EC at step 100. Ivory is the default page surface, not white: white cards sit on it, which gives a raised surface without a shadow. Warm enough to read as paper and stone, cool enough to keep navy text crisp.",
+        "50": { "$type": "color", "$value": "#FEFDFC", "$description": "Near-white; the brightest permitted light surface." },
+        "100": { "$type": "color", "$value": "#F7F4EC", "$description": "BRAND ANCHOR — ivory. Default light-theme page surface. Navy text on it is 15.37:1." },
+        "200": { "$type": "color", "$value": "#F1EBDD", "$description": "Sunken surface, table banding, inset well. Navy text on it is 14.22:1." },
+        "300": { "$type": "color", "$value": "#E8DFC7", "$description": "Default border and chart gridline on the light theme — 1.21:1 against ivory-100. Deliberate: a border is a hint, not an edge, and must not compete with content." },
+        "400": { "$type": "color", "$value": "#DBCDA9", "$description": "Strong border on the light theme; hairline on a white card." },
+        "500": { "$type": "color", "$value": "#CAB681", "$description": "Deepest ivory step. 8.46:1 against navy-900, so it is usable as text on a dark surface." }
+      },
+
+      "accent": {
+        "$description": "Interactive blue. Anchor #2E6BFF at step 500. Deliberately outside the navy and gold family: an accent that lives in the brand hue cannot be distinguished from a brand surface, and links would disappear into headers and footers. Reserved for interactive affordance and never used as decoration, because a colour reserved for interaction is the only way a user learns to trust it.",
+        "50": { "$type": "color", "$value": "#EDF2FF", "$description": "Selected-row and hover wash." },
+        "100": { "$type": "color", "$value": "#D9E4FF" },
+        "200": { "$type": "color", "$value": "#B0C7FF" },
+        "300": { "$type": "color", "$value": "#789FFF", "$description": "Link colour on a raised dark surface — 5.70:1 against navy-800, where accent-400 falls to 4.14:1 and fails." },
+        "400": { "$type": "color", "$value": "#4E82FF", "$description": "Link and focus colour on the dark page surface — 4.80:1 against navy-900. Lifted above the computed ramp value so it clears AA with margin instead of sitting on the threshold. Valid on navy-900 only; see step 300 for navy-800." },
+        "500": { "$type": "color", "$value": "#2E6BFF", "$description": "BRAND ANCHOR — accent. 4.10:1 against ivory-100, 4.50:1 against white, 3.75:1 against navy-900. Passes the 3:1 non-text threshold for a focus ring, an icon or a border everywhere; is at the AA boundary for body text on white only. Body-size link text on a light surface uses step 600." },
+        "600": { "$type": "color", "$value": "#0046F0", "$description": "Link text on the light theme — 6.10:1 against ivory-100, 6.70:1 against white." },
+        "700": { "$type": "color", "$value": "#0039C2", "$description": "Hover for a link, pressed for a secondary button — 8.08:1 against ivory-100." },
+        "800": { "$type": "color", "$value": "#002D99" },
+        "900": { "$type": "color", "$value": "#002378" }
+      },
+
+      "neutral": {
+        "$description": "Warm neutral. Anchor #8A8578 at step 500. Hue-matched to ivory rather than to navy, so greys do not read as dirty against a warm page. Carries all UI chrome that is not brand: dividers, placeholder text, disabled states, secondary iconography, chart axes.",
+        "50": { "$type": "color", "$value": "#FAFAFA" },
+        "100": { "$type": "color", "$value": "#F4F4F3" },
+        "200": { "$type": "color", "$value": "#E7E6E4" },
+        "300": { "$type": "color", "$value": "#D6D4CF" },
+        "400": { "$type": "color", "$value": "#B8B5AD", "$description": "Disabled and placeholder text — 1.86:1 against ivory-100. Exempt from contrast minimums under WCAG 1.4.3 as an inactive component, and must never be used for content a user has to read." },
+        "500": { "$type": "color", "$value": "#8A8578", "$description": "BRAND ANCHOR — neutral. 3.35:1 against ivory-100 and 3.68:1 against white, so it is the light-theme form-control outline. 4.59:1 against navy-900, so it doubles as a muted label on a dark surface." },
+        "600": { "$type": "color", "$value": "#7B766B", "$description": "Chart axis on the light theme — 4.11:1 against ivory-100." },
+        "700": { "$type": "color", "$value": "#615D54", "$description": "Muted body text on the light theme — 5.97:1 against ivory-100, 6.56:1 against white. Passes AA at every size." },
+        "800": { "$type": "color", "$value": "#46433C" },
+        "900": { "$type": "color", "$value": "#2E2D28" }
+      }
+    },
+
+    "semantic": {
+      "$description": "Theme-aware roles. A component consumes these and nothing else. Every token name exists in both themes with the same meaning, so switching theme swaps values without touching markup.",
+
+      "light": {
+        "$description": "Default theme. Page surface is ivory-100; cards are white so they read as raised from a value step alone, without a shadow.",
+
+        "surface": {
+          "page": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "Page background." },
+          "raised": { "$type": "color", "$value": "#FFFFFF", "$description": "Card, popover, dialog, table header. 1.10:1 against page, so separation comes from the value step plus elevation.01 rather than from a border." },
+          "sunken": { "$type": "color", "$value": "{color.palette.ivory.200}", "$description": "Inset well, table banding, code block background." },
+          "overlay": { "$type": "color", "$value": "#0E1B3DCC", "$description": "Modal scrim: 80% navy-900. Keeps the page legible behind a dialog while dropping it out of focus." },
+          "inverse": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "A dark band inside a light page: hero, footer, pull quote." }
+        },
+
+        "text": {
+          "primary": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "Body copy and headings — 15.37:1 against surface.page, 16.90:1 against surface.raised." },
+          "secondary": { "$type": "color", "$value": "{color.palette.navy.700}", "$description": "Supporting copy, table cells, metadata — 10.78:1 against surface.page, 11.85:1 against surface.raised." },
+          "muted": { "$type": "color", "$value": "{color.palette.neutral.700}", "$description": "Captions, helper text, timestamps — 5.97:1 against surface.page, 6.56:1 against surface.raised." },
+          "disabled": { "$type": "color", "$value": "{color.palette.neutral.400}", "$description": "Inactive controls only — 1.86:1 against surface.page. Not permitted for content a user must read." },
+          "inverse": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "Text on surface.inverse — 15.37:1." },
+          "link": { "$type": "color", "$value": "{color.palette.accent.600}", "$description": "Inline link, resting — 6.10:1 against surface.page, 6.70:1 against surface.raised. Links are additionally underlined: colour is never the only signal, per WCAG 1.4.1." },
+          "link-hover": { "$type": "color", "$value": "{color.palette.accent.700}", "$description": "8.08:1 against surface.page." },
+          "link-raised": { "$type": "color", "$value": "{color.palette.accent.600}", "$description": "Link inside a white card. Identical to text.link, because ivory-100 and white are only 1.10:1 apart so no step is needed — accent-600 measures 6.70:1 against white. The token exists anyway so that both themes expose the same shape: a component can always use link-raised inside a card without a theme check, which matters because the dark theme genuinely does need a different value there." },
+          "link-visited": { "$type": "color", "$value": "#7D1F6E", "$description": "8.33:1 against surface.page, 9.16:1 against surface.raised. Distinct from link in both hue and lightness so the distinction survives deuteranopia." },
+          "brand": { "$type": "color", "$value": "{color.palette.gold.700}", "$description": "Gold used AS TEXT on a light surface — 4.93:1 against surface.page, 5.42:1 against surface.raised. Never substitute gold-500 here." },
+          "on-gold": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "Text on a gold-500 fill — 6.98:1. Navy on gold is the only approved combination; white on gold is 2.42:1 and fails." }
+        },
+
+        "border": {
+          "default": { "$type": "color", "$value": "{color.palette.ivory.300}", "$description": "Hairline between same-level surfaces — 1.21:1 against surface.page." },
+          "strong": { "$type": "color", "$value": "{color.palette.ivory.400}", "$description": "Emphasis hairline — 1.43:1 against surface.page. Not sufficient for a form control, which needs 3:1; inputs use border.input." },
+          "input": { "$type": "color", "$value": "{color.palette.neutral.500}", "$description": "Text-input and select outline — 3.35:1 against surface.page, 3.68:1 against surface.raised. Clears the 3:1 non-text requirement in WCAG 1.4.11 on both." },
+          "focus": { "$type": "color", "$value": "{color.palette.accent.500}", "$description": "Focus ring — 4.10:1 against surface.page, 4.50:1 against surface.raised. Both above the 3:1 minimum for focus appearance in WCAG 2.2 SC 2.4.11." },
+          "divider": { "$type": "color", "$value": "{color.palette.ivory.200}", "$description": "Table row rule and section separator — 1.08:1 against surface.page." }
+        },
+
+        "state": {
+          "$description": "Status colours. Each state ships a foreground verified at 4.5:1 or better against the light page surface, and a tint for the fill behind a banner against which navy text is verified. Meaning is never carried by colour alone: every state pairs with an icon and a text label, per WCAG 1.4.1.",
+          "success": { "$type": "color", "$value": "#1F7A4C", "$description": "4.84:1 against surface.page, 5.32:1 against surface.raised." },
+          "success-tint": { "$type": "color", "$value": "#E4F0E8", "$description": "Banner fill. Navy-900 text on it is 14.43:1." },
+          "warning": { "$type": "color", "$value": "#995C00", "$description": "4.92:1 against surface.page, 5.40:1 against surface.raised. Darkened from the obvious amber, which sits near 3.8:1 and fails body text." },
+          "warning-tint": { "$type": "color", "$value": "#FBEEDA", "$description": "Banner fill. Navy-900 text on it is 14.76:1." },
+          "danger": { "$type": "color", "$value": "#B3261E", "$description": "5.95:1 against surface.page, 6.54:1 against surface.raised." },
+          "danger-tint": { "$type": "color", "$value": "#F8E4E1", "$description": "Banner fill. Navy-900 text on it is 13.82:1." },
+          "info": { "$type": "color", "$value": "#1B5E8A", "$description": "6.34:1 against surface.page, 6.97:1 against surface.raised." },
+          "info-tint": { "$type": "color", "$value": "#E3EDF4", "$description": "Banner fill. Navy-900 text on it is 14.23:1." }
+        }
+      },
+
+      "dark": {
+        "$description": "Navy theme for heroes, dashboards, night-time kiosk use and prefers-color-scheme: dark. Not a mirror image of the light theme: a drop shadow is near-invisible on navy, so elevation is carried by a lighter surface value and a hairline top edge instead. See elevation.json. A second divergence is link colour, which steps up one ramp position on a raised surface because navy-800 lifts the background luminance enough to drop accent-400 below 4.5:1.",
+
+        "surface": {
+          "page": { "$type": "color", "$value": "{color.palette.navy.900}" },
+          "raised": { "$type": "color", "$value": "{color.palette.navy.800}" },
+          "sunken": { "$type": "color", "$value": "{color.palette.navy.950}" },
+          "overlay": { "$type": "color", "$value": "#050A1ACC", "$description": "Modal scrim on navy — deeper than navy-950 so a dialog separates from a dark page." },
+          "inverse": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "A light band inside a dark page." }
+        },
+
+        "text": {
+          "primary": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "15.37:1 against surface.page, 13.29:1 against surface.raised." },
+          "secondary": { "$type": "color", "$value": "{color.palette.navy.200}", "$description": "11.06:1 against surface.page, 9.56:1 against surface.raised." },
+          "muted": { "$type": "color", "$value": "{color.palette.navy.300}", "$description": "7.57:1 against surface.page, 6.55:1 against surface.raised — passes AAA on both." },
+          "disabled": { "$type": "color", "$value": "{color.palette.navy.600}", "$description": "1.84:1 against surface.page. Inactive controls only." },
+          "inverse": { "$type": "color", "$value": "{color.palette.navy.900}" },
+          "link": { "$type": "color", "$value": "{color.palette.accent.400}", "$description": "4.80:1 against surface.page. On surface.raised it drops to 4.14:1 and fails — use text.link-raised there." },
+          "link-raised": { "$type": "color", "$value": "{color.palette.accent.300}", "$description": "Link inside a dark card, popover or dialog — 5.70:1 against surface.raised." },
+          "link-hover": { "$type": "color", "$value": "{color.palette.accent.300}", "$description": "6.60:1 against surface.page." },
+          "link-visited": { "$type": "color", "$value": "#F0C5E9", "$description": "11.16:1 against surface.page, 9.64:1 against surface.raised." },
+          "brand": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "On navy, brand gold IS text-safe — 6.98:1 against surface.page, 6.04:1 against surface.raised. The light theme must use gold-700 instead, which is why this token exists rather than a shared value." },
+          "on-gold": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "6.98:1 against a gold-500 fill." }
+        },
+
+        "border": {
+          "default": { "$type": "color", "$value": "{color.palette.navy.700}", "$description": "1.43:1 against surface.page." },
+          "strong": { "$type": "color", "$value": "{color.palette.navy.600}", "$description": "1.84:1 against surface.page. Decorative separation only." },
+          "input": { "$type": "color", "$value": "{color.palette.navy.400}", "$description": "Form-control outline — 4.50:1 against surface.page, 3.89:1 against surface.raised. Clears 3:1 on both." },
+          "focus": { "$type": "color", "$value": "{color.palette.accent.400}", "$description": "Focus ring — 4.80:1 against surface.page, 4.14:1 against surface.raised. A focus indicator needs 3:1, so both pass." },
+          "divider": { "$type": "color", "$value": "{color.palette.navy.800}", "$description": "1.16:1 against surface.page." }
+        },
+
+        "state": {
+          "success": { "$type": "color", "$value": "#5FD39A", "$description": "9.07:1 against surface.page." },
+          "success-tint": { "$type": "color", "$value": "#123524", "$description": "Banner fill — 1.26:1 against surface.page. Its own foreground is 7.22:1 and ivory text on it is 12.24:1." },
+          "warning": { "$type": "color", "$value": "#E8B45C", "$description": "8.94:1 against surface.page." },
+          "warning-tint": { "$type": "color", "$value": "#3A2C10", "$description": "Banner fill — 1.25:1 against surface.page, 7.18:1 against state.warning." },
+          "danger": { "$type": "color", "$value": "#F2836F", "$description": "6.64:1 against surface.page." },
+          "danger-tint": { "$type": "color", "$value": "#3D1512", "$description": "Banner fill — 1.06:1 against surface.page, 6.28:1 against state.danger." },
+          "info": { "$type": "color", "$value": "#7CC4E8", "$description": "8.78:1 against surface.page." },
+          "info-tint": { "$type": "color", "$value": "#10293A", "$description": "Banner fill — 1.13:1 against surface.page, 7.80:1 against state.info." }
+        }
+      }
+    },
+
+    "church": {
+      "$description": "Church-context pairs: the colour roles a funeral, cemetery, parish or basilica surface needs, expressed as foreground/background couples rather than single values. Each pair is verified by tools/contrast_check.py against the minimum declared for it in $extensions. These are UI roles for a page ABOUT a context — not the liturgical season palette, which lives in colors.church.json.",
+
+      "funeral": {
+        "$description": "Funeral and bereavement. Restrained to the point of austerity: no gold, no saturated accent, no celebratory green. A family reading this page at the worst moment of their life should not be asked to process a colour that means anything. Ivory on near-black navy, the highest text contrast in the system, no decoration.",
+        "surface": { "$type": "color", "$value": "{color.palette.navy.950}" },
+        "surface-raised": { "$type": "color", "$value": "{color.palette.navy.900}" },
+        "text": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "17.04:1 against surface. Deliberately AAA and then some: this audience is often elderly, often distressed, and often reading on a phone in a bright church porch." },
+        "text-muted": { "$type": "color", "$value": "{color.palette.navy.300}", "$description": "8.40:1 against surface — still AAA." },
+        "accent": { "$type": "color", "$value": "{color.palette.navy.300}", "$description": "Links stay inside the navy family rather than switching to blue: a bright interactive colour on a funeral page reads as commerce." },
+        "rule": { "$type": "color", "$value": "{color.palette.navy.700}" }
+      },
+
+      "cemetery": {
+        "$description": "Cemetery and memorial garden. Stone and weathered bronze: warm neutral surfaces with a muted gold that reads as an inscription rather than as a highlight. Legibility in direct daylight is the governing constraint, which is why the surface is pale and the text near-black.",
+        "surface": { "$type": "color", "$value": "{color.palette.ivory.200}" },
+        "surface-raised": { "$type": "color", "$value": "#FFFFFF" },
+        "text": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "14.22:1 against surface — high contrast survives glare on a graveside phone." },
+        "text-muted": { "$type": "color", "$value": "{color.palette.neutral.700}", "$description": "5.52:1 against surface." },
+        "accent": { "$type": "color", "$value": "{color.palette.gold.700}", "$description": "Inscription gold — 4.56:1 against surface." },
+        "rule": { "$type": "color", "$value": "{color.palette.ivory.400}" }
+      },
+
+      "parish": {
+        "$description": "Parish life: rotas, newsletters, notices, giving. The warmest and most ordinary of the contexts — ivory surfaces, navy text, inscription gold for emphasis, accent blue for the interactive layer. This is the default look of a ViaVitae parish page and the starting point for any new one.",
+        "surface": { "$type": "color", "$value": "{color.palette.ivory.100}" },
+        "surface-raised": { "$type": "color", "$value": "#FFFFFF" },
+        "text": { "$type": "color", "$value": "{color.palette.navy.900}", "$description": "15.37:1 against surface." },
+        "text-muted": { "$type": "color", "$value": "{color.palette.neutral.700}", "$description": "5.97:1 against surface." },
+        "accent": { "$type": "color", "$value": "{color.palette.gold.700}", "$description": "4.93:1 against surface." },
+        "rule": { "$type": "color", "$value": "{color.palette.ivory.300}" }
+      },
+
+      "basilica": {
+        "$description": "Basilica, cathedral and heritage: the ceremonial register. Navy surface with gold and ivory — the inverse of the parish context. Reserved for heritage content, building history, visiting information, and anything where the architecture rather than the congregation is the subject.",
+        "surface": { "$type": "color", "$value": "{color.palette.navy.900}" },
+        "surface-raised": { "$type": "color", "$value": "{color.palette.navy.800}" },
+        "text": { "$type": "color", "$value": "{color.palette.ivory.100}", "$description": "15.37:1 against surface." },
+        "text-muted": { "$type": "color", "$value": "{color.palette.navy.300}", "$description": "7.57:1 against surface." },
+        "accent": { "$type": "color", "$value": "{color.palette.gold.500}", "$description": "6.98:1 against surface. Gold is text-safe on navy, which is precisely why the ceremonial register is dark." },
+        "rule": { "$type": "color", "$value": "{color.palette.gold.600}", "$description": "5.14:1 against surface." }
+      }
+    },
+
+    "chart": {
+      "$description": "Categorical data-visualisation series, ordered. Two properties hold by construction and are re-verified by tools/contrast_check.py: every series clears 3:1 against its chart surface (WCAG 2.2 SC 1.4.11, non-text contrast), and consecutive series are separated by at least 2.28:1 in relative luminance so a stacked bar or an adjacent legend entry stays legible in greyscale and under colour-vision deficiency. Hue alone never carries meaning: a chart must label its series directly or ship a monochrome alternative, per WCAG 1.4.1. Eight series maximum; beyond eight the ramp restarts and the chart is wrong.",
+
+      "light": {
+        "$description": "Series for a chart drawn on color.semantic.light.surface.page (#F7F4EC). Luminance staircase alternating dark, light, dark, light. Worst on-surface contrast 3.06:1; worst consecutive separation 2.28:1.",
+        "1": { "$type": "color", "$value": "#142D7A", "$description": "Navy series — 11.33:1 against the surface." },
+        "2": { "$type": "color", "$value": "#977813", "$description": "Gold series — 3.81:1. Separated from series 1 by 2.97:1." },
+        "3": { "$type": "color", "$value": "#0C4742", "$description": "Teal series — 9.57:1. Separated from series 2 by 2.51:1." },
+        "4": { "$type": "color", "$value": "#E84760", "$description": "Crimson series — 3.47:1. Separated from series 3 by 2.76:1." },
+        "5": { "$type": "color", "$value": "#7D1F6E", "$description": "Plum series — 8.33:1. Separated from series 4 by 2.40:1." },
+        "6": { "$type": "color", "$value": "#709427", "$description": "Olive series — 3.21:1. Separated from series 5 by 2.60:1." },
+        "7": { "$type": "color", "$value": "#784317", "$description": "Sienna series — 7.31:1. Separated from series 6 by 2.28:1, the tightest pair in the ramp." },
+        "8": { "$type": "color", "$value": "#738FAB", "$description": "Slate series — 3.06:1. Separated from series 7 by 2.39:1." }
+      },
+
+      "dark": {
+        "$description": "Series for a chart drawn on color.semantic.dark.surface.page (#0E1B3D). Inverted staircase alternating light, dark, light, dark. Worst on-surface contrast 3.59:1; worst consecutive separation 2.47:1.",
+        "1": { "$type": "color", "$value": "#ACBDF2", "$description": "Navy series — 9.10:1 against the surface." },
+        "2": { "$type": "color", "$value": "#8D7011", "$description": "Gold series — 3.59:1. Separated from series 1 by 2.54:1." },
+        "3": { "$type": "color", "$value": "#37DED0", "$description": "Teal series — 10.08:1. Separated from series 2 by 2.81:1." },
+        "4": { "$type": "color", "$value": "#E63650", "$description": "Crimson series — 4.03:1. Separated from series 3 by 2.50:1." },
+        "5": { "$type": "color", "$value": "#F0C5E9", "$description": "Plum series — 11.16:1. Separated from series 4 by 2.77:1." },
+        "6": { "$type": "color", "$value": "#6B8E26", "$description": "Olive series — 4.44:1. Separated from series 5 by 2.51:1." },
+        "7": { "$type": "color", "$value": "#F2D5BC", "$description": "Sienna series — 12.08:1. Separated from series 6 by 2.72:1." },
+        "8": { "$type": "color", "$value": "#718DAA", "$description": "Slate series — 4.90:1. Separated from series 7 by 2.47:1." }
+      },
+
+      "grid": { "$type": "color", "$value": "{color.palette.ivory.300}", "$description": "Chart gridline on a light surface — 1.21:1. Deliberately below the 3:1 threshold: a gridline is scaffolding and must not compete with the data." },
+      "grid-dark": { "$type": "color", "$value": "{color.palette.navy.700}", "$description": "Chart gridline on a dark surface — 1.43:1." },
+      "axis": { "$type": "color", "$value": "{color.palette.neutral.600}", "$description": "Axis line and tick, light theme — 4.11:1 against surface.page." },
+      "axis-dark": { "$type": "color", "$value": "{color.palette.navy.300}", "$description": "Axis line and tick, dark theme — 7.57:1 against surface.page." },
+      "label": { "$type": "color", "$value": "{color.palette.neutral.700}", "$description": "Axis label and data label, light theme — 5.97:1 against surface.page." },
+      "label-dark": { "$type": "color", "$value": "{color.palette.navy.200}", "$description": "Axis label and data label, dark theme — 11.06:1 against surface.page." }
+    }
+  },
+
+  "$extensions": {
+    "com.viavitae.contrast-pairs": {
+      "$description": "The contrast contract. tools/contrast_check.py reads this list, resolves every alias to a literal hex value, computes the WCAG 2.x contrast ratio and fails the build when a pair falls below its declared minimum. Adding a semantic text or foreground token without adding its pair here is a review blocker — the tool cannot verify what is not declared. Minimums: 4.5 body text (WCAG 1.4.3), 3.0 large text at 24px or 18.66px bold (1.4.3), 7.0 AAA body text (1.4.6), 3.0 non-text UI components and graphical objects (1.4.11), 3.0 focus appearance (2.4.11), 1.3 minimum separation between adjacent chart series.",
+
+      "text-on-surface": [
+        { "foreground": "{color.semantic.light.text.primary}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.primary}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.secondary}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.secondary}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.muted}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.muted}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.disabled}", "background": "{color.semantic.light.surface.page}", "minimum": 1.0, "sc": "1.4.3 exempt", "note": "MEASURED AND EXEMPT, not unmeasured. 1.86:1. WCAG 1.4.3 exempts inactive user-interface components, and a disabled control is inactive by definition. The exemption does not extend to placeholder text on a required field, which is content the user must read and must use text.muted instead. Declared with a minimum of 1.0 so the exemption is a recorded decision with a number attached rather than an absence that a reviewer has to notice." },
+        { "foreground": "{color.semantic.light.text.link}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.link}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.link-hover}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.link-raised}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.link-visited}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.link-visited}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.brand}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.brand}", "background": "{color.semantic.light.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.on-gold}", "background": "{color.palette.gold.500}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.text.inverse}", "background": "{color.semantic.light.surface.inverse}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{color.semantic.dark.text.primary}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.primary}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.secondary}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.secondary}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.muted}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.muted}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.disabled}", "background": "{color.semantic.dark.surface.page}", "minimum": 1.0, "sc": "1.4.3 exempt", "note": "MEASURED AND EXEMPT. 1.84:1. Inactive components only, on the same terms as the light theme." },
+        { "foreground": "{color.semantic.dark.text.link}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.link-raised}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.link-hover}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.link-visited}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.link-visited}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.brand}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.brand}", "background": "{color.semantic.dark.surface.raised}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.on-gold}", "background": "{color.palette.gold.500}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.text.inverse}", "background": "{color.semantic.dark.surface.inverse}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{color.semantic.light.state.success}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.state.warning}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.state.danger}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.light.state.info}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.success}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.warning}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.danger}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.info}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.success}", "background": "{color.semantic.dark.state.success-tint}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.warning}", "background": "{color.semantic.dark.state.warning-tint}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.danger}", "background": "{color.semantic.dark.state.danger-tint}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.semantic.dark.state.info}", "background": "{color.semantic.dark.state.info-tint}", "minimum": 4.5, "sc": "1.4.3" },
+
+        { "foreground": "{color.church.funeral.text}", "background": "{color.church.funeral.surface}", "minimum": 7.0, "sc": "1.4.6", "note": "AAA by policy: bereavement content is frequently read by distressed and elderly users, often on a small screen in poor light." },
+        { "foreground": "{color.church.funeral.text-muted}", "background": "{color.church.funeral.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.funeral.accent}", "background": "{color.church.funeral.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.cemetery.text}", "background": "{color.church.cemetery.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.cemetery.text-muted}", "background": "{color.church.cemetery.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.cemetery.accent}", "background": "{color.church.cemetery.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.parish.text}", "background": "{color.church.parish.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.parish.text-muted}", "background": "{color.church.parish.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.parish.accent}", "background": "{color.church.parish.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.basilica.text}", "background": "{color.church.basilica.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.basilica.text-muted}", "background": "{color.church.basilica.surface}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.church.basilica.accent}", "background": "{color.church.basilica.surface}", "minimum": 4.5, "sc": "1.4.3" }
+      ],
+
+      "non-text-on-surface": [
+        { "foreground": "{color.semantic.light.border.focus}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "2.4.11" },
+        { "foreground": "{color.semantic.light.border.focus}", "background": "{color.semantic.light.surface.raised}", "minimum": 3.0, "sc": "2.4.11" },
+        { "foreground": "{color.semantic.light.border.input}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.semantic.light.border.input}", "background": "{color.semantic.light.surface.raised}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.semantic.dark.border.focus}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "2.4.11" },
+        { "foreground": "{color.semantic.dark.border.focus}", "background": "{color.semantic.dark.surface.raised}", "minimum": 3.0, "sc": "2.4.11" },
+        { "foreground": "{color.semantic.dark.border.input}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.semantic.dark.border.input}", "background": "{color.semantic.dark.surface.raised}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.church.basilica.rule}", "background": "{color.church.basilica.surface}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.axis}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.axis-dark}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.label}", "background": "{color.semantic.light.surface.page}", "minimum": 4.5, "sc": "1.4.3" },
+        { "foreground": "{color.chart.label-dark}", "background": "{color.semantic.dark.surface.page}", "minimum": 4.5, "sc": "1.4.3" }
+      ],
+
+      "chart-series-on-surface": [
+        { "foreground": "{color.chart.light.1}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.2}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.3}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.4}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.5}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.6}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.7}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.light.8}", "background": "{color.semantic.light.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.1}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.2}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.3}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.4}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.5}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.6}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.7}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" },
+        { "foreground": "{color.chart.dark.8}", "background": "{color.semantic.dark.surface.page}", "minimum": 3.0, "sc": "1.4.11" }
+      ],
+
+      "chart-series-separation": {
+        "$description": "Adjacent series must stay distinguishable when a chart is printed in greyscale or viewed under a colour-vision deficiency. Measured as a WCAG contrast ratio between the two series colours. 1.3:1 is the floor; both ramps ship at 2.28:1 or better because hue alone is not a reliable channel.",
+        "light": { "ramp": ["{color.chart.light.1}", "{color.chart.light.2}", "{color.chart.light.3}", "{color.chart.light.4}", "{color.chart.light.5}", "{color.chart.light.6}", "{color.chart.light.7}", "{color.chart.light.8}"], "minimum": 1.3 },
+        "dark": { "ramp": ["{color.chart.dark.1}", "{color.chart.dark.2}", "{color.chart.dark.3}", "{color.chart.dark.4}", "{color.chart.dark.5}", "{color.chart.dark.6}", "{color.chart.dark.7}", "{color.chart.dark.8}"], "minimum": 1.3 }
+      },
+
+      "prohibited": {
+        "$description": "Combinations that look right and fail. Listed explicitly so a tool and a reviewer can reject them by name instead of relying on someone remembering the arithmetic. tools/contrast_check.py asserts each of these is still below its threshold: if a palette change makes one of them pass, the entry is stale and must be removed or the guidance rewritten.",
+        "entries": [
+          { "foreground": "{color.palette.gold.500}", "background": "{color.palette.ivory.100}", "maximum": 3.0, "reason": "Brand gold at step 500 fails AA, AA-large and the 3:1 non-text threshold on ivory. This is the single most likely contrast regression in the system, because gold is the colour a designer reaches for first." },
+          { "foreground": "{color.palette.gold.500}", "background": "#FFFFFF", "maximum": 3.0, "reason": "As above on a white card." },
+          { "foreground": "#FFFFFF", "background": "{color.palette.gold.500}", "maximum": 3.0, "reason": "White text on a gold fill fails. A gold button carries navy-900 text, per text.on-gold." },
+          { "foreground": "{color.palette.accent.500}", "background": "{color.palette.ivory.100}", "maximum": 4.5, "reason": "Accent 500 sits at 4.10:1 on ivory. Permitted for a focus ring, an icon or a 24px display heading; body-size link text must use accent 600." },
+          { "foreground": "{color.semantic.dark.text.link}", "background": "{color.semantic.dark.surface.raised}", "maximum": 4.5, "reason": "Accent 400 drops to 4.14:1 inside a dark card. Use text.link-raised there; this is why that token exists." },
+          { "foreground": "{color.palette.navy.900}", "background": "{color.palette.navy.800}", "maximum": 1.5, "reason": "Navy on navy. Elevation on a dark surface is carried by the surface step and a hairline top edge, never by a change in text colour." },
+          { "foreground": "{color.palette.neutral.400}", "background": "{color.palette.ivory.100}", "maximum": 2.0, "reason": "Disabled grey on ivory at 1.86:1. Exempt under WCAG 1.4.3 as an inactive component — the exemption does not extend to placeholder text for a required field." }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="vv-clearspace-title">
+  <title id="vv-clearspace-title">Clear space and minimum size sheet for the ViaVitae lockup: an exclusion zone of half the wordmark's cap height on all four sides, and a minimum reproduction size of 24 pixels</title>
+
+  <!--
+    CLEAR SPACE AND MINIMUM SIZE SHEET. The companion to
+    viavitae-logo-construction.svg. That sheet answers "how is the mark made";
+    this one answers "how much room does it need, and how small may it get".
+    The prose rule lives in guidelines/logo-usage.md and this file is its
+    drawing; if the two ever disagree, the markdown governs and this sheet is
+    the defect.
+
+    THE LOCKUPS EMBEDDED BELOW ARE THE MASTERS' OWN PATH DATA, transformed. The
+    inline lockup is drawn inside a group carrying scale(0.5) and the minimum
+    size row inside groups carrying scale(0.09375), scale(0.0625),
+    scale(0.046875) and scale(0.03125) — those being 48, 32, 24 and 16 pixels
+    against the logomark's 512 artboard. No coordinate in this file is
+    retyped from the masters, so a diagram cannot show a clear space the logo
+    does not actually have. If a master's geometry changes, the transform
+    carries the change here automatically and only the annotation text has to
+    be revisited.
+
+    THE MEASURE, STATED PRECISELY. The clear space is HALF THE WORDMARK'S CAP
+    HEIGHT, on all four sides. It is not "the x-height", and this sheet is the
+    reason that phrasing was retired: the wordmark is eight capitals, V I A V I
+    T A E, and there is no lowercase x anywhere in it, so there is no x-height
+    to measure. "An x-height of clear space" is what the industry says when it
+    means a margin of roughly half the cap height, taken from the artwork
+    rather than from a specification; this brand says the thing it means. Half
+    the cap height is measurable with a ruler on any reproduction at any scale,
+    which is the property that makes a clear-space rule enforceable.
+
+    In the lockup masters the cap height is 100 units and the artboard carries
+    50 units of margin, so THE MASTER FILES ALREADY ENFORCE THE RULE: a
+    consumer who places assets/logo/master/viavitae-logo-horizontal.svg edge to
+    edge against another element has respected the clear space without reading
+    this sheet. That is the design intent and it is why the artboard is 1000 by
+    200 rather than 900 by 100.
+
+    COLOUR, from tokens/colors.json on the ivory-100 surface: headings and
+    artwork navy-900 #0E1B3D at 15.37:1, text navy-700 #1B3374 at 10.78:1,
+    dimensions navy-300 #9CADDB at 2.03:1, rules and hairlines navy-200
+    #C9D1E6 at 1.39:1 and ivory-400 #DBCDA9 at 1.43:1. The hairlines are
+    decoration under WCAG 2.2 SC 1.4.11 and the text is not, so a reader who
+    cannot resolve the dimension lines still reads every number on the sheet.
+
+    As with the construction sheet, <text> is used here and is not used in the
+    masters; see that file's header for why the distinction is sound rather
+    than convenient.
+  -->
+
+  <rect width="1200" height="800" fill="#F7F4EC"/>
+
+  <!-- ============================== HEADER ============================== -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="94" font-size="30" font-weight="600" fill="#0E1B3D" letter-spacing="0.5">CLEAR SPACE AND MINIMUM SIZE</text>
+    <text x="60" y="124" font-size="16" fill="#1B3374">The exclusion zone around the lockup, and the smallest size the mark may be reproduced at</text>
+  </g>
+  <path d="M 60 148 H 1140" stroke="#DBCDA9" stroke-width="2" fill="none"/>
+
+  <!-- ============================ CLEAR SPACE =========================== -->
+  <!-- The inline lockup at half scale. Native artboard 1000 by 200, so the
+       dashed rectangle below IS the artboard and the margin it leaves around
+       the artwork IS the clear space. -->
+  <g transform="translate(350,215) scale(0.5)">
+    <g fill="none" stroke="#0E1B3D" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 78 100 A 125 125 0 0 1 278 100 A 125 125 0 0 1 78 100 Z"/>
+      <path d="M 78 100 A 125 125 0 0 0 58 140"/>
+      <path d="M 78 100 A 125 125 0 0 1 58 60"/>
+    </g>
+    <g fill="#0E1B3D">
+      <path d="M 320 50 L 355 150 L 390 50 L 376 50 L 355 110 L 334 50 Z"/>
+      <path d="M 416 50 H 430 V 150 H 416 Z"/>
+      <path d="M 456 150 L 491 50 L 526 150 L 512 150 L 491 90 L 470 150 Z M 477 112 H 505 V 126 H 477 Z"/>
+      <path d="M 552 50 L 587 150 L 622 50 L 608 50 L 587 110 L 566 50 Z"/>
+      <path d="M 648 50 H 662 V 150 H 648 Z"/>
+      <path d="M 688 50 H 758 V 64 H 730 V 150 H 716 V 64 H 688 Z"/>
+      <path d="M 784 150 L 819 50 L 854 150 L 840 150 L 819 90 L 798 150 Z M 805 112 H 833 V 126 H 805 Z"/>
+      <path d="M 880 50 H 950 V 64 H 894 V 93 H 936 V 107 H 894 V 136 H 950 V 150 H 880 Z"/>
+    </g>
+  </g>
+
+  <!-- The exclusion zone: the artboard boundary at this scale. -->
+  <rect x="350" y="215" width="500" height="100" fill="none" stroke="#9CADDB" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <!-- The artwork bounding box inside it, so the gap being dimensioned is
+       visible as a gap rather than implied by two rectangles. -->
+  <rect x="375" y="240" width="450" height="50" fill="none" stroke="#C9D1E6" stroke-width="1"/>
+
+  <!-- Dimensions: the top gap and the left gap, both 25 at this scale. -->
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 350 215 V 190"/>
+    <path d="M 375 240 V 190"/>
+    <path d="M 350 196 H 375"/>
+    <path d="M 344 196 H 356"/>
+    <path d="M 369 196 H 381"/>
+    <path d="M 350 315 V 340"/>
+    <path d="M 375 290 V 340"/>
+    <path d="M 350 334 H 375"/>
+    <path d="M 344 334 H 356"/>
+    <path d="M 369 334 H 381"/>
+  </g>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" font-weight="600" fill="#1B3374">
+    <text x="362" y="184" text-anchor="middle">25</text>
+    <text x="362" y="358" text-anchor="middle">25</text>
+  </g>
+
+  <!-- ============================== EXPLANATION ========================= -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="404" font-size="18" font-weight="600" fill="#0E1B3D">CLEAR SPACE</text>
+    <g font-size="14" fill="#1B3374">
+      <text x="60" y="430">No element, edge, fold, column of type or other mark may enter the</text>
+      <text x="60" y="452">dashed rectangle. The margin is half the wordmark's cap height at</text>
+      <text x="60" y="474">whatever size the lockup is drawn, so it scales with the lockup and</text>
+      <text x="60" y="496">never has to be looked up in a table. It is the same on all four</text>
+      <text x="60" y="518">sides; both dimensions read 25 only because this instance is drawn</text>
+      <text x="60" y="540">at half scale, where a 100-unit cap height becomes 50.</text>
+    </g>
+
+    <text x="620" y="404" font-size="18" font-weight="600" fill="#0E1B3D">WHY NOT "THE X-HEIGHT"</text>
+    <g font-size="14" fill="#1B3374">
+      <text x="620" y="430">The wordmark is eight capitals and contains no lowercase x, so it has</text>
+      <text x="620" y="452">no x-height to measure. Half the cap height is what the rule uses,</text>
+      <text x="620" y="474">and it is what "an x-height of clear space" means in practice: the</text>
+      <text x="620" y="496">familiar measure, taken from the only vertical dimension this artwork</text>
+      <text x="620" y="518">has. Stating it as half the cap height makes it something a designer</text>
+      <text x="620" y="540">can take off any reproduction with a ruler, at any scale.</text>
+    </g>
+  </g>
+
+  <path d="M 60 570 H 1140" stroke="#DBCDA9" stroke-width="1" fill="none"/>
+
+  <!-- ============================= THE MEASURE ========================== -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="60" y="600" font-size="18" font-weight="600" fill="#0E1B3D">THE MEASURE</text>
+  </g>
+
+  <!-- Cap line, half-cap line and baseline, with the A of the wordmark drawn
+       between them at its native 100-unit cap height. -->
+  <g stroke="#C9D1E6" stroke-width="1" fill="none">
+    <path d="M 110 620 H 400"/>
+    <path d="M 110 720 H 400"/>
+  </g>
+  <path d="M 110 670 H 400" stroke="#9CADDB" stroke-width="1.5" stroke-dasharray="6 5" fill="none"/>
+  <g transform="translate(140,620)" fill="#0E1B3D">
+    <path d="M 0 100 L 35 0 L 70 100 L 56 100 L 35 40 L 14 100 Z M 21 62 H 49 V 76 H 21 Z"/>
+  </g>
+  <g stroke="#9CADDB" stroke-width="1.5" fill="none">
+    <path d="M 92 620 V 720"/>
+    <path d="M 86 620 H 98"/>
+    <path d="M 86 720 H 98"/>
+    <path d="M 260 620 V 670"/>
+    <path d="M 254 620 H 266"/>
+    <path d="M 254 670 H 266"/>
+  </g>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" fill="#1B3374">
+    <text transform="translate(76,670) rotate(-90)" text-anchor="middle">cap height 100</text>
+    <text x="272" y="650">50 = the clear-space unit</text>
+    <text x="272" y="616">cap line</text>
+    <text x="272" y="716">baseline</text>
+  </g>
+
+  <!-- ============================ MINIMUM SIZE ========================== -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+    <text x="600" y="600" font-size="18" font-weight="600" fill="#0E1B3D">MINIMUM SIZE</text>
+  </g>
+
+  <!-- The logomark at 48, 32, 24 and 16 pixels, each the 512 master's own
+       path data at the matching scale, bottom-aligned on the artboard so the
+       marks align too. The hairline squares are the rendered footprints. -->
+  <g stroke="#C9D1E6" stroke-width="1" fill="none">
+    <rect x="480" y="612" width="48" height="48"/>
+    <rect x="580" y="628" width="32" height="32"/>
+    <rect x="660" y="636" width="24" height="24"/>
+    <rect x="730" y="644" width="16" height="16"/>
+  </g>
+  <g fill="none" stroke="#0E1B3D" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(480,612) scale(0.09375)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+    <g transform="translate(580,628) scale(0.0625)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+    <g transform="translate(660,636) scale(0.046875)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+    <g transform="translate(730,644) scale(0.03125)">
+      <path d="M 76 256 A 250 250 0 0 1 476 256 A 250 250 0 0 1 76 256 Z"/>
+      <path d="M 76 256 A 250 250 0 0 0 36 336"/>
+      <path d="M 76 256 A 250 250 0 0 1 36 176"/>
+    </g>
+  </g>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" fill="#1B3374" text-anchor="middle">
+    <text x="504" y="680">48px</text>
+    <text x="596" y="680">32px</text>
+    <text x="672" y="680">24px</text>
+    <text x="738" y="680">16px</text>
+  </g>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="13" font-weight="600" text-anchor="middle">
+    <text x="504" y="700" fill="#1B3374">ok</text>
+    <text x="596" y="700" fill="#1B3374">ok</text>
+    <text x="672" y="700" fill="#0E1B3D">MINIMUM</text>
+    <text x="738" y="700" fill="#B3261E">FAILS</text>
+  </g>
+
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="13" fill="#1B3374">
+    <text x="790" y="622">24px is the floor. At 24px the master's</text>
+    <text x="790" y="641">32-unit stroke renders as 1.5 device</text>
+    <text x="790" y="660">pixels on a standard display. At 16px it</text>
+    <text x="790" y="679">renders as one, and one antialiased pixel</text>
+    <text x="790" y="698">of stroke is a grey smudge, not a line.</text>
+    <text x="790" y="717">Below 32px use the filled favicon master.</text>
+  </g>
+
+  <!-- =============================== FOOTER ============================= -->
+  <path d="M 60 740 H 1140" stroke="#DBCDA9" stroke-width="2" fill="none"/>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+     font-size="14" fill="#1B3374">
+    <text x="60" y="768">The rule in prose, and the dos and don'ts that go with it, are in guidelines/logo-usage.md. Where they differ, that file governs.</text>
+    <text x="1140" y="768" text-anchor="end">ViaVitae IT Technologies</text>
+  </g>
+</svg>

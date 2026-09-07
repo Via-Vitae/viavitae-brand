@@ -1,0 +1,1056 @@
+/* ==========================================================================
+   ViaVitae design tokens — CSS custom properties
+   ==========================================================================
+
+   Generated from the token JSON files under ../../tokens by
+   ../../tools/build_exports.py.
+   Do not hand-edit: the next regeneration overwrites the change, and a value
+   that exists only here is invisible to the Tailwind, TypeScript and Figma
+   consumers.
+
+   WHAT THIS FILE IS
+
+   Every design token in the system, exposed as a CSS custom property on :root.
+   This is the plain-CSS consumption path: import it, then use
+   `var(--vv-color-text-primary)` in your own stylesheet. It is also the layer
+   the Tailwind preset resolves through, so importing this file is mandatory for
+   any consumer of build/tailwind.preset.ts — the preset emits utilities that
+   reference these properties, and a `var()` with no declaration behind it falls
+   back to the inherited or initial value rather than failing loudly.
+
+   Load order — tokens first, then reset (which consumes them), then Tailwind:
+
+     @import "@viavitae/brand/tokens.css";
+     @import "@viavitae/brand/reset.css";
+     @import "tailwindcss";
+
+   THEMING
+
+   Both themes are declared once, not twice. Every theme-dependent role uses the
+   CSS `light-dark()` function, so the light and dark values sit side by side on
+   the same declaration and cannot drift apart. Which value wins is decided by
+   the resolved `color-scheme`, which this file drives from the `data-theme`
+   attribute on <html>:
+
+     <html>                       follow the operating system
+     <html data-theme="light">    force light
+     <html data-theme="dark">     force dark
+
+   An explicit attribute always beats `prefers-color-scheme`, and no JavaScript
+   is required for the system-preference path to work. A site that offers its own
+   theme switch must persist the choice — a switch that resets on every
+   navigation is not a switch.
+
+   `light-dark()` is Baseline newly-available (Chrome 123, Firefox 120, Safari
+   17.5). A `@supports` fallback at the end of this file supplies the complete
+   light-theme value set for a browser that does not implement it, so such a
+   browser renders the light theme correctly rather than rendering nothing.
+
+   FONT LOADING
+
+   This file declares font STACKS, not `@font-face` rules. That is deliberate,
+   and there are three supported ways to load the faces:
+
+     1. Self-hosted WOFF2 (the default for any deployment serving EU residents).
+        Run `python3 tools/build_exports.py --fonts`, which subsets Fraunces and
+        Inter to the declared weights and codepoints and emits both the WOFF2
+        files under assets/typography/self-hosted-woff2/ and the matching
+        `@font-face` block to import alongside this file.
+
+     2. Google Fonts, via a <link> in your document head. Convenient, and a
+        privacy problem: the request sends the visitor's IP address and user
+        agent to a US-controlled third party at page load, before any consent.
+        German courts have ruled that unlawful and the CNIL has flagged it. Do
+        not use this path for a deployment serving EU residents without an ADR.
+
+     3. System fallback only, by loading nothing. The stacks below resolve to
+        Iowan Old Style / Palatino / Georgia for display and system-ui for UI.
+        Correct for an internal tool; not correct for a public brand surface.
+
+   Whichever path is used, `font-display: swap` and the fallback metric
+   overrides at the bottom of this file are what keep the swap from shifting the
+   layout. See ../../guidelines/typography-usage.md.
+
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Colour scheme
+   --------------------------------------------------------------------------
+   Declared first because every `light-dark()` below resolves against it. */
+
+:root {
+  /* Follow the operating system by default. */
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Palette ramps
+   --------------------------------------------------------------------------
+   Raw values. Theme-independent: navy-900 is the same colour in both themes.
+   Application code should use the semantic roles in section 3 rather than these,
+   because a ramp value does not change when the theme changes and will silently
+   put light-theme ink on a dark surface. These are exposed for the cases that
+   genuinely need a fixed value — a logo asset, a chart series, a print sheet. */
+
+:root {
+  /* Brand navy. Anchor #0E1B3D at 900. */
+  --vv-color-navy-50: #f4f5f8;
+  --vv-color-navy-100: #e6e9f1;
+  --vv-color-navy-200: #c9d1e6;
+  --vv-color-navy-300: #9caddb;
+  --vv-color-navy-400: #6181d3;
+  --vv-color-navy-500: #2d56c3;
+  --vv-color-navy-600: #224295;
+  --vv-color-navy-700: #1b3374;
+  --vv-color-navy-800: #142655;
+  --vv-color-navy-900: #0e1b3d;
+  --vv-color-navy-950: #091127;
+
+  /* Brand gold. Anchor #C9A227 at 500. Step 500 fails every text-contrast
+     threshold on a light surface (2.20:1 against ivory) and passes on navy
+     (6.98:1), so it is decoration, iconography and text-on-dark only. Gold that
+     carries meaning as text on a light surface is step 700. */
+  --vv-color-gold-50: #fdfbf4;
+  --vv-color-gold-100: #faf6e8;
+  --vv-color-gold-200: #f5ecce;
+  --vv-color-gold-300: #f0e0b0;
+  --vv-color-gold-400: #e8d187;
+  --vv-color-gold-500: #c9a227;
+  --vv-color-gold-600: #ab8a21;
+  --vv-color-gold-700: #806719;
+  --vv-color-gold-800: #604d13;
+  --vv-color-gold-900: #44370d;
+
+  /* Brand ivory. Anchor #F7F4EC at 100, the default page surface. */
+  --vv-color-ivory-50: #fefdfc;
+  --vv-color-ivory-100: #f7f4ec;
+  --vv-color-ivory-200: #f1ebdd;
+  --vv-color-ivory-300: #e8dfc7;
+  --vv-color-ivory-400: #dbcda9;
+  --vv-color-ivory-500: #cab681;
+
+  /* Interactive blue. Anchor #2E6BFF at 500. Reserved for interaction and never
+     used as decoration, because a colour reserved for interaction is the only
+     way a user learns to trust it. */
+  --vv-color-accent-50: #edf2ff;
+  --vv-color-accent-100: #d9e4ff;
+  --vv-color-accent-200: #b0c7ff;
+  --vv-color-accent-300: #789fff;
+  --vv-color-accent-400: #4e82ff;
+  --vv-color-accent-500: #2e6bff;
+  --vv-color-accent-600: #0046f0;
+  --vv-color-accent-700: #0039c2;
+  --vv-color-accent-800: #002d99;
+  --vv-color-accent-900: #002378;
+
+  /* Warm neutral, hue-matched to ivory so greys do not read as dirty against a
+     warm page. Carries UI chrome that is not brand. */
+  --vv-color-neutral-50: #fafafa;
+  --vv-color-neutral-100: #f4f4f3;
+  --vv-color-neutral-200: #e7e6e4;
+  --vv-color-neutral-300: #d6d4cf;
+  --vv-color-neutral-400: #b8b5ad;
+  --vv-color-neutral-500: #8a8578;
+  --vv-color-neutral-600: #7b766b;
+  --vv-color-neutral-700: #615d54;
+  --vv-color-neutral-800: #46433c;
+  --vv-color-neutral-900: #2e2d28;
+}
+
+/* --------------------------------------------------------------------------
+   3. Semantic colour roles
+   --------------------------------------------------------------------------
+   What a component consumes. Each role is declared once with both theme values,
+   so the two themes cannot drift apart. Ratios in the comments are WCAG 2.x
+   contrast against that theme's page surface, computed and verified by
+   ../../tools/contrast_check.py. */
+
+:root {
+  /* --- Surfaces ----------------------------------------------------------- */
+  --vv-color-surface-page: light-dark(#f7f4ec, #0e1b3d);
+  --vv-color-surface-raised: light-dark(#ffffff, #142655);
+  --vv-color-surface-sunken: light-dark(#f1ebdd, #091127);
+  --vv-color-surface-overlay: light-dark(#0e1b3dcc, #050a1acc);
+  --vv-color-surface-inverse: light-dark(#0e1b3d, #f7f4ec);
+
+  /* --- Text ---------------------------------------------------------------
+     light-dark pairs are ordered (light, dark). Ratios:
+       primary    15.37:1 / 15.37:1   secondary 10.78:1 / 11.06:1
+       muted       5.97:1 /  7.57:1   link       6.10:1 /  4.80:1
+       brand       4.93:1 /  6.98:1                                     */
+  --vv-color-text-primary: light-dark(#0e1b3d, #f7f4ec);
+  --vv-color-text-secondary: light-dark(#1b3374, #c9d1e6);
+  --vv-color-text-muted: light-dark(#615d54, #9caddb);
+  --vv-color-text-disabled: light-dark(#b8b5ad, #224295);
+  --vv-color-text-inverse: light-dark(#f7f4ec, #0e1b3d);
+  --vv-color-text-link: light-dark(#0046f0, #4e82ff);
+  --vv-color-text-link-hover: light-dark(#0039c2, #789fff);
+
+  /* A link inside a raised surface. On the light theme this is the same value as
+     --vv-color-text-link, because ivory-100 and white are only 1.10:1 apart so
+     no step is needed. On the dark theme it is NOT: accent-400 measures 4.80:1
+     on navy-900 but only 4.14:1 on navy-800, so a link inside a dark card fails
+     AA unless it steps up to accent-300. The token exists on both themes so a
+     component can use it unconditionally instead of branching. */
+  --vv-color-text-link-raised: light-dark(#0046f0, #789fff);
+
+  --vv-color-text-link-visited: light-dark(#7d1f6e, #f0c5e9);
+
+  /* Gold as text. Light uses gold-700 (4.93:1 on ivory); dark uses gold-500,
+     because on navy the brand gold is already text-safe at 6.98:1 and the darker
+     substitute would be a needless loss of brand presence. */
+  --vv-color-text-brand: light-dark(#806719, #c9a227);
+
+  /* Text on a gold-500 fill. Navy on gold is 6.98:1; white on gold is 2.42:1 and
+     fails, which is why a gold button carries navy text and never white. */
+  --vv-color-text-on-gold: #0e1b3d;
+
+  /* --- Borders ------------------------------------------------------------
+     `default` and `divider` sit deliberately below 3:1 — a hairline is a hint,
+     not an edge, and must not compete with content. `input` and `focus` clear
+     the 3:1 non-text requirement in WCAG 1.4.11 and 2.4.11 respectively. */
+  --vv-color-border-default: light-dark(#e8dfc7, #1b3374);
+  --vv-color-border-strong: light-dark(#dbcda9, #224295);
+  --vv-color-border-input: light-dark(#8a8578, #6181d3);
+  --vv-color-border-focus: light-dark(#2e6bff, #4e82ff);
+  --vv-color-border-divider: light-dark(#f1ebdd, #142655);
+
+  /* --- State --------------------------------------------------------------
+     Each foreground clears 4.5:1 on its theme's page surface. The warning
+     foreground is a darkened amber: the obvious amber sits near 3.8:1 and fails
+     body text. Meaning is never carried by colour alone — every state pairs
+     with an icon and a text label, per WCAG 1.4.1. */
+  --vv-color-state-success: light-dark(#1f7a4c, #5fd39a);
+  --vv-color-state-success-tint: light-dark(#e4f0e8, #123524);
+  --vv-color-state-warning: light-dark(#995c00, #e8b45c);
+  --vv-color-state-warning-tint: light-dark(#fbeeda, #3a2c10);
+  --vv-color-state-danger: light-dark(#b3261e, #f2836f);
+  --vv-color-state-danger-tint: light-dark(#f8e4e1, #3d1512);
+  --vv-color-state-info: light-dark(#1b5e8a, #7cc4e8);
+  --vv-color-state-info-tint: light-dark(#e3edf4, #10293a);
+}
+
+/* --------------------------------------------------------------------------
+   4. Chart palette
+   --------------------------------------------------------------------------
+   Ordered so consecutive series alternate luminance bands: worst consecutive
+   separation is 2.28:1 on the light ramp and 2.47:1 on the dark ramp, and every
+   series clears the 3:1 non-text threshold against its surface. Hue alone never
+   carries meaning — a chart must label its series directly or ship a monochrome
+   alternative, per WCAG 1.4.1. Eight series maximum. */
+
+:root {
+  --vv-color-chart-1: light-dark(#142d7a, #acbdf2);
+  --vv-color-chart-2: light-dark(#977813, #8d7011);
+  --vv-color-chart-3: light-dark(#0c4742, #37ded0);
+  --vv-color-chart-4: light-dark(#e84760, #e63650);
+  --vv-color-chart-5: light-dark(#7d1f6e, #f0c5e9);
+  --vv-color-chart-6: light-dark(#709427, #6b8e26);
+  --vv-color-chart-7: light-dark(#784317, #f2d5bc);
+  --vv-color-chart-8: light-dark(#738fab, #718daa);
+
+  /* Gridlines sit deliberately below 3:1: they are scaffolding and must not
+     compete with the data. Axes and labels do not. */
+  --vv-color-chart-grid: light-dark(#e8dfc7, #1b3374);
+  --vv-color-chart-axis: light-dark(#7b766b, #9caddb);
+  --vv-color-chart-label: light-dark(#615d54, #c9d1e6);
+}
+
+/* --------------------------------------------------------------------------
+   5. Liturgical seasons
+   --------------------------------------------------------------------------
+   Additive themes, applied by `data-season` on <html>. A season changes the
+   ceremonial surface, its soft companion and one accent; the core identity is
+   untouched, so a site can mark Advent without becoming a different product.
+
+   Seasons are NOT theme-aware. Each declares its own surface and its own text
+   colour for that surface, which is why a season block reads correctly on a
+   light page and on a dark page without a second declaration: a season panel is
+   a coloured block sitting ON the page, not a recolouring OF the page.
+
+   Dates and rites are resolved by the consuming application from its own
+   calendar. Nothing here encodes a date range, because the start of Lent moves
+   every year and the Eastern calendars differ by weeks. During the Paschal
+   Triduum no season applies: omit the attribute. */
+
+:root {
+  /* Advent — expectation. Violet text-safe against gold (4.64:1) and ivory
+     (10.20:1). Rose is for a light ground only: 1.99:1 against the violet. */
+  --vv-season-advent-surface: #4a2c6d;
+  --vv-season-advent-surface-soft: #ede6f5;
+  --vv-season-advent-accent: #c9a227;
+  --vv-season-advent-accent-rose: #9c4f66;
+  --vv-season-advent-text-on-surface: #f7f4ec;
+  --vv-season-advent-text-muted-on-surface: #e8dfc7;
+  --vv-season-advent-text-on-soft: #0e1b3d;
+  --vv-season-advent-rule: #6b4e8c;
+
+  /* Lent — penitence. A deeper, more desaturated violet with ash rather than
+     gold. Ash is 5.37:1 on ivory and 4.96:1 on the soft surface, so it is
+     text-safe on both, and white on an ash fill is 5.90:1. Ash on the violet
+     surface is 2.13:1 and navy on ash is 2.86:1, so ash works as a foreground
+     on a light ground only; the dark surface takes the rule token. */
+  --vv-season-lent-surface: #3e2a55;
+  --vv-season-lent-surface-soft: #edebe7;
+  --vv-season-lent-accent: #666460;
+  --vv-season-lent-accent-rose: #9c4f66;
+  --vv-season-lent-text-on-surface: #f7f4ec;
+  --vv-season-lent-text-muted-on-surface: #e8dfc7;
+  --vv-season-lent-text-on-soft: #0e1b3d;
+  --vv-season-lent-rule: #5b4473;
+  --vv-season-lent-gold-permitted: #c9a227;
+
+  /* Easter — light. The only season whose surface is white, which is the whole
+     point: after six weeks of violet the page should feel like it has opened a
+     window. Gold returns at full strength as DECORATION only (2.42:1 against
+     white); gold as text uses the darkened variant at 5.42:1. */
+  --vv-season-easter-surface: #ffffff;
+  --vv-season-easter-surface-soft: #fdfbf6;
+  --vv-season-easter-accent: #c9a227;
+  --vv-season-easter-accent-text: #806719;
+  --vv-season-easter-text-on-surface: #0e1b3d;
+  --vv-season-easter-text-muted-on-surface: #615d54;
+  --vv-season-easter-text-on-soft: #0e1b3d;
+  --vv-season-easter-rule: #e8dfc7;
+  --vv-season-easter-pentecost: #a31621;
+
+  /* Ordinary Time — growth, and the default for content that is not tied to a
+     season, which is most content most of the year. Gold on green is 3.28:1: it
+     clears the 3:1 non-text threshold and fails the 4.5:1 text threshold, which
+     is exactly the distinction a reviewer is most likely to blur. */
+  --vv-season-ordinary-surface: #1f5c3a;
+  --vv-season-ordinary-surface-soft: #e4f0e8;
+  --vv-season-ordinary-accent: #c9a227;
+  --vv-season-ordinary-accent-text: #e8d187;
+  --vv-season-ordinary-text-on-surface: #f7f4ec;
+  --vv-season-ordinary-text-muted-on-surface: #e8dfc7;
+  --vv-season-ordinary-text-on-soft: #0e1b3d;
+  --vv-season-ordinary-rule: #2e7a4e;
+}
+
+/* --------------------------------------------------------------------------
+   6. Church contexts
+   --------------------------------------------------------------------------
+   The colour roles a page ABOUT a context needs, applied by `data-context`.
+   These are page-level, never component-level: two adjacent components in
+   different contexts on one page is not a design. */
+
+:root {
+  /* Funeral and bereavement. Austere: no gold, no saturated accent, no
+     celebratory green. Links stay inside the navy family rather than switching
+     to blue, because a bright interactive colour on a funeral page reads as
+     commerce. Text contrast is 17.04:1, the highest in the system, because the
+     audience is frequently elderly and frequently distressed. */
+  --vv-church-funeral-surface: #091127;
+  --vv-church-funeral-surface-raised: #0e1b3d;
+  --vv-church-funeral-text: #f7f4ec;
+  --vv-church-funeral-text-muted: #9caddb;
+  --vv-church-funeral-accent: #9caddb;
+  --vv-church-funeral-rule: #1b3374;
+
+  /* Cemetery and memorial garden. Stone and weathered bronze. The pale surface
+     is chosen for legibility in direct daylight, which is where a graveside
+     phone is actually used. */
+  --vv-church-cemetery-surface: #f1ebdd;
+  --vv-church-cemetery-surface-raised: #ffffff;
+  --vv-church-cemetery-text: #0e1b3d;
+  --vv-church-cemetery-text-muted: #615d54;
+  --vv-church-cemetery-accent: #806719;
+  --vv-church-cemetery-rule: #dbcda9;
+
+  /* Parish life: rotas, notices, giving. The warmest and most ordinary context,
+     and the default look of a ViaVitae parish page. */
+  --vv-church-parish-surface: #f7f4ec;
+  --vv-church-parish-surface-raised: #ffffff;
+  --vv-church-parish-text: #0e1b3d;
+  --vv-church-parish-text-muted: #615d54;
+  --vv-church-parish-accent: #806719;
+  --vv-church-parish-rule: #e8dfc7;
+
+  /* Basilica, cathedral and heritage: the ceremonial register, the inverse of
+     parish. Gold is text-safe here at 6.98:1, which is precisely why the
+     ceremonial register is dark. */
+  --vv-church-basilica-surface: #0e1b3d;
+  --vv-church-basilica-surface-raised: #142655;
+  --vv-church-basilica-text: #f7f4ec;
+  --vv-church-basilica-text-muted: #9caddb;
+  --vv-church-basilica-accent: #c9a227;
+  --vv-church-basilica-rule: #ab8a21;
+}
+
+/* --------------------------------------------------------------------------
+   7. Typography
+   --------------------------------------------------------------------------
+   Stacks, weights and the complete type scale. A component consumes a whole
+   role — size, weight, line-height, letter-spacing together — rather than
+   setting a font-size and then hand-coding a line-height that disagrees with
+   the scale. reset.css maps each role onto an element or a utility class.
+
+   `--vv-font-display-cyrillic` is not a stylistic alternative. Fraunces does not
+   declare Cyrillic coverage, so a Russian heading set in the display face falls
+   back glyph by glyph and renders as two typefaces in one line. The `[lang="ru"]`
+   rule at the end of this section applies the Cyrillic display stack
+   automatically. Verify the coverage claim against the actual font binaries with
+   `python3 tools/cyrillic_check.py` before a release: a subsetted WOFF2 can drop
+   a block that the upstream release has. */
+
+:root {
+  --vv-font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino,
+    Georgia, serif;
+  --vv-font-display-cyrillic: "Noto Serif", "PT Serif", Georgia, serif;
+  --vv-font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --vv-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --vv-font-weight-light: 300;
+  --vv-font-weight-regular: 400;
+  --vv-font-weight-medium: 500;
+  --vv-font-weight-semibold: 600;
+  --vv-font-weight-bold: 700;
+
+  /* Root size. The whole scale is rem-based, so a user who has set a larger
+     browser default gets the whole system scaled, which is the point of rem and
+     the reason no value below is in px. */
+  --vv-font-size-root: 100%;
+
+  /* Display — Fraunces. Line-height tightens as size grows, and letter-spacing
+     goes negative for the same reason: large type appears looser than it is. */
+  --vv-text-display-2xl-size: 4.5rem;
+  --vv-text-display-2xl-line-height: 1.05;
+  --vv-text-display-2xl-letter-spacing: -0.02em;
+  --vv-text-display-2xl-weight: var(--vv-font-weight-bold);
+  --vv-text-display-2xl-fluid: clamp(2.75rem, 1.4rem + 5.6vw, 4.5rem);
+
+  --vv-text-display-xl-size: 3.75rem;
+  --vv-text-display-xl-line-height: 1.08;
+  --vv-text-display-xl-letter-spacing: -0.02em;
+  --vv-text-display-xl-weight: var(--vv-font-weight-bold);
+  --vv-text-display-xl-fluid: clamp(2.375rem, 1.4rem + 3.9vw, 3.75rem);
+
+  --vv-text-display-lg-size: 3rem;
+  --vv-text-display-lg-line-height: 1.1;
+  --vv-text-display-lg-letter-spacing: -0.015em;
+  --vv-text-display-lg-weight: var(--vv-font-weight-semibold);
+  --vv-text-display-lg-fluid: clamp(2rem, 1.3rem + 2.8vw, 3rem);
+
+  --vv-text-display-md-size: 2.25rem;
+  --vv-text-display-md-line-height: 1.15;
+  --vv-text-display-md-letter-spacing: -0.01em;
+  --vv-text-display-md-weight: var(--vv-font-weight-semibold);
+  --vv-text-display-md-fluid: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+
+  --vv-text-display-sm-size: 1.875rem;
+  --vv-text-display-sm-line-height: 1.2;
+  --vv-text-display-sm-letter-spacing: -0.01em;
+  --vv-text-display-sm-weight: var(--vv-font-weight-semibold);
+
+  /* Headings. h1-h3 Fraunces; h4-h6 Inter, because below 20px a serif's
+     hairlines lose definition at typical screen densities and the smaller
+     headings are doing structural UI work. */
+  --vv-text-heading-1-size: 2.25rem;
+  --vv-text-heading-1-line-height: 1.2;
+  --vv-text-heading-1-letter-spacing: -0.01em;
+  --vv-text-heading-1-weight: var(--vv-font-weight-semibold);
+  --vv-text-heading-1-fluid: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+
+  --vv-text-heading-2-size: 1.875rem;
+  --vv-text-heading-2-line-height: 1.25;
+  --vv-text-heading-2-letter-spacing: -0.01em;
+  --vv-text-heading-2-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-heading-3-size: 1.5rem;
+  --vv-text-heading-3-line-height: 1.3;
+  --vv-text-heading-3-letter-spacing: -0.005em;
+  --vv-text-heading-3-weight: var(--vv-font-weight-medium);
+
+  --vv-text-heading-4-size: 1.25rem;
+  --vv-text-heading-4-line-height: 1.35;
+  --vv-text-heading-4-letter-spacing: 0em;
+  --vv-text-heading-4-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-heading-5-size: 1.125rem;
+  --vv-text-heading-5-line-height: 1.4;
+  --vv-text-heading-5-letter-spacing: 0em;
+  --vv-text-heading-5-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-heading-6-size: 1rem;
+  --vv-text-heading-6-line-height: 1.45;
+  --vv-text-heading-6-letter-spacing: 0.005em;
+  --vv-text-heading-6-weight: var(--vv-font-weight-semibold);
+
+  /* Body. body-md is the default and the only size for prose longer than three
+     paragraphs. */
+  --vv-text-body-xl-size: 1.25rem;
+  --vv-text-body-xl-line-height: 1.6;
+  --vv-text-body-xl-letter-spacing: -0.005em;
+  --vv-text-body-xl-weight: var(--vv-font-weight-regular);
+
+  --vv-text-body-lg-size: 1.125rem;
+  --vv-text-body-lg-line-height: 1.65;
+  --vv-text-body-lg-letter-spacing: 0em;
+  --vv-text-body-lg-weight: var(--vv-font-weight-regular);
+
+  --vv-text-body-md-size: 1rem;
+  --vv-text-body-md-line-height: 1.6;
+  --vv-text-body-md-letter-spacing: 0em;
+  --vv-text-body-md-weight: var(--vv-font-weight-regular);
+
+  --vv-text-body-sm-size: 0.875rem;
+  --vv-text-body-sm-line-height: 1.55;
+  --vv-text-body-sm-letter-spacing: 0.005em;
+  --vv-text-body-sm-weight: var(--vv-font-weight-regular);
+
+  --vv-text-body-strong-size: 1rem;
+  --vv-text-body-strong-line-height: 1.6;
+  --vv-text-body-strong-letter-spacing: 0em;
+  --vv-text-body-strong-weight: var(--vv-font-weight-semibold);
+
+  /* Utility. caption at 12px is THE MINIMUM TEXT SIZE in the system. */
+  --vv-text-caption-size: 0.75rem;
+  --vv-text-caption-line-height: 1.45;
+  --vv-text-caption-letter-spacing: 0.01em;
+  --vv-text-caption-weight: var(--vv-font-weight-medium);
+
+  /* The only uppercase role. 0.1em is the floor for legible uppercase at 12px;
+     below about 0.08em the words close into a grey bar. Ligatures are disabled
+     here because the fi and fl joins read as errors at this size. */
+  --vv-text-overline-size: 0.75rem;
+  --vv-text-overline-line-height: 1.3;
+  --vv-text-overline-letter-spacing: 0.1em;
+  --vv-text-overline-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-code-size: 0.875rem;
+  --vv-text-code-line-height: 1.6;
+  --vv-text-code-letter-spacing: 0em;
+  --vv-text-code-weight: var(--vv-font-weight-regular);
+
+  /* A single headline number. Tabular figures are mandatory: a metric that
+     resizes as its digits change is unreadable, and a row of metrics that does
+     not align is worse than no metrics. */
+  --vv-text-metric-size: 2.25rem;
+  --vv-text-metric-line-height: 1.1;
+  --vv-text-metric-letter-spacing: -0.02em;
+  --vv-text-metric-weight: var(--vv-font-weight-bold);
+
+  /* Buttons. button-lg is deliberately one pixel above body-md: a button label
+     at exactly body size disappears into surrounding prose, and the primary
+     call to action is the one element that must not. */
+  --vv-text-button-lg-size: 1.0625rem;
+  --vv-text-button-lg-line-height: 1.2;
+  --vv-text-button-lg-letter-spacing: 0.005em;
+  --vv-text-button-lg-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-button-md-size: 0.9375rem;
+  --vv-text-button-md-line-height: 1.2;
+  --vv-text-button-md-letter-spacing: 0.005em;
+  --vv-text-button-md-weight: var(--vv-font-weight-semibold);
+
+  --vv-text-nav-size: 0.9375rem;
+  --vv-text-nav-line-height: 1.2;
+  --vv-text-nav-letter-spacing: 0.01em;
+  --vv-text-nav-weight: var(--vv-font-weight-medium);
+
+  /* Measure. Line length is the single largest determinant of reading comfort
+     and the one most often left to a container width that happens to be 1200px.
+     Enforced as max-width on the prose container, never on the page. */
+  --vv-measure-optimal: 66ch;
+  --vv-measure-max: 75ch;
+  --vv-measure-min: 35ch;
+  --vv-measure-narrow: 45ch;
+
+  /* OpenType settings. Every one of these must be confirmed against the shipped
+     font file: a CSS request for a feature the font does not implement is
+     silently ignored, so the design looks correct in a mockup and wrong in
+     production with no error anywhere. */
+  --vv-font-variant-numerals-tabular: tabular-nums;
+  --vv-font-variant-numerals-lining: lining-nums;
+  --vv-font-variant-numerals-proportional: proportional-nums;
+  --vv-font-variant-ligatures-common: common-ligatures;
+  --vv-font-variant-ligatures-none: no-common-ligatures;
+}
+
+/* Russian: swap the display face, keep the UI face. Inter covers Cyrillic, so
+   only the display role changes. */
+[lang="ru"] :root,
+:root [lang="ru"],
+[lang="ru"] {
+  --vv-font-display-active: var(--vv-font-display-cyrillic);
+}
+
+/* Every other locale uses the Latin display face. Declared on :root so the
+   variable always resolves, rather than being undefined until a locale matches. */
+:root {
+  --vv-font-display-active: var(--vv-font-display);
+}
+
+[lang="ru"],
+[lang="ru"] * {
+  font-family: var(--vv-font-display-cyrillic), var(--vv-font-ui);
+}
+
+/* --------------------------------------------------------------------------
+   8. Spacing
+   --------------------------------------------------------------------------
+   4pt base scale. Every margin, padding and gap is one of these values; an
+   off-scale value is a defect that shows up as a page that looks almost right
+   and cannot be fixed by anyone who did not build it. */
+
+:root {
+  --vv-spacing-0: 0px;
+  --vv-spacing-px: 1px;
+  --vv-spacing-0-5: 2px;
+  --vv-spacing-1: 4px;
+  --vv-spacing-2: 8px;
+  --vv-spacing-3: 12px;
+  --vv-spacing-4: 16px;
+  --vv-spacing-6: 24px;
+  --vv-spacing-8: 32px;
+  --vv-spacing-10: 40px;
+  --vv-spacing-12: 48px;
+  --vv-spacing-16: 64px;
+  --vv-spacing-20: 80px;
+  --vv-spacing-24: 96px;
+  --vv-spacing-32: 128px;
+  --vv-spacing-40: 160px;
+  --vv-spacing-48: 192px;
+
+  /* Composite component spacing. These exist because "the padding inside a
+     button" is a design decision that should be made once. */
+  --vv-button-padding-x-lg: var(--vv-spacing-6);
+  --vv-button-padding-y-lg: var(--vv-spacing-3);
+  --vv-button-padding-x-md: var(--vv-spacing-4);
+  --vv-button-padding-y-md: var(--vv-spacing-2);
+  --vv-input-padding-x: var(--vv-spacing-3);
+  --vv-input-padding-y: var(--vv-spacing-3);
+  --vv-card-padding: var(--vv-spacing-6);
+  --vv-card-gap: var(--vv-spacing-4);
+  --vv-list-item-gap: var(--vv-spacing-3);
+  --vv-icon-label-gap: var(--vv-spacing-2);
+
+  /* Focus indicator. 2px ring with a 2px offset: WCAG 2.2 SC 2.4.11 requires
+     the indicator to enclose an area at least equal to a 2 CSS pixel thick
+     perimeter, so a 1px ring fails regardless of its contrast. The offset keeps
+     the ring from merging with the control's own border. */
+  --vv-focus-ring-width: 2px;
+  --vv-focus-ring-offset: var(--vv-spacing-0-5);
+
+  /* Layout. Gutters step at the breakpoints in section 11. */
+  --vv-gutter: var(--vv-spacing-4);
+  --vv-gutter-md: var(--vv-spacing-6);
+  --vv-gutter-lg: var(--vv-spacing-8);
+  --vv-gutter-xl: var(--vv-spacing-12);
+  --vv-container-max: 1280px;
+  --vv-container-prose: 720px;
+  --vv-container-wide: 1536px;
+  --vv-section-gap: var(--vv-spacing-16);
+  --vv-grid-gap: var(--vv-spacing-6);
+  --vv-stack-gap: var(--vv-spacing-4);
+
+  /* Border widths. Not spacing, and kept out of the spacing scale. */
+  --vv-border-hairline: 1px;
+  --vv-border-medium: 2px;
+  --vv-border-heavy: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Radius
+   --------------------------------------------------------------------------
+   Close to square by design. A church-vertical identity built on stone, print
+   and liturgical book is undermined by the soft pill corners of a consumer app.
+   Inner radius rule: an element inside a rounded container with padding between
+   them takes max(0, outer - padding). */
+
+:root {
+  --vv-radius-none: 0px;
+  --vv-radius-xs: 2px;
+  --vv-radius-sm: 4px;
+  --vv-radius-md: 6px;
+  --vv-radius-lg: 8px;
+  --vv-radius-xl: 12px;
+  /* 9999px rather than 50%: a percentage radius on a non-square element
+     produces an ellipse, so a 44px-tall pill button becomes an oval. 9999px
+     clamps to half the shorter side and stays a pill at any size. */
+  --vv-radius-pill: 9999px;
+  --vv-radius-circle: 50%;
+}
+
+/* --------------------------------------------------------------------------
+   10. Elevation
+   --------------------------------------------------------------------------
+   Composed per level, per theme, because the two themes differ in more than
+   colour: the dark stack leads with an inset hairline highlight and the light
+   stack does not, and `inset` is not something a colour variable can express.
+
+   The per-theme layer lists are held in private `--_` properties so that each
+   `light-dark()` call receives exactly two arguments. A comma-separated shadow
+   list passed directly into `light-dark()` would parse as more than two
+   arguments and invalidate the whole declaration.
+
+   A drop shadow is the wrong elevation mechanism on navy — there is almost
+   nothing left to darken — so the dark stack substitutes a surface step plus a
+   hairline top edge, which is how a real object reads in a dark room. Every
+   level also pairs with a border, because forced-colors mode removes box-shadow
+   entirely and a border survives it. */
+
+:root {
+  /* Level 0 — the page and anything flush with it. */
+  --_vv-elevation-none-light: none;
+  --_vv-elevation-none-dark: none;
+  --vv-elevation-none: light-dark(
+    var(--_vv-elevation-none-light),
+    var(--_vv-elevation-none-dark)
+  );
+
+  /* Level 1 — a card. Two layers: the tight one defines the edge, the soft one
+     gives the impression of distance, and a single blur cannot do both. Alpha
+     is 5% and 8%, deliberately faint, because a strong shadow on ivory reads as
+     a floating sticker. */
+  --_vv-elevation-raised-light: 0 1px 2px 0 #0e1b3d0d, 0 2px 4px 0 #0e1b3d14;
+  --_vv-elevation-raised-dark: inset 0 1px 0 0 #f7f4ec12, 0 4px 12px 0 #050a1a80;
+  --vv-elevation-raised: light-dark(
+    var(--_vv-elevation-raised-light),
+    var(--_vv-elevation-raised-dark)
+  );
+
+  /* Level 2 — a dropdown, popover or tooltip. The 8px/16px layer is what
+     distinguishes level 2 from level 1: an overlay has to read as being above
+     the page rather than merely raised on it. */
+  --_vv-elevation-overlay-light: 0 2px 4px 0 #0e1b3d14, 0 8px 16px 0 #0e1b3d1f;
+  --_vv-elevation-overlay-dark: inset 0 1px 0 0 #f7f4ec1a, 0 8px 24px 0 #050a1ab3;
+  --vv-elevation-overlay: light-dark(
+    var(--_vv-elevation-overlay-light),
+    var(--_vv-elevation-overlay-dark)
+  );
+
+  /* Level 3 — a dialog. The heaviest shadow in the system, and paired with a
+     scrim rather than relying on the shadow alone. */
+  --_vv-elevation-modal-light: 0 8px 16px 0 #0e1b3d1f, 0 24px 48px 0 #0e1b3d33;
+  --_vv-elevation-modal-dark: inset 0 1px 0 0 #f7f4ec1f, 0 24px 64px 0 #050a1ae6;
+  --vv-elevation-modal: light-dark(
+    var(--_vv-elevation-modal-light),
+    var(--_vv-elevation-modal-dark)
+  );
+
+  /* Level 4 — a toast, arriving over content without a scrim. */
+  --_vv-elevation-toast-light: 0 4px 12px 0 #0e1b3d29, 0 16px 32px 0 #0e1b3d1f;
+  --_vv-elevation-toast-dark: inset 0 1px 0 0 #f7f4ec24, 0 12px 32px 0 #050a1acc;
+  --vv-elevation-toast: light-dark(
+    var(--_vv-elevation-toast-light),
+    var(--_vv-elevation-toast-dark)
+  );
+
+  /* :active — an inset shadow that pushes a control INTO the surface, so a press
+     has a physical response that does not depend on colour alone. */
+  --_vv-elevation-pressed-light: inset 0 1px 2px 0 #0e1b3d14;
+  --_vv-elevation-pressed-dark: inset 0 2px 4px 0 #050a1a99;
+  --vv-elevation-pressed: light-dark(
+    var(--_vv-elevation-pressed-light),
+    var(--_vv-elevation-pressed-dark)
+  );
+
+  /* Surface and border that go with each level. Setting the shadow without the
+     surface step loses the elevation on the dark theme entirely. */
+  --vv-elevation-raised-surface: var(--vv-color-surface-raised);
+  --vv-elevation-raised-border: var(--vv-color-border-default);
+  --vv-elevation-overlay-surface: var(--vv-color-surface-raised);
+  --vv-elevation-overlay-border: var(--vv-color-border-strong);
+  --vv-elevation-modal-surface: var(--vv-color-surface-raised);
+  --vv-elevation-modal-border: var(--vv-color-border-strong);
+  --vv-elevation-toast-surface: var(--vv-color-surface-raised);
+  --vv-elevation-toast-border: var(--vv-color-border-default);
+}
+
+/* --------------------------------------------------------------------------
+   11. Motion
+   --------------------------------------------------------------------------
+   Motion has one job: to explain where something came from and where it went.
+   The useful band is 100-300ms and most of the system lives there. Only
+   transform and opacity are cheap to animate; transition-expand animating
+   height is the single permitted layout animation, because no transform can
+   express "grow to fit content". */
+
+:root {
+  --vv-duration-instant: 0ms;
+  --vv-duration-immediate: 80ms;
+  --vv-duration-fast: 120ms;
+  --vv-duration-base: 200ms;
+  --vv-duration-moderate: 320ms;
+  --vv-duration-slow: 480ms;
+  --vv-duration-deliberate: 720ms;
+  --vv-duration-ceremonial: 1200ms;
+
+  /* No curve here overshoots. A spring is a simulator-sickness trigger and is
+     rejected outright rather than merely disabled under reduced motion, so no
+     component can come to depend on it. `linear` is restricted to elapsed-time
+     indicators: easing a progress bar misrepresents the remaining time. */
+  --vv-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --vv-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --vv-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --vv-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --vv-easing-linear: cubic-bezier(0, 0, 1, 1);
+
+  /* Named transitions. A component uses one of these and never assembles its
+     own, because the failure mode of a hand-assembled transition is a property
+     list that quietly omits one of the properties the design changes. */
+  --vv-transition-color: color var(--vv-duration-fast) var(--vv-easing-standard),
+    background-color var(--vv-duration-fast) var(--vv-easing-standard),
+    border-color var(--vv-duration-fast) var(--vv-easing-standard),
+    fill var(--vv-duration-fast) var(--vv-easing-standard),
+    stroke var(--vv-duration-fast) var(--vv-easing-standard);
+  --vv-transition-interactive: color var(--vv-duration-fast) var(--vv-easing-standard),
+    background-color var(--vv-duration-fast) var(--vv-easing-standard),
+    border-color var(--vv-duration-fast) var(--vv-easing-standard),
+    box-shadow var(--vv-duration-fast) var(--vv-easing-standard),
+    transform var(--vv-duration-fast) var(--vv-easing-standard);
+  --vv-transition-expand: height var(--vv-duration-base) var(--vv-easing-standard),
+    opacity var(--vv-duration-base) var(--vv-easing-standard);
+  --vv-transition-enter: opacity var(--vv-duration-moderate) var(--vv-easing-decelerate),
+    transform var(--vv-duration-moderate) var(--vv-easing-decelerate);
+  /* Exit is deliberately shorter than enter: a dismissal that takes as long as
+     an arrival makes the interface feel slow to obey. */
+  --vv-transition-exit: opacity var(--vv-duration-base) var(--vv-easing-accelerate),
+    transform var(--vv-duration-base) var(--vv-easing-accelerate);
+  --vv-transition-fade: opacity var(--vv-duration-base) var(--vv-easing-standard);
+  --vv-transition-reveal: opacity var(--vv-duration-ceremonial) var(--vv-easing-emphasized),
+    transform var(--vv-duration-ceremonial) var(--vv-easing-emphasized),
+    clip-path var(--vv-duration-ceremonial) var(--vv-easing-emphasized);
+  --vv-transition-progress: width var(--vv-duration-base) var(--vv-easing-linear);
+
+  /* Layer order, declared once so a modal is always above a toast that is
+     always above a dropdown, instead of each component picking a number and the
+     highest winning by accident. Sparse on purpose: the gaps leave room for a
+     new layer without renumbering the ones above it. */
+  --vv-z-base: 0;
+  --vv-z-raised: 10;
+  --vv-z-sticky: 100;
+  --vv-z-dropdown: 500;
+  --vv-z-overlay: 800;
+  --vv-z-modal: 1000;
+  --vv-z-toast: 1200;
+  --vv-z-tooltip: 1400;
+  --vv-z-skip-link: 9999;
+}
+
+/* --------------------------------------------------------------------------
+   12. Breakpoints and containers
+   --------------------------------------------------------------------------
+   A CSS custom property cannot be used in a media query condition, so the
+   breakpoint values are declared here as documentation and as the source of
+   truth for container queries (which DO accept custom properties via
+   `container-type`), and the media queries themselves are written literally in
+   reset.css. If a breakpoint value changes, both places change, and
+   tools/validate_tokens.py fails the build when they disagree. */
+
+:root {
+  --vv-breakpoint-sm: 640px;
+  --vv-breakpoint-md: 768px;
+  --vv-breakpoint-lg: 1024px;
+  --vv-breakpoint-xl: 1280px;
+  --vv-breakpoint-xxl: 1536px;
+  --vv-viewport-minimum: 320px;
+
+  --vv-container-xs: 240px;
+  --vv-container-sm: 384px;
+  --vv-container-md: 448px;
+  --vv-container-lg: 576px;
+  --vv-container-xl: 768px;
+}
+
+/* --------------------------------------------------------------------------
+   13. Icons
+   -------------------------------------------------------------------------- */
+
+:root {
+  --vv-icon-grid: 24px;
+  --vv-icon-live-area: 20px;
+  --vv-icon-stroke-base: 1.5px;
+  --vv-icon-xs: 16px;
+  --vv-icon-xs-stroke: 1.75px;
+  --vv-icon-sm: 20px;
+  --vv-icon-sm-stroke: 1.75px;
+  --vv-icon-md: 24px;
+  --vv-icon-md-stroke: 1.5px;
+  --vv-icon-lg: 32px;
+  --vv-icon-lg-stroke: 1.5px;
+  --vv-icon-xl: 48px;
+  --vv-icon-xl-stroke: 1.25px;
+  --vv-icon-clear-space: 4px;
+  --vv-icon-gap-to-text: var(--vv-spacing-2);
+  --vv-icon-gap-to-icon: var(--vv-spacing-3);
+  --vv-icon-colour: var(--vv-color-text-secondary);
+  --vv-icon-colour-muted: var(--vv-color-text-muted);
+  --vv-icon-colour-interactive: var(--vv-color-text-link);
+  --vv-icon-colour-on-gold: var(--vv-color-text-on-gold);
+  /* 44px for anything primary; 24px is the absolute AA floor in WCAG 2.2
+     SC 2.5.8. */
+  --vv-touch-target: 44px;
+  --vv-touch-target-floor: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   14. Fallback metric overrides
+   --------------------------------------------------------------------------
+   Applied to the fallback faces so a `font-display: swap` reflow is a change of
+   texture rather than a change of layout. Without these a 72px Fraunces
+   headline reflows to a different height when the webfont lands and everything
+   below it jumps — the classic cumulative-layout-shift failure, and the reason
+   font loading belongs in a Core Web Vitals gate.
+
+   These are `@font-face` blocks for locally-installed copies of the fallback
+   families, reached through `local()`. They cost no network request. If the
+   fallback is not installed locally the block does not match and the plain
+   family name in the stack is used instead, which is the correct degradation. */
+
+@font-face {
+  font-family: "ViaVitae Display Fallback";
+  src: local("Iowan Old Style"), local("Palatino Linotype"), local("Palatino"),
+    local("Georgia");
+  size-adjust: 100%;
+  ascent-override: 75%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "ViaVitae UI Fallback";
+  src: local("system-ui"), local("-apple-system"), local("Segoe UI"),
+    local("Roboto"), local("Helvetica Neue"), local("Arial");
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+/* --------------------------------------------------------------------------
+   15. User-preference adaptations
+   -------------------------------------------------------------------------- */
+
+/* Stronger contrast on request. Muted text steps up to secondary, the default
+   border steps up to strong, and a tinted state surface is replaced by its
+   foreground at full strength. This is a real accessibility path, tested in CI
+   alongside the default palette.
+
+   `prefers-contrast: less` is recognised and deliberately NOT acted on:
+   reducing contrast below the WCAG minimums to honour a preference would fail
+   the AA gate this system is required to meet. */
+@media (prefers-contrast: more) {
+  :root {
+    --vv-color-text-muted: var(--vv-color-text-secondary);
+    --vv-color-border-default: var(--vv-color-border-strong);
+    --vv-color-border-divider: var(--vv-color-border-strong);
+    --vv-color-state-success-tint: transparent;
+    --vv-color-state-warning-tint: transparent;
+    --vv-color-state-danger-tint: transparent;
+    --vv-color-state-info-tint: transparent;
+    --vv-color-chart-grid: var(--vv-color-chart-axis);
+  }
+}
+
+/* Less transparency on request. A backdrop blur over scrolling text is a genuine
+   readability problem, not a stylistic preference, so any translucent surface
+   becomes opaque. */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --vv-color-surface-overlay: light-dark(#091127, #050a1a);
+  }
+}
+
+/* Forced colours: Windows High Contrast and forced-colors user agent styles.
+   Every colour declared above is overridden by system colours, box-shadow is
+   removed and border-radius may be removed. Only border widths, text and
+   structure survive — which is exactly why every elevation level pairs with a
+   border and why no state in this system is communicated by colour alone.
+   `forced-color-adjust: none` is deliberately NOT set anywhere: opting out of
+   forced colours is how a site becomes unusable in high-contrast mode. */
+@media (forced-colors: active) {
+  :root {
+    --vv-elevation-none: none;
+    --vv-elevation-raised: none;
+    --vv-elevation-overlay: none;
+    --vv-elevation-modal: none;
+    --vv-elevation-toast: none;
+    --vv-elevation-pressed: none;
+    --vv-color-border-default: CanvasText;
+    --vv-color-border-strong: CanvasText;
+    --vv-color-border-input: CanvasText;
+    --vv-color-border-focus: Highlight;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. light-dark() fallback
+   --------------------------------------------------------------------------
+   A browser without `light-dark()` gets the complete light-theme value set,
+   rendered as literal values. The dark theme is unavailable there; the light
+   theme is correct rather than blank, which is the right failure mode for a
+   parish website whose visitors do not control their browser version. */
+
+@supports not (color: light-dark(#000, #fff)) {
+  :root {
+    --vv-color-surface-page: #f7f4ec;
+    --vv-color-surface-raised: #ffffff;
+    --vv-color-surface-sunken: #f1ebdd;
+    --vv-color-surface-overlay: #0e1b3dcc;
+    --vv-color-surface-inverse: #0e1b3d;
+
+    --vv-color-text-primary: #0e1b3d;
+    --vv-color-text-secondary: #1b3374;
+    --vv-color-text-muted: #615d54;
+    --vv-color-text-disabled: #b8b5ad;
+    --vv-color-text-inverse: #f7f4ec;
+    --vv-color-text-link: #0046f0;
+    --vv-color-text-link-hover: #0039c2;
+    --vv-color-text-link-raised: #0046f0;
+    --vv-color-text-link-visited: #7d1f6e;
+    --vv-color-text-brand: #806719;
+
+    --vv-color-border-default: #e8dfc7;
+    --vv-color-border-strong: #dbcda9;
+    --vv-color-border-input: #8a8578;
+    --vv-color-border-focus: #2e6bff;
+    --vv-color-border-divider: #f1ebdd;
+
+    --vv-color-state-success: #1f7a4c;
+    --vv-color-state-success-tint: #e4f0e8;
+    --vv-color-state-warning: #995c00;
+    --vv-color-state-warning-tint: #fbeeda;
+    --vv-color-state-danger: #b3261e;
+    --vv-color-state-danger-tint: #f8e4e1;
+    --vv-color-state-info: #1b5e8a;
+    --vv-color-state-info-tint: #e3edf4;
+
+    --vv-color-chart-1: #142d7a;
+    --vv-color-chart-2: #977813;
+    --vv-color-chart-3: #0c4742;
+    --vv-color-chart-4: #e84760;
+    --vv-color-chart-5: #7d1f6e;
+    --vv-color-chart-6: #709427;
+    --vv-color-chart-7: #784317;
+    --vv-color-chart-8: #738fab;
+    --vv-color-chart-grid: #e8dfc7;
+    --vv-color-chart-axis: #7b766b;
+    --vv-color-chart-label: #615d54;
+
+    --vv-elevation-none: none;
+    --vv-elevation-raised: var(--_vv-elevation-raised-light);
+    --vv-elevation-overlay: var(--_vv-elevation-overlay-light);
+    --vv-elevation-modal: var(--_vv-elevation-modal-light);
+    --vv-elevation-toast: var(--_vv-elevation-toast-light);
+    --vv-elevation-pressed: var(--_vv-elevation-pressed-light);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    :root {
+      --vv-color-surface-overlay: #091127;
+    }
+  }
+}

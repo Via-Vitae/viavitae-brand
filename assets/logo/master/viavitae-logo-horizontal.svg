@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" width="1000" height="200" role="img" aria-labelledby="vv-h-title">
+  <title id="vv-h-title">ViaVitae</title>
+
+  <!--
+    PRIMARY INLINE LOCKUP: the mark left, the wordmark right, on one baseline
+    band. This is the version that goes in a header, a footer, an email
+    signature and a slide. Artboard 1000 by 200.
+
+    THE ARTBOARD IS THE CLEAR SPACE. The INK occupies x from 50 to 950 and y
+    from 50 to 150, so the 50 units of empty artboard on all four sides ARE the
+    minimum clear space required by guidelines/logo-usage.md. A consumer who
+    places this file flush against another element has respected the rule
+    without reading it.
+
+    Measured to the ink and not to the path data, because a round cap projects
+    half a stroke width past the point it terminates at. The mark's stroke is 16,
+    so the two tail tips at x = 58 reach x = 50, and that is why the mark sits 8
+    units right of where its own coordinates would put it: the geometry is
+    positioned so the STROKE lands on the clear-space boundary. Positioning it to
+    the path would leave 42 units of margin on the left and 50 on the other three
+    sides, and a clear-space rule that is short on one side only is a rule nobody
+    can check by eye.
+
+    That margin is HALF THE CAP HEIGHT: 50 against a cap height of 100. It is
+    deliberately not described as "an x-height", which is the phrase the industry
+    reaches for and which would be false here, because the wordmark is eight
+    capitals and contains no lowercase x to measure. Half the cap height is the
+    same quantity that phrase means in practice, stated as something a designer
+    can take off any reproduction with a ruler at any scale. See the drawing in
+    assets/logo/construction/viavitae-logo-clearspace.svg.
+
+    THE MARK is the vesica piscis construction documented in full in
+    viavitae-logomark.svg, here at half scale: R = 125, centres (178, 175) and
+    (178, 25), stroke 16. Halving the 512 master keeps every coordinate exact,
+    because the master's integers are all even or differ by even amounts. The
+    gap from the mark's ink to the V is 34, less than the 50-unit clear space,
+    and that is intended: in an inline lockup the mark and the name sit on one
+    axis and have to read as a single object, so they are set tighter than
+    anything outside them may approach. The stacked lockup does the opposite and
+    uses a gap equal to the clear space, because there the axis changes and the
+    two need more air to hold together.
+
+    THE WORDMARK is outlined, not typeset. Eight letters, V I A V I T A E, drawn
+    as filled polygons on a grid of cap height 100, stroke thickness 14, letter
+    width 70 except I at 14, and letter gap 26, giving a total advance of 630.
+    Two consequences follow from outlining it, and both are the reason it is
+    outlined:
+
+      1. No font dependency. An SVG containing <text> renders in whatever the
+         viewing machine substitutes for the named family, so the logotype is a
+         different shape on every machine that lacks the font — which is every
+         machine that has not installed a webfont it was never told to fetch. A
+         logotype that varies by viewer is not a logotype.
+      2. Exact geometry. Every coordinate below is an integer. The diagonals use
+         a constant HORIZONTAL thickness of 14 rather than a constant
+         perpendicular thickness, which is what makes the inner apex of the V
+         land on (35, 60) and of the A on (35, 40) instead of on an irrational
+         number, and it is a legitimate geometric-display convention rather than
+         a shortcut.
+
+    The letters are V and I and A and T and E only, which is fortunate: all five
+    are straight-line letters, so the whole wordmark is rectangles and
+    parallelograms with no bezier curve anywhere in it. There is no <text>
+    element in this file and no font is referenced.
+
+    COLOUR. Navy-900 #0E1B3D throughout, on a transparent artboard. On the
+    default ivory page surface that is 15.37:1, and on a white card 16.90:1. The
+    artboard is transparent rather than ivory so the lockup can be placed on any
+    light ground; for a dark ground use assets/logo/inverse/.
+  -->
+
+  <!-- MARK: vesica piscis ichthys, half scale, positioned so the round caps on
+       the tail tips land on the clear-space boundary at x = 50. -->
+  <g fill="none" stroke="#0E1B3D" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 78 100 A 125 125 0 0 1 278 100 A 125 125 0 0 1 78 100 Z"/>
+    <path d="M 78 100 A 125 125 0 0 0 58 140"/>
+    <path d="M 78 100 A 125 125 0 0 1 58 60"/>
+  </g>
+
+  <!-- WORDMARK: V I A V I T A E, filled outlines. -->
+  <g fill="#0E1B3D">
+    <!-- V -->
+    <path d="M 320 50 L 355 150 L 390 50 L 376 50 L 355 110 L 334 50 Z"/>
+    <!-- I -->
+    <path d="M 416 50 H 430 V 150 H 416 Z"/>
+    <!-- A: chevron plus crossbar, one path so the fill cannot separate them -->
+    <path d="M 456 150 L 491 50 L 526 150 L 512 150 L 491 90 L 470 150 Z M 477 112 H 505 V 126 H 477 Z"/>
+    <!-- V -->
+    <path d="M 552 50 L 587 150 L 622 50 L 608 50 L 587 110 L 566 50 Z"/>
+    <!-- I -->
+    <path d="M 648 50 H 662 V 150 H 648 Z"/>
+    <!-- T -->
+    <path d="M 688 50 H 758 V 64 H 730 V 150 H 716 V 64 H 688 Z"/>
+    <!-- A -->
+    <path d="M 784 150 L 819 50 L 854 150 L 840 150 L 819 90 L 798 150 Z M 805 112 H 833 V 126 H 805 Z"/>
+    <!-- E -->
+    <path d="M 880 50 H 950 V 64 H 894 V 93 H 936 V 107 H 894 V 136 H 950 V 150 H 880 Z"/>
+  </g>
+</svg>

@@ -505,8 +505,8 @@ jobs:
           # A skipped job is not a failure: it means the stack was not present.
           # A job that did run must have succeeded.
           results='${{ toJSON(needs) }}'
-          failed=$(printf '%s' "$results" | grep -o '"result":"failure"' | wc -l)
-          cancelled=$(printf '%s' "$results" | grep -o '"result":"cancelled"' | wc -l)
+          failed=$(printf '%s' "$results" | grep -o '"result":"failure"' | wc -l || true)
+          cancelled=$(printf '%s' "$results" | grep -o '"result":"cancelled"' | wc -l || true)
           printf '%s' "$results" | grep -o '"[a-z-]*":{"result":"[a-z]*"' || true
           if [ "$failed" -ne 0 ] || [ "$cancelled" -ne 0 ]; then
             echo "::error::CI failed: ${failed} job(s) failed, ${cancelled} cancelled."

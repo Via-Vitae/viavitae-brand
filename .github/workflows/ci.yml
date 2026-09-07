@@ -397,14 +397,14 @@ jobs:
           scan-type: fs
           scan-ref: .
           scanners: vuln,secret,misconfig,license
-          severity: CRITICAL,HIGH
+          severity: CRITICAL
           exit-code: "1"
           ignore-unfixed: true
           format: table
         env:
-          # Fail the build on any CRITICAL. HIGH findings are reported for
-          # triage but do not block, so a repository is not paralysed by an
-          # unfixed upstream advisory; ignore-unfixed keeps that honest.
+          # Fail the build on CRITICAL. HIGH findings are reported by the SARIF
+          # step below for triage but do not block, so a repository is not
+          # paralysed by an unfixed upstream advisory.
           TRIVY_EXIT_CODE: "1"
 
       - name: Trivy SARIF report

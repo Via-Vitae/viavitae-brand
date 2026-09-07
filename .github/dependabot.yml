@@ -24,7 +24,7 @@ updates:
       timezone: "Europe/Vilnius"
     open-pull-requests-limit: 10
     reviewers:
-      - "viavitae-org/architects"
+      - "Via-Vitae/architects"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
@@ -62,7 +62,7 @@ updates:
       timezone: "Europe/Vilnius"
     open-pull-requests-limit: 10
     reviewers:
-      - "viavitae-org/architects"
+      - "Via-Vitae/architects"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
@@ -103,8 +103,8 @@ updates:
       timezone: "Europe/Vilnius"
     open-pull-requests-limit: 10
     reviewers:
-      - "viavitae-org/platform"
-      - "viavitae-org/architects"
+      - "Via-Vitae/platform"
+      - "Via-Vitae/architects"
     commit-message:
       prefix: "ci(deps)"
       include: "scope"
@@ -135,8 +135,8 @@ updates:
       timezone: "Europe/Vilnius"
     open-pull-requests-limit: 10
     reviewers:
-      - "viavitae-org/platform"
-      - "viavitae-org/security"
+      - "Via-Vitae/platform"
+      - "Via-Vitae/security"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
@@ -165,8 +165,8 @@ updates:
       timezone: "Europe/Vilnius"
     open-pull-requests-limit: 10
     reviewers:
-      - "viavitae-org/platform"
-      - "viavitae-org/security"
+      - "Via-Vitae/platform"
+      - "Via-Vitae/security"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"

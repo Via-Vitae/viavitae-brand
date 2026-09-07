@@ -6,7 +6,7 @@
     "name": "radius",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "adr": "docs/architecture.md — ADR-001",
     "guidance": "guidelines/brand-guidelines.md"
   },

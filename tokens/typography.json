@@ -6,7 +6,7 @@
     "name": "typography",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "adr": "docs/architecture.md — ADR-003",
     "verification": "tools/cyrillic_check.py",
     "guidance": "guidelines/typography-usage.md",

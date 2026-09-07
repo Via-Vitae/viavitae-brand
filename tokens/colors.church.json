@@ -6,7 +6,7 @@
     "name": "colors.church",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "extends": "tokens/colors.json",
     "adr": "docs/architecture.md — ADR-001",
     "verification": "tools/contrast_check.py",

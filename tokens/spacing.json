@@ -6,7 +6,7 @@
     "name": "spacing",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "base": "4pt",
     "basePx": 4,
     "adr": "docs/architecture.md — ADR-002",

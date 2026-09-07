@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/viavitae-org/viavitae-brand.git",
+    "url": "git+https://github.com/Via-Vitae/viavitae-brand.git",
     "directory": "build"
   },
   "bugs": {
-    "url": "https://github.com/viavitae-org/viavitae-brand/issues"
+    "url": "https://github.com/Via-Vitae/viavitae-brand/issues"
   },
-  "homepage": "https://github.com/viavitae-org/viavitae-brand#readme",
+  "homepage": "https://github.com/Via-Vitae/viavitae-brand#readme",
   "author": {
     "name": "ViaVitae IT Technologies",
     "email": "brand@viavitae.com",

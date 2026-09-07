@@ -6,7 +6,7 @@
     "name": "elevation",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "adr": "docs/architecture.md — ADR-002",
     "guidance": "guidelines/brand-guidelines.md",
     "shadowColourRationale": "Shadows are navy-tinted (14, 27, 61) rather than pure black on the light theme. A black shadow on warm ivory reads as dirt or as a rendering artefact; a navy shadow reads as the object's own colour reflected in the surface beneath it. On the dark theme the shadow colour drops below navy-950 to (5, 10, 26), because the only way to darken an already-dark surface is to go darker than the darkest token in the palette."

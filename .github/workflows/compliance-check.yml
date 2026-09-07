@@ -307,7 +307,7 @@ jobs:
             exit 1
           fi
           if ! printf '%s\n' "$effective" | grep -qE '^\*\s+@'; then
-            echo "::error::CODEOWNERS has no '* @team' default rule. Rule R2 requires '*' to resolve to at least @viavitae-org/architects."
+            echo "::error::CODEOWNERS has no '* @team' default rule. Rule R2 requires '*' to resolve to at least @Via-Vitae/architects."
             exit 1
           fi
           if printf '%s\n' "$effective" | grep -qE '@org/|<OWNER_HANDLE>|@your-org'; then

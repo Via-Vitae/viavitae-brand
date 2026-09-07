@@ -6,7 +6,7 @@
     "name": "icons",
     "version": "1.0.0",
     "format": "dtcg-draft",
-    "owner": "@viavitae-org/brand",
+    "owner": "@Via-Vitae/brand",
     "adr": "docs/architecture.md — ADR-002",
     "guidance": "guidelines/accessibility.md",
     "scReferences": ["WCAG 2.2 SC 1.4.1 Use of Colour", "WCAG 2.2 SC 1.4.11 Non-text Contrast", "WCAG 2.2 SC 2.5.8 Target Size (Minimum)", "WCAG 2.2 SC 4.1.2 Name, Role, Value"]
@@ -148,7 +148,7 @@
 
     "com.viavitae.motif-icons": {
       "$description": "Sacred and liturgical glyphs — the ichthys, the cross, the chi-rho, a dove, a flame, an anchor, a wheat sheaf — are held to a higher standard than utility icons and are reviewed by the brand team rather than merged on a designer's judgement alone. A sacred symbol rendered badly is not a small error: it is visible to exactly the people for whom it is not a decoration. Two additional rules apply. The symbol must be geometrically correct, which for the ichthys means the two arcs meet at a point and do not cross; and it must never be used as a status icon, a bullet, or any other purely functional marker, because a symbol that means something cannot also mean 'list item'.",
-      "review": "@viavitae-org/brand",
+      "review": "@Via-Vitae/brand",
       "geometry": "Verified by eye at 24px and at 16px; a sacred glyph that fails at 16px is not simplified, it is withdrawn from that size.",
       "prohibited": ["as a list bullet", "as a status or state icon", "as a loading indicator", "inside a progress bar", "as a decorative watermark behind body text at more than 5% opacity"]
     }

@@ -71,7 +71,7 @@ same pull request. An ADR that is not in the index has not been made.
 | Field | Value |
 | --- | --- |
 | **Status** | Accepted |
-| **Owner** | `@viavitae-org/architects` |
+| **Owner** | `@Via-Vitae/architects` |
 | **Date** | 2026-09-08 |
 | **Deciders** | Architects, Security, Compliance |
 | **Consulted** | Platform, Legal |
@@ -185,7 +185,7 @@ number from the index, and add the index row in the same pull request.
 | Field | Value |
 | --- | --- |
 | **Status** | Proposed |
-| **Owner** | <team handle, for example @viavitae-org/architects> |
+| **Owner** | <team handle, for example @Via-Vitae/architects> |
 | **Date** | <YYYY-MM-DD> |
 | **Deciders** | <roles and teams that agreed> |
 | **Consulted** | <roles and teams whose input was sought> |

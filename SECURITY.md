@@ -13,7 +13,7 @@ puts users at risk.
 | --- | --- |
 | **Email** | `security@viavitae.com` |
 | **Encryption** | Strongly encouraged. Our PGP public key is published on the [OpenPGP key servers](https://keys.openpgp.org/search?q=security%40viavitae.com); fetch and verify the fingerprint out of band before first use. |
-| **GitHub** | Private vulnerability reporting is enabled on repositories in the `viavitae-org` organisation. Use *Security* -> *Report a vulnerability* when available. |
+| **GitHub** | Private vulnerability reporting is enabled on repositories in the `Via-Vitae` organisation. Use *Security* -> *Report a vulnerability* when available. |
 
 Include as much of the following as you can:
 
@@ -125,7 +125,7 @@ In scope for reporting under this policy:
 
 | Scope | Detail |
 | --- | --- |
-| **Repositories** | All repositories in the `viavitae-org` GitHub organisation, including public, private and internal repositories, their CI/CD configuration, and their build and deployment artefacts. |
+| **Repositories** | All repositories in the `Via-Vitae` GitHub organisation, including public, private and internal repositories, their CI/CD configuration, and their build and deployment artefacts. |
 | **Domains and subdomains** | All `*.viavitae.com` hosts, including demo tenant subdomains provisioned by `viavitae-infra` and `viavitae-clients`. |
 | **Marketplace** | `jolarca.com` and the `jolarca` repository, including the vendor dashboard and vendor onboarding and KYC flows. |
 | **Infrastructure** | Self-hosted Proxmox, k3s and Terraform-managed resources, where testing is coordinated with us in advance. |

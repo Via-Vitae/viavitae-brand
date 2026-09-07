@@ -2,7 +2,7 @@ name: Bug report
 description: Report a defect in this repository. For a security vulnerability, use the private disclosure process in SECURITY.md instead.
 title: "bug(<scope>): "
 labels: ["bug", "triage"]
-projects: ["viavitae-org/1"]
+projects: ["Via-Vitae/1"]
 
 body:
   - type: markdown
@@ -54,7 +54,7 @@ body:
     attributes:
       label: Affected repository
       description: The repository where the defect lives.
-      placeholder: "viavitae-org/viavitae-web"
+      placeholder: "Via-Vitae/viavitae-web"
     validations:
       required: true
 

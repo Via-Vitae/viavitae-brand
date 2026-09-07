@@ -96,7 +96,7 @@ _None._
 ## [1.0.0] - 2026-09-06
 
 Initial release of the ViaVitae repository template. Every repository in the
-`viavitae-org` organisation is generated from this baseline.
+`Via-Vitae` organisation is generated from this baseline.
 
 ### Added
 
@@ -107,7 +107,7 @@ Initial release of the ViaVitae repository template. Every repository in the
 - `SECURITY.md` — private disclosure to `security@viavitae.com`, acknowledgement within 24
   hours, triage within 72 hours, remediation SLA table, GDPR Article 33 72-hour breach
   notification workflow, safe harbour for good-faith researchers, and scope covering all
-  `viavitae-org` repositories, demo subdomains and `jolarca.com`.
+  `Via-Vitae` repositories, demo subdomains and `jolarca.com`.
 - `QODER.md` — seven behavioural rules for AI-assisted coding, including compliance
   stop-conditions for GDPR, WCAG 2.2 AA, EU data residency and secrets.
 - `CONTRIBUTING.md` — trunk-based development, branch naming, Conventional Commits, DCO
@@ -120,7 +120,7 @@ Initial release of the ViaVitae repository template. Every repository in the
 - `.editorconfig` — UTF-8, LF, final newline, trimmed trailing whitespace, 2-space indent
   for web and data formats, 4-space for Python, tab for `Makefile`, 100-column limit
   except Markdown.
-- `.github/CODEOWNERS` — `*` to `@viavitae-org/architects`, with per-path rules for
+- `.github/CODEOWNERS` — `*` to `@Via-Vitae/architects`, with per-path rules for
   platform, compliance, security, legal and DPO ownership, and the R2 immutability rule.
 - `.github/dependabot.yml` — weekly grouped updates on Monday 06:00 Europe/Vilnius across
   npm, pip, github-actions, terraform and docker, limit 10 open pull requests, reviewed by
@@ -185,5 +185,5 @@ _None._
 
 ---
 
-[Unreleased]: https://github.com/viavitae-org/viavitae-template/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/viavitae-org/viavitae-template/releases/tag/v1.0.0
+[Unreleased]: https://github.com/Via-Vitae/viavitae-template/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Via-Vitae/viavitae-template/releases/tag/v1.0.0

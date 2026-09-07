@@ -899,9 +899,9 @@ def check_bookkeeping(repo_root: Path, report: Report) -> None:
         if isinstance(version, str):
             versions[relative] = version
         owner = meta.get("owner")
-        if owner != "@viavitae-org/brand":
+        if owner != "@Via-Vitae/brand":
             report.fail(
-                "meta", relative, f"owner is {owner!r}; expected '@viavitae-org/brand'"
+                "meta", relative, f"owner is {owner!r}; expected '@Via-Vitae/brand'"
             )
     distinct = sorted(set(versions.values()))
     if len(distinct) > 1:

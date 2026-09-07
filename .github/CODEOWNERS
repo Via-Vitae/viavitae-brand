@@ -12,85 +12,85 @@
 # 1. This file is NEVER empty. An empty CODEOWNERS silently removes every
 #    required reviewer, so a pull request that empties it fails review by
 #    definition. The `*` rule below must always resolve to at least
-#    @viavitae-org/architects.
+#    @Via-Vitae/architects.
 # 2. Overrides are allowed. Narrower path rules may add or replace owners for
 #    their subtree — that is the intended mechanism for giving security,
 #    compliance, legal and the DPO authority over their own paths.
 # 3. Removal requires compliance team approval. Deleting an owner, widening `*`,
 #    or changing the rules for /LICENSE, /SECURITY.md, /QODER.md,
 #    /.github/CODEOWNERS, /docs/DPIA-template.md or /.github/workflows/
-#    requires an approving review from @viavitae-org/compliance in addition to
+#    requires an approving review from @Via-Vitae/compliance in addition to
 #    the standard architect review. Record the reason as an ADR.
 # 4. Owners are teams, not individuals. Team membership changes without editing
 #    this file, which keeps the ownership map stable and auditable.
 # ---------------------------------------------------------------------------
 
 # --- Default owner for everything -------------------------------------------
-*                                       @viavitae-org/architects
+*                                       @Via-Vitae/architects
 
 # --- Platform: CI/CD, automation and repository configuration -----------------
-/.github/                               @viavitae-org/platform @viavitae-org/architects
-/.github/workflows/                     @viavitae-org/platform @viavitae-org/security
-/.github/CODEOWNERS                     @viavitae-org/architects @viavitae-org/compliance
-/.github/dependabot.yml                 @viavitae-org/platform
-/.editorconfig                          @viavitae-org/platform
-/.gitignore                             @viavitae-org/platform @viavitae-org/security
+/.github/                               @Via-Vitae/platform @Via-Vitae/architects
+/.github/workflows/                     @Via-Vitae/platform @Via-Vitae/security
+/.github/CODEOWNERS                     @Via-Vitae/architects @Via-Vitae/compliance
+/.github/dependabot.yml                 @Via-Vitae/platform
+/.editorconfig                          @Via-Vitae/platform
+/.gitignore                             @Via-Vitae/platform @Via-Vitae/security
 
 # --- Compliance and privacy --------------------------------------------------
-/docs/gdpr/                             @viavitae-org/compliance
-/docs/DPIA-template.md                  @viavitae-org/compliance @viavitae-org/dpo
-/docs/architecture.md                   @viavitae-org/architects @viavitae-org/compliance
-/docs/security/                         @viavitae-org/security @viavitae-org/compliance
+/docs/gdpr/                             @Via-Vitae/compliance
+/docs/DPIA-template.md                  @Via-Vitae/compliance @Via-Vitae/dpo
+/docs/architecture.md                   @Via-Vitae/architects @Via-Vitae/compliance
+/docs/security/                         @Via-Vitae/security @Via-Vitae/compliance
 
 # --- Legal and policy --------------------------------------------------------
-/LICENSE                                @viavitae-org/legal @viavitae-org/architects
-/SECURITY.md                            @viavitae-org/security @viavitae-org/legal
-/CODE_OF_CONDUCT.md                     @viavitae-org/legal @viavitae-org/compliance
-/CONTRIBUTING.md                        @viavitae-org/architects
-/QODER.md                               @viavitae-org/architects @viavitae-org/security
-/CHANGELOG.md                           @viavitae-org/architects
-/README.md                              @viavitae-org/architects
+/LICENSE                                @Via-Vitae/legal @Via-Vitae/architects
+/SECURITY.md                            @Via-Vitae/security @Via-Vitae/legal
+/CODE_OF_CONDUCT.md                     @Via-Vitae/legal @Via-Vitae/compliance
+/CONTRIBUTING.md                        @Via-Vitae/architects
+/QODER.md                               @Via-Vitae/architects @Via-Vitae/security
+/CHANGELOG.md                           @Via-Vitae/architects
+/README.md                              @Via-Vitae/architects
 
 # --- Security-sensitive application paths ------------------------------------
-**/auth/**                              @viavitae-org/security @viavitae-org/architects
-**/authentication/**                    @viavitae-org/security
-**/authorization/**                     @viavitae-org/security
-**/secrets/**                           @viavitae-org/security
-**/crypto/**                            @viavitae-org/security
-**/payments/**                          @viavitae-org/security @viavitae-org/legal
-**/donations/**                         @viavitae-org/security @viavitae-org/compliance
+**/auth/**                              @Via-Vitae/security @Via-Vitae/architects
+**/authentication/**                    @Via-Vitae/security
+**/authorization/**                     @Via-Vitae/security
+**/secrets/**                           @Via-Vitae/security
+**/crypto/**                            @Via-Vitae/security
+**/payments/**                          @Via-Vitae/security @Via-Vitae/legal
+**/donations/**                         @Via-Vitae/security @Via-Vitae/compliance
 
 # --- Infrastructure and data residency ---------------------------------------
-/terraform/                             @viavitae-org/platform @viavitae-org/security
-/ansible/                               @viavitae-org/platform
-/k8s/                                   @viavitae-org/platform @viavitae-org/security
-*.tf                                    @viavitae-org/platform @viavitae-org/security
-*.tfvars                                @viavitae-org/security
-Dockerfile                              @viavitae-org/platform @viavitae-org/security
-docker-compose*.yml                     @viavitae-org/platform
+/terraform/                             @Via-Vitae/platform @Via-Vitae/security
+/ansible/                               @Via-Vitae/platform
+/k8s/                                   @Via-Vitae/platform @Via-Vitae/security
+*.tf                                    @Via-Vitae/platform @Via-Vitae/security
+*.tfvars                                @Via-Vitae/security
+Dockerfile                              @Via-Vitae/platform @Via-Vitae/security
+docker-compose*.yml                     @Via-Vitae/platform
 
 # --- Application source ------------------------------------------------------
-/src/                                   @viavitae-org/architects
-*.py                                    @viavitae-org/architects
-*.ts                                    @viavitae-org/architects
-*.tsx                                   @viavitae-org/architects
-*.js                                    @viavitae-org/architects
-*.jsx                                   @viavitae-org/architects
+/src/                                   @Via-Vitae/architects
+*.py                                    @Via-Vitae/architects
+*.ts                                    @Via-Vitae/architects
+*.tsx                                   @Via-Vitae/architects
+*.js                                    @Via-Vitae/architects
+*.jsx                                   @Via-Vitae/architects
 
 # --- Dependencies and packaging ----------------------------------------------
-/requirements*.txt                      @viavitae-org/architects @viavitae-org/security
-/pyproject.toml                         @viavitae-org/architects @viavitae-org/security
-/uv.lock                                @viavitae-org/architects
-/package.json                           @viavitae-org/architects @viavitae-org/security
-/package-lock.json                      @viavitae-org/architects @viavitae-org/security
+/requirements*.txt                      @Via-Vitae/architects @Via-Vitae/security
+/pyproject.toml                         @Via-Vitae/architects @Via-Vitae/security
+/uv.lock                                @Via-Vitae/architects
+/package.json                           @Via-Vitae/architects @Via-Vitae/security
+/package-lock.json                      @Via-Vitae/architects @Via-Vitae/security
 
 # --- Accessibility and internationalisation ----------------------------------
-**/locales/**                           @viavitae-org/architects @viavitae-org/compliance
-**/i18n/**                              @viavitae-org/architects @viavitae-org/compliance
-**/a11y/**                              @viavitae-org/architects
-**/components/**                        @viavitae-org/architects
+**/locales/**                           @Via-Vitae/architects @Via-Vitae/compliance
+**/i18n/**                              @Via-Vitae/architects @Via-Vitae/compliance
+**/a11y/**                              @Via-Vitae/architects
+**/components/**                        @Via-Vitae/architects
 
 # --- Tests and quality assets ------------------------------------------------
-/tests/                                 @viavitae-org/architects
-**/*.test.*                             @viavitae-org/architects
-**/*.spec.*                             @viavitae-org/architects
+/tests/                                 @Via-Vitae/architects
+**/*.test.*                             @Via-Vitae/architects
+**/*.spec.*                             @Via-Vitae/architects

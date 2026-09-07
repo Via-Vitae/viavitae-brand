@@ -2,7 +2,7 @@ name: Feature request
 description: Propose a new capability or a change to an existing one. Compliance, i18n and accessibility impact are assessed here, before work starts.
 title: "feat(<scope>): "
 labels: ["enhancement", "triage"]
-projects: ["viavitae-org/1"]
+projects: ["Via-Vitae/1"]
 
 body:
   - type: markdown

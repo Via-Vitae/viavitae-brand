@@ -91,7 +91,7 @@ jobs:
           external-data: false
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@5ba2889ada762081db2c4f32a729827dce632c7b
+        uses: github/codeql-action/analyze@6f5948dfacef28e207b48d0905cf90c03365536d
         with:
           category: "/language:${{ matrix.language }}/build-mode:${{ matrix.build-mode }}"
           # Always upload. Blocking behaviour is governed by the repository's

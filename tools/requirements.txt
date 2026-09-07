@@ -69,6 +69,14 @@ cairosvg>=2.7,<3
 # 10.2.0 verified in the reference environment.
 pillow==10.2.0
 
+# --- SVG parsing (tools/build_exports.py) ------------------------------------
+# defusedxml wraps the standard-library XML parsers with safe defaults that
+# reject entity expansion and external entity references. The SVG masters are
+# committed brand assets, not untrusted input, but Semgrep's python.lang
+# security rules flag `xml.etree.ElementTree` at ERROR severity regardless of
+# threat model, and the CI gate does not distinguish intent from exposure.
+defusedxml==0.7.1
+
 # --- Font subsetting and coverage (tools/cyrillic_check.py, --fonts) --------
 # Reads a font binary's `cmap` table to verify that the codepoints required by
 # each supported locale are actually present, and reads the `fvar` table to

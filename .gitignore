@@ -25,6 +25,11 @@
 *.jks
 secrets/
 .secrets.baseline
+# Terraform state files can contain credentials in plaintext. This repository
+# holds no infrastructure, but the compliance governance check requires every
+# repository to ignore state patterns so a stray .tfstate is never committed.
+*.tfstate
+*.tfstate.*
 
 # --- Python (tools/) ---------------------------------------------------------
 # The scripts under tools/ are linted and type-checked in CI, so their caches

@@ -45,7 +45,7 @@ import json
 import re
 import subprocess
 import sys
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path

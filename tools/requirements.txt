@@ -84,4 +84,4 @@ fonttools>=4.47,<5
 # the `--fonts` path; the coverage check itself reads TTF, OTF and WOFF2 through
 # fonttools and does not need the compressor.
 # UNRESOLVED PIN — see the pinning policy above.
-brotli>=1.1,<2
+brotli>=1.2.0,<2

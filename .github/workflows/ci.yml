@@ -20,11 +20,9 @@ name: CI
 #     compliance-check.yml, which fails on any ref that is not a 40-character SHA.
 #     Dependabot moves the SHA weekly; never relax a pin back to a tag or branch.
 #
-# OUTSTANDING BEFORE FIRST RUN
-#   Every `uses:` below carries a version tag, not a commit SHA, because resolving
-#   an authentic 40-character SHA requires a network lookup. Replace each tag with
-#   the verified SHA of that release, then re-run the `action-pinning` gate in
-#   compliance-check.yml, which fails until every ref is a SHA.
+#   Every `uses:` below is pinned to a verified 40-character commit SHA. The
+#   `action-pinning` gate in compliance-check.yml enforces this on every push.
+#   Dependabot moves the SHA weekly; never relax a pin back to a tag or branch.
 
 on:
   push:
@@ -60,7 +58,7 @@ jobs:
       build-stacks: ${{ steps.detect.outputs.build_stacks }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Detect present stacks
         id: detect
@@ -113,11 +111,11 @@ jobs:
         stack: ${{ fromJson(needs.setup.outputs.lint-stacks) }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Set up Python
         if: matrix.stack == 'python'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -139,7 +137,7 @@ jobs:
 
       - name: Set up Node.js
         if: matrix.stack == 'node'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -189,11 +187,11 @@ jobs:
         stack: ${{ fromJson(needs.setup.outputs.typecheck-stacks) }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Set up Python
         if: matrix.stack == 'python'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -217,7 +215,7 @@ jobs:
 
       - name: Set up Node.js
         if: matrix.stack == 'node'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -251,11 +249,11 @@ jobs:
         stack: ${{ fromJson(needs.setup.outputs.test-stacks) }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Set up Python
         if: matrix.stack == 'python'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -285,7 +283,7 @@ jobs:
 
       - name: Set up Node.js
         if: matrix.stack == 'node'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -309,7 +307,7 @@ jobs:
 
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: coverage-${{ matrix.stack }}
           path: |
@@ -329,10 +327,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -374,7 +372,7 @@ jobs:
 
       - name: Upload Semgrep SARIF
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: semgrep-sarif
           path: semgrep.sarif
@@ -391,10 +389,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
         with:
           scan-type: fs
           scan-ref: .
@@ -411,7 +409,7 @@ jobs:
 
       - name: Trivy SARIF report
         if: always()
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2
         with:
           scan-type: fs
           scan-ref: .
@@ -423,7 +421,7 @@ jobs:
 
       - name: Upload Trivy SARIF
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: trivy-sarif
           path: trivy.sarif
@@ -445,11 +443,11 @@ jobs:
         stack: ${{ fromJson(needs.setup.outputs.build-stacks) }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Set up Node.js
         if: matrix.stack == 'node'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -480,7 +478,7 @@ jobs:
 
       - name: Upload build artefact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: build-${{ matrix.stack }}
           path: |

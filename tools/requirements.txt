@@ -45,13 +45,13 @@ referencing==0.37.0
 # caught before it reaches a hosted runner. 6.0.1 verified in the reference
 # environment. PyYAML is also the parser behind a duplicate-key check that
 # `yaml.safe_load` alone does not perform.
-PyYAML==6.0.1
+PyYAML==6.0.3
 
 # --- Lint and type check for the tools themselves ---------------------------
 # The scripts in this directory are Python and are held to the same standard as
 # any other Python in the organisation: ruff for lint and format, mypy in strict
 # mode for types. Both verified in the reference environment.
-ruff==0.16.5
+ruff==0.16.6
 mypy==2.3.1
 
 # --- Raster export (tools/build_exports.py) --------------------------------

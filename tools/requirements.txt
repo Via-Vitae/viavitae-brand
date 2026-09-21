@@ -51,7 +51,7 @@ PyYAML==6.0.3
 # The scripts in this directory are Python and are held to the same standard as
 # any other Python in the organisation: ruff for lint and format, mypy in strict
 # mode for types. Both verified in the reference environment.
-ruff==0.16.6
+ruff==0.16.8
 mypy==2.3.1
 
 # --- Raster export (tools/build_exports.py) --------------------------------

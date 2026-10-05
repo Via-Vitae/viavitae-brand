@@ -51,8 +51,8 @@ PyYAML==6.0.3
 # The scripts in this directory are Python and are held to the same standard as
 # any other Python in the organisation: ruff for lint and format, mypy in strict
 # mode for types. Both verified in the reference environment.
-ruff==0.16.6
-mypy==2.3.1
+ruff==0.16.10
+mypy==2.4.0
 
 # --- Raster export (tools/build_exports.py) --------------------------------
 # SVG to PNG rasterisation for the logo masters, the favicon set and the OG

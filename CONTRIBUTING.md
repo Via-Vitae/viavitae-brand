@@ -16,7 +16,7 @@ critique work rather than people, and to assume good faith. Harassment, discrimi
 personal attacks are not accepted in any ViaVitae space, including issues, pull requests,
 commit messages and chat.
 
-Report a concern to `legal@viavitae.com`. Reports are handled confidentially. Where a
+Report a concern to `journey4oflife+viavitae.billing@gmail.com`. Reports are handled confidentially. Where a
 repository needs a full standalone code of conduct, one is added as `CODE_OF_CONDUCT.md`
 and owned by `.github/CODEOWNERS`; this section remains the binding baseline until then.
 
@@ -236,9 +236,9 @@ not a penalty; it changes how a reviewer reads the diff.
 | --- | --- |
 | Workflow, review, branch or commit rules | This document, then `#engineering` |
 | Architecture or design decisions | The architects, and record the outcome as an ADR |
-| Personal data, DPIA, retention, processors | `dpo@viavitae.com` |
-| Licensing and third-party components | `legal@viavitae.com` |
-| Vulnerabilities and security incidents | `security@viavitae.com` — private, per [SECURITY.md](SECURITY.md) |
+| Personal data, DPIA, retention, processors | `journey4oflife+viavitae.privacy@gmail.com` |
+| Licensing and third-party components | `journey4oflife+viavitae.billing@gmail.com` |
+| Vulnerabilities and security incidents | `journey4oflife+viavitae.security@gmail.com` — private, per [SECURITY.md](SECURITY.md) |
 
 ## Recognition
 

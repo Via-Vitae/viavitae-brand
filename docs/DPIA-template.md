@@ -8,7 +8,7 @@ A DPIA is completed **before** processing starts, not after. Under rule R5 in
 reference to a completed DPIA is blocked at review. Under QODER rule 7, a request to begin
 processing before the assessment is complete halts work rather than being worked around.
 
-The DPO owns this register: `dpo@viavitae.com`.
+The DPO owns this register: `journey4oflife+viavitae.privacy@gmail.com`.
 
 ---
 
@@ -405,7 +405,7 @@ turned into a proposal that a ViaVitae staff member reviews before it is sent.
   before submission, in Lithuanian, English and Russian. It names the controller, the
   purposes, the lawful basis, the retention period, the recipients and the rights available.
 - **Rights.** Access, rectification, erasure, restriction, portability and objection are
-  exercisable through `dpo@viavitae.com`. Erasure is refused only where the 7-year
+  exercisable through `journey4oflife+viavitae.privacy@gmail.com`. Erasure is refused only where the 7-year
   accounting obligation applies, and the refusal is explained with the legal citation.
 
 ### 3. Lawful basis
@@ -516,7 +516,7 @@ the funnel route. Attachments are optional. The follow-up email is a single mess
 asking.
 
 **Breach readiness.** Detection is by alert on anomalous bulk read, on failed-authentication
-spike and on CSP violation. The path is on-call engineer to `security@viavitae.com`, then to
+spike and on CSP violation. The path is on-call engineer to `journey4oflife+viavitae.security@gmail.com`, then to
 the DPO, then the Article 33 assessment. The 72-hour workflow is in `SECURITY.md`. A
 quarterly tabletop exercise runs against this processing specifically.
 
@@ -844,7 +844,7 @@ Retention is 24 months, not indefinite. Nothing is used for training.
 
 **Breach readiness.** Detection is by alert on cross-tenant access patterns, on egress policy
 violation, on safeguarding-classifier failure and on anomalous bulk read. The path is on-call
-engineer to `security@viavitae.com`, then the DPO, then the parish as controller, then the
+engineer to `journey4oflife+viavitae.security@gmail.com`, then the DPO, then the parish as controller, then the
 Article 33 assessment. Because the parish is the controller, the parish is notified
 immediately so that its own 72-hour clock can be managed; ViaVitae notifies without undue
 delay under Article 33(2). The workflow is in `SECURITY.md`. A quarterly tabletop exercise

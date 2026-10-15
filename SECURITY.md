@@ -11,8 +11,8 @@ puts users at risk.
 
 | Channel | Detail |
 | --- | --- |
-| **Email** | `security@viavitae.com` |
-| **Encryption** | Strongly encouraged. Our PGP public key is published on the [OpenPGP key servers](https://keys.openpgp.org/search?q=security%40viavitae.com); fetch and verify the fingerprint out of band before first use. |
+| **Email** | `journey4oflife+viavitae.security@gmail.com` |
+| **Encryption** | Optional. No PGP key is published for this mailbox yet. Use GitHub private vulnerability reporting (*Security* -> *Report a vulnerability*) as the access-controlled channel, or say in your report that you will send proof-of-concept material out of band and we will arrange it. |
 | **GitHub** | Private vulnerability reporting is enabled on repositories in the `Via-Vitae` organisation. Use *Security* -> *Report a vulnerability* when available. |
 
 Include as much of the following as you can:
@@ -43,7 +43,7 @@ persistent access.
 | **Researcher notification of fix** | Within 5 business days of deployment. |
 
 If you have not received an acknowledgement within 24 hours, resend to the same address
-and copy `legal@viavitae.com`. Email delivery failures happen, and we would rather receive
+and copy `journey4oflife+viavitae.billing@gmail.com`. Email delivery failures happen, and we would rather receive
 a duplicate than lose a report.
 
 ### Remediation SLA
@@ -92,7 +92,7 @@ waits for the other.
 6. **Close the loop.** The DPIA for the affected processing is revisited under Article 35(7)
    and, where the breach reveals an architectural weakness, an ADR records the decision.
 
-The DPO (`dpo@viavitae.com`) owns steps 2 to 5. The security team owns technical
+The DPO (`journey4oflife+viavitae.privacy@gmail.com`) owns steps 2 to 5. The security team owns technical
 containment and remediation and provides the factual record.
 
 ## Safe harbour for good-faith research
@@ -156,9 +156,9 @@ upgrade before reporting a finding that has already been fixed.
 
 | Role | Contact |
 | --- | --- |
-| Security team | `security@viavitae.com` |
-| Data Protection Officer | `dpo@viavitae.com` |
-| Legal | `legal@viavitae.com` |
+| Security team | `journey4oflife+viavitae.security@gmail.com` |
+| Data Protection Officer | `journey4oflife+viavitae.privacy@gmail.com` |
+| Legal | `journey4oflife+viavitae.billing@gmail.com` |
 
 This policy is reviewed at least annually, and after any Critical severity incident.
 Changes are recorded in `CHANGELOG.md`.
